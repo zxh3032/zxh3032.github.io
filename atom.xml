@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-03-23T11:31:02.267Z</updated>
+  <updated>2023-03-28T15:41:04.109Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>小孔成像模型——坐标系转换</title>
+    <link href="http://example.com/2023/03/28/%E5%B0%8F%E5%AD%94%E6%88%90%E5%83%8F%E6%A8%A1%E5%9E%8B%E2%80%94%E2%80%94%E5%9D%90%E6%A0%87%E7%B3%BB%E8%BD%AC%E6%8D%A2/"/>
+    <id>http://example.com/2023/03/28/%E5%B0%8F%E5%AD%94%E6%88%90%E5%83%8F%E6%A8%A1%E5%9E%8B%E2%80%94%E2%80%94%E5%9D%90%E6%A0%87%E7%B3%BB%E8%BD%AC%E6%8D%A2/</id>
+    <published>2023-03-28T14:37:07.000Z</published>
+    <updated>2023-03-28T15:41:04.109Z</updated>
+    
+    <content type="html"><![CDATA[<p>本文主要记录在三维空间的物体转换为二维图像的过程，即相机的投影过程。</p><h1 id="一、小孔成像模型与坐标系"><a href="#一、小孔成像模型与坐标系" class="headerlink" title="一、小孔成像模型与坐标系"></a>一、小孔成像模型与坐标系</h1><p>相机的拍摄过程可以简化为小孔成像的一种形式，利用这种形式很容易就能得到相机模型中的数学表达式。通过相机的成像方式及其数学表达式，可以看出三维场景和图像中每一个像素之间的映射关系。</p><p>相机的模型结构如下图所示，为了使其简单化，把成像的平面置于小孔前面，并且拍摄出来的图像也应该是正立的。</p><p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/image-20230328224246218.png" alt="image-20230328224246218"></p><p>在小孔成像模型中，场景从三维空间投影到图片上的整个过程可以理解为<strong>三个步骤</strong>和<strong>四个坐标系</strong>。</p><p>具体流程如下：从世界坐标系转换到相机坐标系，再从相机坐标系转换到图像坐标系，最后从图像坐标系转换到像素坐标系。</p><p>四个坐标系的定义如下：</p><ul><li><strong>世界坐标系：</strong>一个客观的绝对存在，世界坐标系都需要<strong>预先确定</strong>，指定其<strong>原点</strong>和<strong>方向</strong>。在定义好的世界坐标系中可以放置任何物体。世界坐标系下的坐标通常用（Xw,Yw,Zw）来进行表示。</li><li><strong>相机坐标系：</strong>目前通用的定义方法是以一台<strong>相机的光心或者主点</strong>作为坐标系的<strong>原点。X轴和Y轴</strong>在拍摄画面时分别平行于图像的横轴和纵轴，<strong>Z轴</strong>为相机的焦距所指方向。相机坐标系下的坐标通常使用符号（Xc,Yc,Zc）来进行表示。</li><li><strong>图像坐标系：</strong>根据图像进行定义，以图象中心作为<strong>原点，</strong>X 轴和 Y 轴与相机的 X 轴和 Y 轴的方向保持一致。图像坐标是使用米、厘米等物理学单位来表示的坐标系。图像坐标系只有两个维度，没有Z轴。图像坐标系下通常使用符号（x, y）来表示。</li><li><strong>像素坐标系：</strong>以像素为单位的坐标系。像素坐标系也是二维坐标系，其 X 轴和 Y 轴的方向与图像坐标系一致。坐标原点位于二维图像的左上角。像素通用的表示形式为一个方块或者矩形，每个像素里面存放的信息为像素的强度和灰度值。</li></ul><h1 id="二、坐标系的转换"><a href="#二、坐标系的转换" class="headerlink" title="二、坐标系的转换"></a>二、坐标系的转换</h1><p>在第一小节中，已经定义了各个坐标系及其表示形式，在该小节中，将通过数学模型的形式，推导小孔成像的过程。整个过程分为三个步骤，其中<strong>世界坐标系</strong>到<strong>相机坐标系</strong>的变化过程涉及相机的<strong>外参</strong>，从<strong>相机的坐标系</strong>转换到<strong>图像坐标系</strong>再转换到像素坐标系的过程中都涉及到了相机的<strong>内参</strong>的使用。该小节通过相机内参以及外参的形式推导相机的投影过程。</p><h2 id="1-相机外参"><a href="#1-相机外参" class="headerlink" title="(1) 相机外参"></a>(1) 相机外参</h2><p>世界坐标系（Xw,Yw,Zw）与相机坐标系（Xc,Yc,Zc）的转换。</p><p>假设点 <strong>P </strong>是一个三维空间的点，其在相机坐标系下的位置为 <strong>Pc</strong> ，在世界坐标系下的位置为 <strong>Pw </strong>。Pw 和 Pc 可以通过一个变换矩阵相互转换，该变换矩阵可以细分为旋转矩阵(<strong>R</strong>)和平移矩阵(<strong>t</strong>).其数学表达式为：</p><script type="math/tex; mode=display">P_c=RP_w+t</script><p>其中 <strong>R</strong> 有三个自由度，是一个 3 <em> 3 的矩阵，表示相机在世界坐标系下的旋转。<strong>t</strong> 表示相机的原点（或者说相机开始时的坐标系的原点）相对于世界坐标系的变化，是一个 3 </em> 1的矩阵。上式可以展开为：</p><script type="math/tex; mode=display">\begin{bmatrix}X_c \\Y_c \\Z_c \\\end{bmatrix}=\begin{bmatrix}R_{11} & R_{12} & R_{13} \\R_{21} & R_{22} & R_{23} \\R_{31} & R_{32} & R_{33} \\\end{bmatrix}\begin{bmatrix}X_w \\Y_w \\Z_w \\\end{bmatrix}+\begin{bmatrix}t_1 \\t_2 \\t_3 \\\end{bmatrix}</script>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;本文主要记录在三维空间的物体转换为二维图像的过程，即相机的投影过程。&lt;/p&gt;
+&lt;h1 id=&quot;一、小孔成像模型与坐标系&quot;&gt;&lt;a href=&quot;#一、小孔成像模型与坐标系&quot; class=&quot;headerlink&quot; title=&quot;一、小孔成像模型与坐标系&quot;&gt;&lt;/a&gt;一、小孔成像模型</summary>
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>计算机视觉学习</title>
