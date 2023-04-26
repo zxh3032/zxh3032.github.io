@@ -7,7 +7,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/img/touxiang.png">
 <meta property="article:published_time" content="2023-04-26T08:39:17.000Z">
-<meta property="article:modified_time" content="2023-04-26T12:20:37.521Z">
+<meta property="article:modified_time" content="2023-04-26T12:34:00.843Z">
 <meta property="article:author" content="随便寻个地方">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/img/touxiang.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2023/04/26/%E3%80%8A%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E5%A3%B9%E2%80%94%E2%80%94CPU%E8%99%9A%E6%8B%9F%E5%8C%96/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
@@ -56,7 +56,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: true,
-  postUpdate: '2023-04-26 20:20:37'
+  postUpdate: '2023-04-26 20:34:00'
 }</script><noscript><style type="text/css">
   #nav {
     opacity: 1
@@ -165,7 +165,7 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
 <!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="随便寻个地方'Blog" type="application/atom+xml">
-</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/touxiang.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="随便寻个地方'Blog"><span class="site-name">随便寻个地方'Blog</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">《操作系统导论》学习笔记壹——CPU虚拟化</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-04-26T08:39:17.000Z" title="发表于 2023-04-26 16:39:17">2023-04-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-04-26T12:20:37.521Z" title="更新于 2023-04-26 20:20:37">2023-04-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="《操作系统导论》学习笔记壹——CPU虚拟化"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="0-为什么要设计CPU虚拟化"><a href="#0-为什么要设计CPU虚拟化" class="headerlink" title="0 为什么要设计CPU虚拟化"></a>0 为什么要设计CPU虚拟化</h1><p>CPU虚拟化是指在一台物理计算机上运行多个虚拟机，每个虚拟机都能够运行自己的操作系统和应用程序。CPU虚拟化的出现是为了解决以下几个问题：</p>
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/touxiang.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">3</div></a></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="随便寻个地方'Blog"><span class="site-name">随便寻个地方'Blog</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">《操作系统导论》学习笔记壹——CPU虚拟化</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-04-26T08:39:17.000Z" title="发表于 2023-04-26 16:39:17">2023-04-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-04-26T12:34:00.843Z" title="更新于 2023-04-26 20:34:00">2023-04-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="《操作系统导论》学习笔记壹——CPU虚拟化"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="0-为什么要设计CPU虚拟化"><a href="#0-为什么要设计CPU虚拟化" class="headerlink" title="0 为什么要设计CPU虚拟化"></a>0 为什么要设计CPU虚拟化</h1><p>CPU虚拟化是指在一台物理计算机上运行多个虚拟机，每个虚拟机都能够运行自己的操作系统和应用程序。CPU虚拟化的出现是为了解决以下几个问题：</p>
 <ol>
 <li><p>提高资源利用率：在传统的物理服务器中，一台服务器只能运行一个操作系统和一组应用程序。这意味着服务器的资源利用率很低，而虚拟化技术可以将一台物理服务器虚拟化为多个虚拟机，从而提高资源利用率。</p>
 </li>
@@ -216,12 +216,12 @@
 <li>execvp()：与execv()相同，但只需指定程序的名称，而不必指定程序的完整路径。execvp()会在环境变量<code>$PATH</code>中查找程序，并自动使用正确的路径。需要注意的是，如果<code>$PATH</code>中存在多个匹配的程序，那么execvp()将使用第一个匹配的程序。</li>
 <li>execve()：使用这种变体时，需要将所有要传递给新程序的参数和环境变量存储在指向参数数组和环境变量数组的指针中。第一个元素应该是程序的路径。execve()提供了最大的灵活性，因为它允许指定所有的参数和环境变量，并且不依赖于任何默认值。如果使用此变体，应该完全了解新程序所需的所有参数和环境变量，并且能够以可预测的方式指定这些参数和变量。</li>
 </ul>
-<p><img src="https://cdn.nlark.com/yuque/0/2022/png/29628887/1660644389301-7e0d3ac7-1763-4524-8495-be89b71b2069.png" alt="image.png"></p>
 </li>
 <li><p><strong>kill()：</strong>向进程发送一个信号（虽然名字是kill但不一定是结束进程）。</p>
 </li>
 </ul>
 <p>下图为这些函数的一些示意图：</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/image-20230426203324358.png" alt="image-20230426203324358"></p>
 <p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/885a77cb817431314faeb4783784ba3.jpg" alt="885a77cb817431314faeb4783784ba3" style="zoom:80%;" /></p>
 <h2 id="1-3-进程创建"><a href="#1-3-进程创建" class="headerlink" title="1.3 进程创建"></a>1.3 进程创建</h2><ul>
 <li><p><strong>加载数据到内存</strong></p>
