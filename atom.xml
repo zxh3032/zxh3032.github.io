@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-03-22T05:48:23.366Z</updated>
+  <updated>2024-03-22T14:27:49.617Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,19 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Web程序</title>
+    <link href="http://example.com/2024/03/22/Web%E7%A8%8B%E5%BA%8F/"/>
+    <id>http://example.com/2024/03/22/Web%E7%A8%8B%E5%BA%8F/</id>
+    <published>2024-03-22T14:27:49.000Z</published>
+    <updated>2024-03-22T14:27:49.617Z</updated>
+    
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>腾讯面试——血与泪的教训</title>
