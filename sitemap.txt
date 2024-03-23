@@ -1,7 +1,7 @@
+http://example.com/2024/03/23/Go%E8%AF%AD%E8%A8%80%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93%E2%80%94%E2%80%94%E5%8D%9A%E5%AE%A2%E5%90%8E%E7%AB%AF/
 http://example.com/2024/03/22/Web%E7%A8%8B%E5%BA%8F/
 http://example.com/2024/03/21/%E8%85%BE%E8%AE%AF%E9%9D%A2%E8%AF%95%E2%80%94%E2%80%94%E8%A1%80%E4%B8%8E%E6%B3%AA%E7%9A%84%E6%95%99%E8%AE%AD/
 http://example.com/2024/03/12/%E6%B7%B1%E5%85%A5Go%E8%AF%AD%E8%A8%80%E2%80%94%E2%80%94%E5%86%85%E5%AD%98/
-http://example.com/2024/03/12/Go%E8%AF%AD%E8%A8%80%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93%E2%80%94%E2%80%94%E5%8D%9A%E5%AE%A2%E5%90%8E%E7%AB%AF/
 http://example.com/2024/03/08/Go%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6%E2%80%94%E2%80%94%E5%B9%B6%E5%8F%91/
 http://example.com/2024/03/01/%E6%89%93%E5%BC%80GO%E8%AF%AD%E8%A8%80%E4%B9%8B%E9%97%A8/
 http://example.com/2023/04/18/Bomb-Lab/
@@ -13,6 +13,8 @@ http://example.com/tags/%E9%9A%8F%E6%83%B3/
 http://example.com/tags/Go%E8%AF%AD%E8%A8%80%E3%80%81%E5%B9%B6%E5%8F%91/
 http://example.com/tags/Go%E8%AF%AD%E8%A8%80/
 http://example.com/tags/%E9%9D%A2%E8%AF%95%E7%BB%8F%E9%AA%8C/
+http://example.com/tags/%E9%A1%B9%E7%9B%AE/
 http://example.com/categories/%E3%80%8A%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%B3%BB%E7%BB%9F%E3%80%8B%E8%AF%BE%E7%A8%8B%E5%AE%9E%E9%AA%8C/
 http://example.com/categories/%E6%95%B0%E5%AD%97%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/
 http://example.com/categories/%E5%AD%A6%E4%B9%A0%E5%91%A8%E6%8A%A5/
+http://example.com/categories/GoBlog/

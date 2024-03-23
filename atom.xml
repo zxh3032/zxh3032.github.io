@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-03-22T14:27:49.617Z</updated>
+  <updated>2024-03-23T12:37:40.254Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,11 +17,35 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Web程序</title>
+    <title>GoBlog，启动！</title>
+    <link href="http://example.com/2024/03/23/Go%E8%AF%AD%E8%A8%80%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93%E2%80%94%E2%80%94%E5%8D%9A%E5%AE%A2%E5%90%8E%E7%AB%AF/"/>
+    <id>http://example.com/2024/03/23/Go%E8%AF%AD%E8%A8%80%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93%E2%80%94%E2%80%94%E5%8D%9A%E5%AE%A2%E5%90%8E%E7%AB%AF/</id>
+    <published>2024-03-23T12:52:50.000Z</published>
+    <updated>2024-03-23T12:37:40.254Z</updated>
+    
+    <content type="html"><![CDATA[<p>喜大普奔！！！GoBlog这个项目总算是写完了，严格来说这是笔者完成的第一个项目，也是笔者学习Go语言的主要途径。从开始那天算起到现在，完成这个项目用了差不多四个月，但真正用在学习这个项目的时间估计不到一个月。刚开始说为了学习Go语言开始写一个感兴趣的项目，结果就一直拖，直到需要找实习才发现自己简历上能写的东西寥寥无几。说来奇怪，上了几年大学发现自己好像什么都没学到，这应该就是一种清醒的堕落吧。</p><p>我对这个项目的了解就像我对Go语言的了解一样，来自我那个神奇的舍友。他花钱买了教程之后，我就可以蹭一下了，很难想象没有我亲爱的舍友，我的大学生活会变成什么样子。</p><h1 id="项目说明"><a href="#项目说明" class="headerlink" title="项目说明"></a>项目说明</h1><p>废话少说，为什么要用Go来开发一个博客系统呢？答案很简单，Go语言本身就非常适用于开发Web应用程序，而且我们在学习的过程中也不难发现好像很多大佬都有自己的博客，那不如把这两个结合一下，这样在设计具体功能的时候也能找到一些可以借鉴的地方。</p><p>开发Web应用要涉及到的知识：</p><ul><li>表单验证</li><li>注册登录</li><li>授权验证</li><li>共享数据库连接</li><li>密码哈希</li><li>路由和中间件</li><li>代码组织（MVC/RESTful）</li><li>打包静态文件和模板文件</li><li>项目部署等</li></ul><p>这些内容会在后面的博客中一一介绍，这个项目并不是一个玩具项目，后续的文章中也会解决一些会在实际生产环境中出现的问题。</p><p>本书源码：<a href="https://github.com/summerblue/goblog">github.com/summerblue/goblog</a></p><p>本项目并不是笔者自己开发的，是跟着社区的教程完成的。</p><h1 id="遇到问题怎么办？"><a href="#遇到问题怎么办？" class="headerlink" title="遇到问题怎么办？"></a>遇到问题怎么办？</h1><p>作为实战项目，遇到程序报错是很正常的情况，多解决报错能帮助我们学到不少东西。</p><p>在遇到一些很抽象的报错时，不要怀疑机器有问题，99%的概率问题在自己，即使代码都是复制的。</p><p>当然如果实在是找不到，可以利用源码来排除错误。</p><h1 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h1><ul><li>Windows11</li><li>Go1.21.1</li><li>编译器Visual studio code</li></ul><h1 id="通过本项目学到了什么"><a href="#通过本项目学到了什么" class="headerlink" title="通过本项目学到了什么"></a>通过本项目学到了什么</h1><ul><li>数据库使用</li><li>模板使用</li><li>基础测试</li><li>项目开发流程</li><li>Go 项目结构选择</li></ul><h1 id="项目成果"><a href="#项目成果" class="headerlink" title="项目成果"></a>项目成果</h1><p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/image-20240323203506135.png" alt="image-20240323203506135"></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;喜大普奔！！！GoBlog这个项目总算是写完了，严格来说这是笔者完成的第一个项目，也是笔者学习Go语言的主要途径。从开始那天算起到现在，完成这个项目用了差不多四个月，但真正用在学习这个项目的时间估计不到一个月。刚开始说为了学习Go语言开始写一个感兴趣的项目，结果就一直拖，直</summary>
+      
+    
+    
+    
+    <category term="GoBlog" scheme="http://example.com/categories/GoBlog/"/>
+    
+    
+    <category term="项目" scheme="http://example.com/tags/%E9%A1%B9%E7%9B%AE/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>一个简单的Go Web程序</title>
     <link href="http://example.com/2024/03/22/Web%E7%A8%8B%E5%BA%8F/"/>
     <id>http://example.com/2024/03/22/Web%E7%A8%8B%E5%BA%8F/</id>
     <published>2024-03-22T14:27:49.000Z</published>
-    <updated>2024-03-22T14:27:49.617Z</updated>
+    <updated>2024-03-22T14:38:08.780Z</updated>
     
     
     
@@ -50,19 +74,6 @@
     
     
     <category term="面试经验" scheme="http://example.com/tags/%E9%9D%A2%E8%AF%95%E7%BB%8F%E9%AA%8C/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Go语言项目总结——博客后端</title>
-    <link href="http://example.com/2024/03/12/Go%E8%AF%AD%E8%A8%80%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93%E2%80%94%E2%80%94%E5%8D%9A%E5%AE%A2%E5%90%8E%E7%AB%AF/"/>
-    <id>http://example.com/2024/03/12/Go%E8%AF%AD%E8%A8%80%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93%E2%80%94%E2%80%94%E5%8D%9A%E5%AE%A2%E5%90%8E%E7%AB%AF/</id>
-    <published>2024-03-12T12:52:50.000Z</published>
-    <updated>2024-03-15T05:54:16.183Z</updated>
-    
-    
-    
-    
     
   </entry>
   
