@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-03-26T08:31:45.927Z</updated>
+  <updated>2024-04-03T13:30:14.327Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Go语言设计哲学</title>
+    <link href="http://example.com/2024/04/03/Go%E8%AF%AD%E8%A8%80%E8%AE%BE%E8%AE%A1%E5%93%B2%E5%AD%A6/"/>
+    <id>http://example.com/2024/04/03/Go%E8%AF%AD%E8%A8%80%E8%AE%BE%E8%AE%A1%E5%93%B2%E5%AD%A6/</id>
+    <published>2024-04-03T13:16:08.000Z</published>
+    <updated>2024-04-03T13:30:14.327Z</updated>
+    
+    <content type="html"><![CDATA[<p>实在是想不到啊，我的博客里面竟然还会出现如此高大上的文章——设计哲学。为什么回想写关于这方面的文章呢，主要还是在跟面试官闲聊的时候提到了这方面的问题。</p><p>在学习一门语言时，有没有考虑过这个语言的语法和格式为什么要这么设计。这个问题一听就是一个好的话题啊，为什么这么设计，为什么在已经有了那么多语言后，还要设计出Go语言。</p><p>正是内容可能要到清明节后才能完成，现在刚刚开始看查到的一些资料，为了激励自己这几天能把那些东西消化掉，先开个题，挖坑代填。</p><p>后续可能也会写一些其他语言或者什么有意思的东西。</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;实在是想不到啊，我的博客里面竟然还会出现如此高大上的文章——设计哲学。为什么回想写关于这方面的文章呢，主要还是在跟面试官闲聊的时候提到了这方面的问题。&lt;/p&gt;
+&lt;p&gt;在学习一门语言时，有没有考虑过这个语言的语法和格式为什么要这么设计。这个问题一听就是一个好的话题啊，为什么这</summary>
+      
+    
+    
+    
+    <category term="Go语言" scheme="http://example.com/categories/Go%E8%AF%AD%E8%A8%80/"/>
+    
+    
+    <category term="随想" scheme="http://example.com/tags/%E9%9A%8F%E6%83%B3/"/>
+    
+  </entry>
   
   <entry>
     <title>操作数据库</title>
