@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-04-06T14:26:46.032Z</updated>
+  <updated>2024-04-14T09:50:35.474Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>唉……</title>
+    <link href="http://example.com/2024/04/14/%E5%94%89%E2%80%A6%E2%80%A6/"/>
+    <id>http://example.com/2024/04/14/%E5%94%89%E2%80%A6%E2%80%A6/</id>
+    <published>2024-04-14T09:21:21.000Z</published>
+    <updated>2024-04-14T09:50:35.474Z</updated>
+    
+    <content type="html"><![CDATA[<p>文章是越写越慢，质量是越来越差，这周的甚至连标题都想不出来了，离谱。从标题也能看出来，这周应该是不太愉悦的，二面被挂就算了，还被另一个面试官给戏耍了。我懂了，找实习就一个字——摆。</p><h1 id="学习内容"><a href="#学习内容" class="headerlink" title="学习内容"></a>学习内容</h1><h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><p>清明假期三天，每天都是两三个小时的做题时间，本周倒是没怎么做题。</p><p>原因是觉得刷了一个月的题了，还是在看到题目后几分钟就有思路了，但是不知道代码该怎么写，所以决定先沉淀几天。</p><h2 id="项目"><a href="#项目" class="headerlink" title="项目"></a>项目</h2><p>虽然最近几天算法进展不怎么样，项目进展还是不错的。</p><p>上周六开的新项目，其实还是这周才开始，项目内容和之前的项目好像没有什么太大的区别，一个是博客，一个是论坛。但是实际开发就是天差地别了，不仅仅将框架全部换了 <code>gin</code> ，还用上了 <code>redis</code>。是的，就是那个只要出现在简历上就会触发面试官被动的 <code>redis</code> ，当然，以防万一，我非常认真地背了 Redis 三兄弟。</p><p>项目中更加详细地内容还是等到下周专门来写吧，写在周报里好像不是很好记录。</p><h2 id="Go语言设计哲学"><a href="#Go语言设计哲学" class="headerlink" title="Go语言设计哲学"></a>Go语言设计哲学</h2><p>没想到这一块竟然还有后续，因为上一篇有些一些相关的内容，后续也有去了解 Go 和 C++ 的不同，也查了一些资料，感觉很有意思，后续应该会继续写相关的内容。</p><h2 id="找实习的进展"><a href="#找实习的进展" class="headerlink" title="找实习的进展"></a>找实习的进展</h2><p>有什么进展呢，最接近成功的也就是清明假期前的那次了，结果挂在了横向对比上，只能怪一面的时候回答的确实不怎么样。腾讯约了第三次面试，结果是个 KPI 面，一共就二十几分钟，面试官还迟到了，连自我介绍都没让做。</p><p>字节和小米都是简历直接就给挂了，其他的公司也看不上我的简历，只有等月底的华为喽。</p><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>总的来说，本周学的东西不算很多，因为考试加上心情不是很好，决定开摆一周，也没整理这周学的内容，所以周报也没什么好写的。那为什么还写呢，因为想找一个地方记录并发泄一下。</p><p>下周会把项目全部完成，调整后会继续刷题，那就期待着后续的博客更新吧。完成项目后会继续完善自己的简历，我想这个暑假应该是能找到实习的吧，希望是。</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;文章是越写越慢，质量是越来越差，这周的甚至连标题都想不出来了，离谱。从标题也能看出来，这周应该是不太愉悦的，二面被挂就算了，还被另一个面试官给戏耍了。我懂了，找实习就一个字——摆。&lt;/p&gt;
+&lt;h1 id=&quot;学习内容&quot;&gt;&lt;a href=&quot;#学习内容&quot; class=&quot;heade</summary>
+      
+    
+    
+    
+    <category term="学习周报" scheme="http://example.com/categories/%E5%AD%A6%E4%B9%A0%E5%91%A8%E6%8A%A5/"/>
+    
+    
+    <category term="随想" scheme="http://example.com/tags/%E9%9A%8F%E6%83%B3/"/>
+    
+  </entry>
   
   <entry>
     <title>Gohub——注册</title>
