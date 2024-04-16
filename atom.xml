@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-04-14T09:50:35.474Z</updated>
+  <updated>2024-04-16T07:42:21.588Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,11 +17,73 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Gohub开发</title>
+    <link href="http://example.com/2024/04/16/Gohub%E5%BC%80%E5%8F%91/"/>
+    <id>http://example.com/2024/04/16/Gohub%E5%BC%80%E5%8F%91/</id>
+    <published>2024-04-16T07:41:08.000Z</published>
+    <updated>2024-04-16T07:42:21.588Z</updated>
+    
+    <content type="html"><![CDATA[<p>本项目为从零构建一个高性能、功能齐全的 API 程序框架，主体内容和第一个项目相似。但是并没有做前端的内容，只针对相应功能做了 API 开发。</p><p>本项目主要设计一下三部分的知识点：</p><ul><li>API 开发</li><li>命令行开发</li><li>构建高效率的程序结构</li></ul><p>主要功能为：</p><ul><li>用户的注册和登录</li><li>安全验证码和图片验证码</li><li>JWT 授权</li><li>用户修改个人信息</li></ul><h1 id="项目统计"><a href="#项目统计" class="headerlink" title="项目统计"></a>项目统计</h1><h2 id="实现路由"><a href="#实现路由" class="headerlink" title="实现路由"></a>实现路由</h2><div class="table-container"><table><thead><tr><th>请求方法</th><th>API 地址</th><th>说明</th></tr></thead><tbody><tr><td>POST</td><td>/api/v1/auth/login/using-phone</td><td>短信 + 手机号登录</td></tr><tr><td>POST</td><td>/api/v1/auth/login/using-password</td><td>手机号、用户名、邮箱 + 密码</td></tr><tr><td>POST</td><td>/api/v1/auth/login/refresh-token</td><td>刷下 Token</td></tr><tr><td>POST</td><td>/api/v1/auth/password-reset/using-email</td><td>邮件密码重置</td></tr><tr><td>POST</td><td>/api/v1/auth/password-reset/using-phone</td><td>短信验证码密码重置</td></tr><tr><td>POST</td><td>/api/v1/auth/signup/using-phone</td><td>使用手机号注册</td></tr><tr><td>POST</td><td>/api/v1/auth/signup/using-email</td><td>使用邮箱注册</td></tr><tr><td>POST</td><td>/api/v1/auth/signup/phone/exist</td><td>手机号是否已注册</td></tr><tr><td>POST</td><td>/api/v1/auth/signup/email/exist</td><td>email 是否已支持</td></tr><tr><td>POST</td><td>/api/v1/auth/verify-codes/phone</td><td>发送短信验证码</td></tr><tr><td>POST</td><td>/api/v1/auth/verify-codes/email</td><td>发送邮件验证码</td></tr><tr><td>POST</td><td>/api/v1/auth/verify-codes/captcha</td><td>获取图片验证码</td></tr><tr><td>GET</td><td>/api/v1/user</td><td>获取当前用户</td></tr><tr><td>GET</td><td>/api/v1/users</td><td>用户列表</td></tr><tr><td>PUT</td><td>/api/v1/users</td><td>修改个人资料</td></tr><tr><td>PUT</td><td>/api/v1/users/email</td><td>修改邮箱</td></tr><tr><td>PUT</td><td>/api/v1/users/phone</td><td>修改手机号</td></tr><tr><td>PUT</td><td>/api/v1/users/password</td><td>修改密码</td></tr><tr><td>PUT</td><td>/api/v1/users/avatar</td><td>上传头像</td></tr><tr><td>GET</td><td>/api/v1/categories</td><td>分类列表</td></tr><tr><td>POST</td><td>/api/v1/categories</td><td>创建分类</td></tr><tr><td>PUT</td><td>/api/v1/categories/:id</td><td>更新分类</td></tr><tr><td>DELETE</td><td>/api/v1/categories/:id</td><td>删除分类</td></tr><tr><td>GET</td><td>/api/v1/topics</td><td>话题列表</td></tr><tr><td>POST</td><td>/api/v1/topics</td><td>创建话题</td></tr><tr><td>PUT</td><td>/api/v1/topics/:id</td><td>更新话题</td></tr><tr><td>DELETE</td><td>/api/v1/topics/:id</td><td>删除话题</td></tr><tr><td>GET</td><td>/api/v1/topics/:id</td><td>获取话题</td></tr><tr><td>GET</td><td>/api/v1/links</td><td>友情链接列表</td></tr></tbody></table></div><h2 id="第三方依赖"><a href="#第三方依赖" class="headerlink" title="第三方依赖"></a>第三方依赖</h2><p>使用到的开源库：</p><ul><li><a href="https://github.com/gin-gonic/gin">gin</a> —— 路由、路由组、中间件</li><li><a href="https://github.com/gin-contrib/zap">zap</a> —— 高性能日志方案</li><li><a href="https://github.com/go-gorm/gorm">gorm</a> —— ORM 数据操作</li><li><a href="https://github.com/spf13/cobra">cobra</a> —— 命令行结构</li><li><a href="https://github.com/spf13/viper">viper</a> —— 配置信息</li><li><a href="https://github.com/spf13/cast">cast</a> —— 类型转换</li><li><a href="https://github.com/go-redis/redis/v8">redis</a> —— Redis 操作</li><li><a href="https://github.com/golang-jwt/jwt">jwt</a> —— JWT 操作</li><li><a href="https://github.com/mojocn/base64Captcha">base64Captcha</a> —— 图片验证码</li><li><a href="https://github.com/thedevsaddam/govalidator">govalidator</a> —— 请求验证器</li><li><a href="https://github.com/ulule/limiter/v3">limiter</a> —— 限流器</li><li><a href="https://github.com/jordan-wright/email">email</a> —— SMTP 邮件发送</li><li><a href="https://github.com/KenmyZhang/aliyun-communicate">aliyun-communicate</a> —— 发送阿里云短信</li><li><a href="https://github.com/mgutz/ansi">ansi</a> —— 终端高亮输出</li><li><a href="https://github.com/iancoleman/strcase">strcase</a> —— 字符串大小写操作</li><li><a href="https://github.com/gertd/go-pluralize">pluralize</a> —— 英文字符单数复数处理</li><li><a href="https://learnku.com/courses/go-api/1.19/finish-up/github.com/bxcodec/faker">faker</a> —— 假数据填充</li><li><a href="https://learnku.com/courses/go-api/1.19/finish-up/github.com/disintegration/imaging">imaging</a> —— 图片裁切</li></ul><h2 id="自定义的包"><a href="#自定义的包" class="headerlink" title="自定义的包"></a>自定义的包</h2><p>现在来看下我们自建的库：</p><ul><li>app —— 应用对象</li><li>auth —— 用户授权</li><li>cache —— 缓存</li><li>captcha —— 图片验证码</li><li>config —— 配置信息</li><li>console —— 终端</li><li>database —— 数据库操作</li><li>file —— 文件处理</li><li>hash —— 哈希</li><li>helpers —— 辅助方法</li><li>jwt —— JWT 认证</li><li>limiter —— API 限流</li><li>logger —— 日志记录</li><li>mail —— 邮件发送</li><li>migrate —— 数据库迁移</li><li>paginator —— 分页器</li><li>redis —— Redis 数据库操作</li><li>response —— 响应处理</li><li>seed —— 数据填充</li><li>sms —— 发送短信</li><li>str —— 字符串处理</li><li>verifycode —— 数字验证码</li></ul><h1 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h1><ol><li>配置信息（使用 Viper，支持 .env 和 config 目录 ）</li><li>API 版本</li><li>API 错误码</li><li>API 限流<ol><li>支持秒、分钟、小时、天级的请求限制</li><li>支持返回 API 请求量标头（限制数，剩余量、重置时间）</li></ol></li><li>注册登录<ol><li>注册<ol><li>判断手机是否注册</li><li>判断 Email 是否注册</li><li>支持手机 + 短信验证码进行注册</li><li>支持使用邮箱注册账号</li></ol></li><li>登录<ol><li>支持手机 + 短信进行登录</li><li>支持密码登录（手机号、Email、用户名任选）</li><li>支持更加安全的 Token Refresh 机制</li></ol></li><li>找回密码<ol><li>支持使用手机 + 短信验证码找回</li><li>支持使用邮箱 + 邮箱验证码找回</li></ol></li></ol></li><li>JWT 授权</li><li>整个应用使用命令行模式（默认运行 web 服务）</li><li>内置命令行（ cobra，对比 cli 和 cobra）<ol><li>key 命令生成 app key</li><li>make 命令<ul><li>make seeder —— 生成数据填充</li><li>make policy —— 生成授权文件</li><li>make apicontroller —— 生成 Restful API 控制器</li><li>make model —— 生成模型文件</li><li>make request —— 生成请求验证文件</li><li>make factory —— 生成模型工厂文件</li><li>make cmd —— 生成自定义命令文件</li><li>make migration —— 生成数据库迁移文件</li></ul></li><li>seed 数据填充<ul><li>seed 所有数据</li><li>seed 单条数据</li><li>支持使用 faker 填充假数据</li><li>支持模型工厂（ factory ）</li></ul></li><li>migrate 数据库迁移<ol><li>up —— 执行迁移</li><li>rollback (down) —— 回滚上一步执行的迁移</li><li>fresh —— 删除所有表，然后执行所有迁移</li><li>reset —— 回滚所有迁移</li><li>refresh —— 回滚所有迁移，然后再执行所有迁移</li></ol></li><li>cache 缓存处理<ul><li>cache clear —— 清除缓存</li><li>cache forget —— 忘记某个 KEY 对应的缓存</li></ul></li></ol></li><li>分页<ol><li>支持返回上下页链接，方便客户端调用</li></ol></li><li>Cache 缓存包<ol><li>支持 redis 缓存</li><li>使用 interface ，支持使用多驱动</li></ol></li><li>Redis 操作</li><li>安全验证码<ol><li>Email （发送邮箱，使用 Mailhog 进行测试）</li><li>手机验证码（发送手机短信）</li><li>内置 Redis 驱动，以接口方式编写，支持多驱动</li></ol></li><li>图片验证码，防机器人滥用<ol><li>支持通过配置信息自定义复杂度</li><li>内置 Redis 驱动，以接口方式编写，支持多驱动</li></ol></li><li>日志记录<ol><li>集成 zap 高性能日志库</li><li>支持命令行记录（方便开发时快速定位问题）</li><li>命令行日志高亮</li><li>支持文件记录（多文件和按日期分隔）</li><li>记录 gorm 的 query log</li><li>记录 HTTP 请求 log</li><li>Panic Recovery 中间件</li><li>合理的日志等级（debug, info, error, panic, fatal）</li></ol></li><li>Policy 授权策略结构</li><li>Request 请求验证方案<ol><li>支持 JSON 请求、表单请求、URL Query</li></ol></li><li>API 图片上传</li><li>图片裁切</li><li>数据库支持 mysql 和 sqlite</li></ol><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>由于本项目是一个完全只涉及到 API 设计的内容，所以测试功能是否符合预期则是采用了 Postman 这款测试软件，有关 Redis 的可视化则是采用了 Another Redis Desktop Manager。</p><p>考虑到篇幅的问题，项目的知识点总结会分开来写。所以这篇文章是用来提醒我去学习的。 </p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;本项目为从零构建一个高性能、功能齐全的 API 程序框架，主体内容和第一个项目相似。但是并没有做前端的内容，只针对相应功能做了 API 开发。&lt;/p&gt;
+&lt;p&gt;本项目主要设计一下三部分的知识点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;API 开发&lt;/li&gt;
+&lt;li&gt;命令行开发&lt;/li&gt;
+</summary>
+      
+    
+    
+    
+    <category term="Gohub" scheme="http://example.com/categories/Gohub/"/>
+    
+    
+    <category term="项目开发" scheme="http://example.com/tags/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Gohub——注册</title>
+    <link href="http://example.com/2024/04/16/Gohub%E2%80%94%E2%80%94%E6%B3%A8%E5%86%8C/"/>
+    <id>http://example.com/2024/04/16/Gohub%E2%80%94%E2%80%94%E6%B3%A8%E5%86%8C/</id>
+    <published>2024-04-16T07:18:28.000Z</published>
+    <updated>2024-04-16T08:17:50.337Z</updated>
+    
+    <content type="html"><![CDATA[<p>本文主要介绍新项目中第一部分的内容——身份验证接口的设计思路。</p><p>身份验证接口主要包括以下模块：</p><ul><li>注册</li><li>登录</li><li>找回密码</li></ul><p>基本流程为：</p><ol><li>填写手机号或者邮箱</li><li>填写图片验证码中的内容</li><li>填写数字验证码以完成身份验证</li><li>操作完成</li></ol><h1 id="双重验证"><a href="#双重验证" class="headerlink" title="双重验证"></a>双重验证</h1><p>在调用接口时，用户需要完成图片验证码 + 短信验证码，我们在日常使用相关的功能时也是采用这样的双重验证的策略。那我们为什么要用这么繁琐的验证方式呢？在了解为什么之前，我们先来看以下这两种验证码的作用。</p><ul><li>图片验证码 —— 区分机器人和正常用户</li><li>数字验证码——区分用户是否为手机号或邮箱的主人</li></ul><p>采用双重验证，主要还是考虑到开放注册登录接口所带来的安全隐患。在知道了这两种验证码的作用后，我们来看缺少了其中一种会带来什么样的安全隐患。</p><p>黑客容易利用的地方，大致可以分为两部分：</p><ul><li>滥用</li><li>暴力破解</li></ul><h2 id="滥用-轰炸机"><a href="#滥用-轰炸机" class="headerlink" title="滥用(轰炸机)"></a>滥用(轰炸机)</h2><p>删除图片验证，保留短信验证。</p><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>短信验证码轰炸一般基于web方式，主要有两个模块组成：一个前端web网页，提供输入被攻击者手机号码的输入窗口；一个后台攻击页面(如PHP)，利用从各个网站上找到的动态短信URL 和前端输入的被攻击者手机号码，发送HTTP 请求，每次请求给用户发送一个动态短信。原理和实施过程如下：</p><ol><li><p>恶意攻击者在前端中输入被攻击者的手机号；</p></li><li><p>短信炸弹后台服务器，将该手机号与互联网收集的可不需要经过认证即可发送动态短信的URL 进行组合，形成可发送动态短信的URL 请求；</p></li><li>通过后台请求页面，伪造用户的请求发给不同的业务服务器；</li><li>业务服务器收到该请求后，发送动态短信到被攻击用户的手机上。</li></ol><p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/8ad9cb41-13ad-4bf7-aba9-dbec5c3e6d4c.jpg" alt="img"></p><p>GitHub 上也有一些轰炸机的项目，例如这个 <a href="https://github.com/shellvon/smsBomb/blob/master/config/sms.json">github.com/shellvon/smsBomb/blob/m…</a> ，门槛非常低。</p><p>轰炸机的配置示例：</p><p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/CcqRHrK7Fa.png!large" alt="身份验证接口设计"></p><h3 id="如何防治"><a href="#如何防治" class="headerlink" title="如何防治"></a>如何防治</h3><p>短信炸弹形成的原因是因为非授权的动态短信获取，由于在使用动态短信业务前系统并不能建立业务关联。因此，在未建立业务关联的情况下，需要进一步严格限制保证业务使用的安全性。可以采用增加<strong>图形验证码</strong>、<strong>限制单IP请求次数</strong>、<strong>限制用户短信请求间隔</strong>等方式，保护短信通道。</p><p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/7bca2ddb-f4b1-44e6-b9c7-8d5b5e490a67.png" alt="img"></p><p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/5b7d30bd-3ed2-4cde-b210-3d1ed5d78ba0.png" alt="img"></p><h2 id="暴力破解"><a href="#暴力破解" class="headerlink" title="暴力破解"></a>暴力破解</h2><p>用户使用密码登录时，很容易被黑客暴力破解。</p><p>所谓暴力破解，就是针对某个用户名，不断尝试可能出现的密码，直到最终成功登录。</p><p>互联网上有大量的常用密码词典，GitHub 上随便一搜就能找到如 <a href="https://github.com/TheKingOfDuck/fuzzDicts/blob/master/passwordDict/top1000.txt">这个</a> 和 <a href="https://github.com/berzerk0/Probable-Wordlists/blob/master/Real-Passwords/Top207-probable-v2.txt">这个</a> 。也极大的降低了黑客暴力破解的门槛。</p><p>防止暴力破解，是一个系统性工程。用户注册时候，我们会要求密码至少六位数（要求太严格也不好，影响用户体验）。</p><p>另外 API 也会加入限流措施，不会让黑客无止境的尝试，这也是现在主流的防范机制。</p><p>防止暴力破解，一个行之有效的方式，是使用图片验证码。</p><p>图片验证码的设计初衷，是用来区分人和机器的输入：</p><p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/mNTpWgMD4R.png!large" alt="mNTpWgMD4R.png!large"></p><p>如果一个验证码很容易破解，我们还可以增加其难度：</p><p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/uDpbpHfEpb.png!large" alt="uDpbpHfEpb.png!large"></p><p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/X1wXrgsdWb.png!large" alt="X1wXrgsdWb.png!large"></p><p>另外，不止用户密码，有时候<strong>短信验证码和邮箱验证码</strong>，也很容易被破解，因为一般情况下我们只会提供六位数的数字。</p><p>六位数，意味着 999999 种可能性。虽然会加入过期时间，例如说 15 分钟内有效，但是如果接口不做限制的话，黑客写个程序，很容易就能在几分钟内尝试完所有的 999999 个可能性。最终短信验证码形同虚设，黑客可以很轻松的通过验证码来重置用户的密码。最终导致用户账号丢失。</p><h1 id="Redis是什么？"><a href="#Redis是什么？" class="headerlink" title="Redis是什么？"></a>Redis是什么？</h1>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;本文主要介绍新项目中第一部分的内容——身份验证接口的设计思路。&lt;/p&gt;
+&lt;p&gt;身份验证接口主要包括以下模块：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;注册&lt;/li&gt;
+&lt;li&gt;登录&lt;/li&gt;
+&lt;li&gt;找回密码&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;基本流程为：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;填写手机号或</summary>
+      
+    
+    
+    
+    <category term="Gohub" scheme="http://example.com/categories/Gohub/"/>
+    
+    
+    <category term="项目开发" scheme="http://example.com/tags/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91/"/>
+    
+  </entry>
+  
+  <entry>
     <title>唉……</title>
     <link href="http://example.com/2024/04/14/%E5%94%89%E2%80%A6%E2%80%A6/"/>
     <id>http://example.com/2024/04/14/%E5%94%89%E2%80%A6%E2%80%A6/</id>
     <published>2024-04-14T09:21:21.000Z</published>
-    <updated>2024-04-14T09:50:35.474Z</updated>
+    <updated>2024-04-14T09:50:50.924Z</updated>
     
     <content type="html"><![CDATA[<p>文章是越写越慢，质量是越来越差，这周的甚至连标题都想不出来了，离谱。从标题也能看出来，这周应该是不太愉悦的，二面被挂就算了，还被另一个面试官给戏耍了。我懂了，找实习就一个字——摆。</p><h1 id="学习内容"><a href="#学习内容" class="headerlink" title="学习内容"></a>学习内容</h1><h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><p>清明假期三天，每天都是两三个小时的做题时间，本周倒是没怎么做题。</p><p>原因是觉得刷了一个月的题了，还是在看到题目后几分钟就有思路了，但是不知道代码该怎么写，所以决定先沉淀几天。</p><h2 id="项目"><a href="#项目" class="headerlink" title="项目"></a>项目</h2><p>虽然最近几天算法进展不怎么样，项目进展还是不错的。</p><p>上周六开的新项目，其实还是这周才开始，项目内容和之前的项目好像没有什么太大的区别，一个是博客，一个是论坛。但是实际开发就是天差地别了，不仅仅将框架全部换了 <code>gin</code> ，还用上了 <code>redis</code>。是的，就是那个只要出现在简历上就会触发面试官被动的 <code>redis</code> ，当然，以防万一，我非常认真地背了 Redis 三兄弟。</p><p>项目中更加详细地内容还是等到下周专门来写吧，写在周报里好像不是很好记录。</p><h2 id="Go语言设计哲学"><a href="#Go语言设计哲学" class="headerlink" title="Go语言设计哲学"></a>Go语言设计哲学</h2><p>没想到这一块竟然还有后续，因为上一篇有些一些相关的内容，后续也有去了解 Go 和 C++ 的不同，也查了一些资料，感觉很有意思，后续应该会继续写相关的内容。</p><h2 id="找实习的进展"><a href="#找实习的进展" class="headerlink" title="找实习的进展"></a>找实习的进展</h2><p>有什么进展呢，最接近成功的也就是清明假期前的那次了，结果挂在了横向对比上，只能怪一面的时候回答的确实不怎么样。腾讯约了第三次面试，结果是个 KPI 面，一共就二十几分钟，面试官还迟到了，连自我介绍都没让做。</p><p>字节和小米都是简历直接就给挂了，其他的公司也看不上我的简历，只有等月底的华为喽。</p><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>总的来说，本周学的东西不算很多，因为考试加上心情不是很好，决定开摆一周，也没整理这周学的内容，所以周报也没什么好写的。那为什么还写呢，因为想找一个地方记录并发泄一下。</p><p>下周会把项目全部完成，调整后会继续刷题，那就期待着后续的博客更新吧。完成项目后会继续完善自己的简历，我想这个暑假应该是能找到实习的吧，希望是。</p>]]></content>
     
@@ -38,31 +100,6 @@
     
     
     <category term="随想" scheme="http://example.com/tags/%E9%9A%8F%E6%83%B3/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Gohub——注册</title>
-    <link href="http://example.com/2024/04/06/Gohub%E2%80%94%E2%80%94%E6%B3%A8%E5%86%8C/"/>
-    <id>http://example.com/2024/04/06/Gohub%E2%80%94%E2%80%94%E6%B3%A8%E5%86%8C/</id>
-    <published>2024-04-06T14:18:28.000Z</published>
-    <updated>2024-04-06T14:26:46.032Z</updated>
-    
-    <content type="html"><![CDATA[<p>新项目的第一篇博客</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;新项目的第一篇博客&lt;/p&gt;
-</summary>
-      
-    
-    
-    
-    <category term="Gohub" scheme="http://example.com/categories/Gohub/"/>
-    
-    
-    <category term="项目开发" scheme="http://example.com/tags/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91/"/>
     
   </entry>
   
