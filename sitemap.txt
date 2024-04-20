@@ -1,5 +1,10 @@
-http://example.com/2024/04/16/Gohub%E2%80%94%E2%80%94%E6%B3%A8%E5%86%8C/
+http://example.com/2024/04/20/%E6%B7%B1%E5%85%A5Go%E8%AF%AD%E8%A8%802%E2%80%94%E2%80%94%E5%8F%8D%E5%B0%84%E4%B8%8Eunsafe/
+http://example.com/2024/04/20/%E8%81%8A%E5%A4%A9%E5%AE%A4/
+http://example.com/2024/04/20/Go%E8%AF%AD%E8%A8%80%E5%B7%A5%E7%A8%8B%E7%AE%A1%E7%90%86/
+http://example.com/2024/04/20/Gohub%E5%BC%80%E5%8F%91%E2%80%94%E2%80%94%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%A8%A1%E5%BC%8F/
+http://example.com/2024/04/20/Go%E8%AF%AD%E8%A8%80%E8%AE%BE%E8%AE%A1%E5%93%B2%E5%AD%A6%E2%80%94%E2%80%94%E8%AF%AD%E8%A8%80%E7%89%B9%E6%80%A7%E4%B8%8E%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%80%83/
 http://example.com/2024/04/18/Gohub%E2%80%94%E2%80%94%E6%97%A5%E5%BF%97/
+http://example.com/2024/04/16/Gohub%E2%80%94%E2%80%94%E6%B3%A8%E5%86%8C/
 http://example.com/2024/04/15/Gohub%E5%BC%80%E5%8F%91/
 http://example.com/2024/04/14/%E5%94%89%E2%80%A6%E2%80%A6/
 http://example.com/2024/03/26/%E6%93%8D%E4%BD%9C%E6%95%B0%E6%8D%AE%E5%BA%93/
@@ -26,3 +31,5 @@ http://example.com/categories/%E5%AD%A6%E4%B9%A0%E5%91%A8%E6%8A%A5/
 http://example.com/categories/GoBlog/
 http://example.com/categories/Go%E8%AF%AD%E8%A8%80/
 http://example.com/categories/Gohub/
+http://example.com/categories/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91/
+http://example.com/categories/%E8%81%8A%E5%A4%A9%E5%AE%A4/
