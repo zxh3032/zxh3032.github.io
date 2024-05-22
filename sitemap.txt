@@ -1,3 +1,4 @@
+http://example.com/2024/05/22/go-vue-admin%E5%AD%A6%E4%B9%A0/
 http://example.com/2024/04/20/%E8%81%8A%E5%A4%A9%E5%AE%A4/
 http://example.com/2024/04/20/Go%E8%AF%AD%E8%A8%80%E8%AE%BE%E8%AE%A1%E5%93%B2%E5%AD%A6%E2%80%94%E2%80%94%E8%AF%AD%E8%A8%80%E7%89%B9%E6%80%A7/
 http://example.com/2024/04/20/%E6%B7%B1%E5%85%A5Go%E8%AF%AD%E8%A8%802%E2%80%94%E2%80%94%E5%8F%8D%E5%B0%84%E4%B8%8Eunsafe/
@@ -30,3 +31,4 @@ http://example.com/categories/GoBlog/
 http://example.com/categories/Go%E8%AF%AD%E8%A8%80/
 http://example.com/categories/Gohub/
 http://example.com/categories/%E8%81%8A%E5%A4%A9%E5%AE%A4/
+http://example.com/categories/go-vue-admin/
