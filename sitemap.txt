@@ -58,4 +58,3 @@ http://example.com/categories/%E8%81%8A%E5%A4%A9%E5%AE%A4/
 http://example.com/categories/gin-vue-admin/
 http://example.com/categories/Redis/
 http://example.com/categories/Java%EF%BC%9FJava%EF%BC%81%EF%BC%81%EF%BC%81/
-http://example.com/categories/%E5%AD%A6%E4%B9%A0%E5%91%A8%E6%8A%A5/MySQL/
