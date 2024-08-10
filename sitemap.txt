@@ -1,3 +1,4 @@
+http://example.com/2024/08/10/%E8%BF%91%E5%86%B5/
 http://example.com/2024/07/05/gRPC%E5%85%A5%E9%97%A8/
 http://example.com/2024/07/03/%E4%B8%80%E8%87%B4%E6%80%A7%E7%AE%97%E6%B3%95%E2%80%94%E2%80%94ZAB/
 http://example.com/2024/07/01/%E4%B8%80%E8%87%B4%E6%80%A7%E7%AE%97%E6%B3%95%E2%80%94%E2%80%94Raft/
