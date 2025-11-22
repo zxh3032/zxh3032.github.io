@@ -1,0 +1,274 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>深入Go语言——内存 | 随便寻个地方'Blog</title><meta name="author" content="随便寻个地方"><meta name="copyright" content="随便寻个地方"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前言关于内存部分的内容，是正在读的书中的第三部分，这一部分讲的是Go语言中的指针相关的知识，由于书中花费了一定篇幅去讲过于内存的问题，所以本周的总结报告命题为”内存“。 这并不是第三周全部学到的东西，只是开始，由于我现在还不能把学到的东西随手记录下来，所以选择先写一篇学习总结。我详细一篇应该是关于项目实战的。 学习思考指针提到指针，我们并不陌生，从开始学习程序设计就已经接触到了指针。对我来说，指针">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入Go语言——内存">
+<meta property="og:url" content="http://example.com/2024/03/12/%E6%B7%B1%E5%85%A5Go%E8%AF%AD%E8%A8%80%E2%80%94%E2%80%94%E5%86%85%E5%AD%98/index.html">
+<meta property="og:site_name" content="随便寻个地方&#39;Blog">
+<meta property="og:description" content="前言关于内存部分的内容，是正在读的书中的第三部分，这一部分讲的是Go语言中的指针相关的知识，由于书中花费了一定篇幅去讲过于内存的问题，所以本周的总结报告命题为”内存“。 这并不是第三周全部学到的东西，只是开始，由于我现在还不能把学到的东西随手记录下来，所以选择先写一篇学习总结。我详细一篇应该是关于项目实战的。 学习思考指针提到指针，我们并不陌生，从开始学习程序设计就已经接触到了指针。对我来说，指针">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/touxiang.png">
+<meta property="article:published_time" content="2024-03-12T12:51:19.000Z">
+<meta property="article:modified_time" content="2024-06-11T15:56:51.000Z">
+<meta property="article:author" content="随便寻个地方">
+<meta property="article:tag" content="学习周报">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/touxiang.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2024/03/12/%E6%B7%B1%E5%85%A5Go%E8%AF%AD%E8%A8%80%E2%80%94%E2%80%94%E5%86%85%E5%AD%98/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '深入Go语言——内存',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-06-11 23:56:51'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="随便寻个地方'Blog" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/touxiang.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">69</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="随便寻个地方'Blog"><span class="site-name">随便寻个地方'Blog</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">深入Go语言——内存</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-03-12T12:51:19.000Z" title="发表于 2024-03-12 20:51:19">2024-03-12</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-06-11T15:56:51.000Z" title="更新于 2024-06-11 23:56:51">2024-06-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Go%E8%AF%AD%E8%A8%80/">Go语言</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="深入Go语言——内存"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>关于内存部分的内容，是正在读的书中的第三部分，这一部分讲的是Go语言中的指针相关的知识，由于书中花费了一定篇幅去讲过于内存的问题，所以本周的总结报告命题为”内存“。</p>
+<p>这并不是第三周全部学到的东西，只是开始，由于我现在还不能把学到的东西随手记录下来，所以选择先写一篇学习总结。我详细一篇应该是关于项目实战的。</p>
+<h1 id="学习思考"><a href="#学习思考" class="headerlink" title="学习思考"></a>学习思考</h1><h2 id="指针"><a href="#指针" class="headerlink" title="指针"></a>指针</h2><p>提到指针，我们并不陌生，从开始学习程序设计就已经接触到了指针。对我来说，指针是一个既熟悉又陌生的东西。熟悉是因为在最开始的学习时，我和同学不止一次地讨论过指针也进行了一定的学习。陌生是因为我确实不是很喜欢学习C语言，以至于其真正的核心内容我学的都不扎实，学了就忘。</p>
+<hr>
+<p>在Go语言中，由于变量分为<strong>值类型</strong>和<strong>引用类型</strong>，使得指针在函数传参的时候有了用处。对于<strong>值类型的变量</strong>而言，当函数的参数是指针类型时，函数对该参数的修改才会影响到该参数本身。</p>
+<h3 id="指针接收者"><a href="#指针接收者" class="headerlink" title="指针接收者"></a>指针接收者</h3><p>对于是否使用指针类型作为接收者，有以下几点参考：</p>
+<ol>
+<li>如果接收者类型是 map、slice、channel 这类引用类型，不使用指针。</li>
+<li>如果需要修改接收者，那么需要使用指针。</li>
+<li>如果接收者是比较大的类型，可以考虑使用指针，因为内存拷员廉价，所以效率高。</li>
+</ol>
+<h3 id="什么情况下使用指针"><a href="#什么情况下使用指针" class="headerlink" title="什么情况下使用指针"></a>什么情况下使用指针</h3><p>从以上指针的详细分析中，我们可以总结出指针的两大好处：</p>
+<ol>
+<li>可以修改所指向数据的值。</li>
+<li>在变量复制、参数传值的时候可以节省内存。</li>
+</ol>
+<p>不过.Go语言作为一种高级语言，在指针的使用上还是比较克制的。它在设计的时候就对指针进行了诸多限制，比如指针不支持运算，也不能取常量的指针。所以在思考是各使用时，我们也要保持克制的心态。<br>根据实战经验我总结了以下几点使用指针的建议，供你参考：</p>
+<ol>
+<li>不要对map、slice、channel 这类引用类型使用指针。</li>
+<li>如果需要修改方法接收者内部的数据或者状态时，需要使用指针。</li>
+<li>如果需要修改参数的值或者内部数据时，也需要使用指针类型的参数。</li>
+<li>如果是比较大的结构体，每次参数传递或者调用方法都要内存拷贝，内存占用多，这时候可以考虑使用指针。</li>
+<li>像 int、bool 这样的小数据类型没必要使用指针。</li>
+<li>如果需要并发安全，则尽可能地不要使用指针，使用指针一定要保证并发安全。</li>
+<li>指针最好不要嵌套，也就是不要使用一个指向指针的指针，虽然Go语言允许这么做，但是这会使你的代码变得异常复杂。</li>
+</ol>
+<h3 id="思考题"><a href="#思考题" class="headerlink" title="思考题"></a>思考题</h3><p>指向接口的指针是否实现了该接口？为什么？</p>
+<p>答：虽然指向具体类型的指针可以实现一个接口，但是指向接口的指针永远不可能实现该接口。</p>
+<h2 id="值类型？指针类型？引用类型？"><a href="#值类型？指针类型？引用类型？" class="headerlink" title="值类型？指针类型？引用类型？"></a>值类型？指针类型？引用类型？</h2><p>初次看到这三个名词，我似懂非懂。值、指针、引用，为什么几个我认识的字放在一起，我就不太能分得清这些都是什么了。在上面的内容中有提到，Go语言中的变量分为两种，值类型和引用类型。那这个指针类型又是什么，和其他两种有什么关系呢。</p>
+<h3 id="值类型"><a href="#值类型" class="headerlink" title="值类型"></a>值类型</h3><p>值类型包括：整型、浮点型、字符串、布尔、数组和 struct 。</p>
+<p>认真观察过这些类型，我们不难发现，当这些类型作为函数参数时，在函数内部对其进行修改并不会影响到其原来的值。这就是值类型的特点。原因如下：</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/image-20240312223328702.png" alt="image-20240312223328702"></p>
+<p>观察上面的示意图不难得出，当 <code>main</code> 函数调用函数 <code>modifyPerson</code> 时，程序将变量 P 进行了一次复制，所以在函数 <code>modifyPerson</code> 试图修改变量 P 时，修改的是 P 的副本。值类型的变量在函数中均是如此。因此，在函数试图修改值类型的参数时，实际的参数并不会被修改。</p>
+<h3 id="指针类型"><a href="#指针类型" class="headerlink" title="指针类型"></a>指针类型</h3><p>指针类型保存的值就是数据对应的内存地址，所以在函数传参采用值传递的原则下，拷贝的值也是内存地址。因此当函数想要对参数进行修改时，即使修改的是参数的副本，其内容仍是需要修改变量的地址。</p>
+<h3 id="引用类型"><a href="#引用类型" class="headerlink" title="引用类型"></a>引用类型</h3><p>引用类型包括：切片、map、函数、chan和接口</p>
+<p>对于引用类型，在参数传递时仍然是<strong>值传递</strong>，但其传递的值为指针，并不是其他编程语言中所谓的引用传递。</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/image-20240312231609318.png" alt="image-20240312231609318"></p>
+<h2 id="new和make"><a href="#new和make" class="headerlink" title="new和make"></a>new和make</h2><p>在声明一个变量时，常常会使用到的是 <code>var</code> 关键字和 <code>:=</code> 这两种方法。当我们尝试着去指针类型的变量时：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> sp *<span class="type">string</span></span><br><span class="line">	*sp = “内存地址”</span><br><span class="line">	fmt.Println(*sp)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当运行上面的代码时，编译器会报错。</p>
+<p>这是因为指针类型的变量如果没有分配内存，其默认值为 <code>nil</code>，因为它没有指向的内存，所以无法使用，强行使用就会出现 <code>nil</code> 指针的报错。</p>
+<p>一个变量必须要经过<strong>声明</strong>、<strong>内存分配</strong>才能赋值，才能进行初始化。对于值类型，Go语言会在声明时就为它分配内存，以便后续的赋值操作。对于指针类型，Go语言并没有自动分配内存，所以不能对其进行赋值操作。</p>
+<h3 id="new函数"><a href="#new函数" class="headerlink" title="new函数"></a>new函数</h3><p>正是因为上面情况，<code>new</code>函数派上了用场。</p>
+<p><code>new</code> 函数的作用就是根据传入的类型申请一块内存，然后返回指向这块内存的指针，指针指向的数据就是该类型的<strong>零值</strong></p>
+<h3 id="make函数"><a href="#make函数" class="headerlink" title="make函数"></a>make函数</h3><p>关于<code>make</code>函数，最常使用的场景就是 map、slice 和 chan 这三种类型的初始化。</p>
+<p>make 函数就是上述三种类型的工厂函数，用于<strong>创建和初始化</strong>这几种类型。</p>
+<h3 id="make和new的区别"><a href="#make和new的区别" class="headerlink" title="make和new的区别"></a>make和new的区别</h3><p><code>make</code> 和 <code>new</code> 是两个⽤于分配内存的内建函数, 在使⽤场景和返回值类型上有明显的区别。</p>
+<ul>
+<li><code>make</code> ⽤于创建并初始化切⽚、映射和通道等引⽤类型。它返回的是被初始化的⾮零值（⾮nil）的引⽤类型。</li>
+<li><code>new</code> ⽤于分配值类型的内存，并返回该值类型的指针。它返回的是分配的零值的指针。</li>
+</ul>
+<p>总结：</p>
+<ul>
+<li><code>new</code>只⽤于分配内存，返回⼀个指向地址的<strong>指针</strong>。它为每个新类型分配⼀⽚内存，初始化为0且返回类型*T的内存地址，它相当于&amp;T{}</li>
+<li><code>make</code>只可⽤于 <strong>slice, map, channel</strong> 的初始化,返回的是<strong>引⽤</strong></li>
+</ul>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>总结一下，本周好像有一点懈怠了，做题和做项目的时候都有点心不在焉的。不过本周学到的东西还是不少的。</p>
+<ul>
+<li>算法题已经完成了数组、双指针、滑动窗口和区间四个部分了。</li>
+<li>项目目前完成了一半左右，希望下一周能全部搞完，再完成一篇博客。</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">随便寻个地方</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2024/03/12/%E6%B7%B1%E5%85%A5Go%E8%AF%AD%E8%A8%80%E2%80%94%E2%80%94%E5%86%85%E5%AD%98/">http://example.com/2024/03/12/%E6%B7%B1%E5%85%A5Go%E8%AF%AD%E8%A8%80%E2%80%94%E2%80%94%E5%86%85%E5%AD%98/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">随便寻个地方'Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%AD%A6%E4%B9%A0%E5%91%A8%E6%8A%A5/">学习周报</a></div><div class="post_share"><div class="social-share" data-image="/img/touxiang.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/03/21/%E8%85%BE%E8%AE%AF%E9%9D%A2%E8%AF%95%E2%80%94%E2%80%94%E8%A1%80%E4%B8%8E%E6%B3%AA%E7%9A%84%E6%95%99%E8%AE%AD/" title="腾讯面试——血与泪的教训"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">腾讯面试——血与泪的教训</div></div></a></div><div class="next-post pull-right"><a href="/2024/03/08/Go%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6%E2%80%94%E2%80%94%E5%B9%B6%E5%8F%91/" title="Go语言进阶——并发"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Go语言进阶——并发</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2024/04/14/%E5%94%89%E2%80%A6%E2%80%A6/" title="唉……"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-04-14</div><div class="title">唉……</div></div></a></div><div><a href="/2024/04/20/%E6%B7%B1%E5%85%A5Go%E8%AF%AD%E8%A8%802%E2%80%94%E2%80%94%E5%8F%8D%E5%B0%84%E4%B8%8Eunsafe/" title="深入Go语言2——反射与unsafe"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-04-20</div><div class="title">深入Go语言2——反射与unsafe</div></div></a></div><div><a href="/2024/03/01/%E6%89%93%E5%BC%80GO%E8%AF%AD%E8%A8%80%E4%B9%8B%E9%97%A8/" title="打开Go语言之门"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-03-01</div><div class="title">打开Go语言之门</div></div></a></div><div><a href="/2024/06/03/%E7%BB%86%E8%AF%B4%E7%A9%BA%E7%BB%93%E6%9E%84%E4%BD%93%EF%BC%9AGo%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E5%A5%87%E5%A6%99%E7%94%A8%E9%80%94/" title="细说空结构体：Go语言中的奇妙用途"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-06-03</div><div class="title">细说空结构体：Go语言中的奇妙用途</div></div></a></div><div><a href="/2024/03/08/Go%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6%E2%80%94%E2%80%94%E5%B9%B6%E5%8F%91/" title="Go语言进阶——并发"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-03-08</div><div class="title">Go语言进阶——并发</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/touxiang.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">随便寻个地方</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">69</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E6%80%9D%E8%80%83"><span class="toc-number">2.</span> <span class="toc-text">学习思考</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E9%92%88"><span class="toc-number">2.1.</span> <span class="toc-text">指针</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E6%8E%A5%E6%94%B6%E8%80%85"><span class="toc-number">2.1.1.</span> <span class="toc-text">指针接收者</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%B8%8B%E4%BD%BF%E7%94%A8%E6%8C%87%E9%92%88"><span class="toc-number">2.1.2.</span> <span class="toc-text">什么情况下使用指针</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%9D%E8%80%83%E9%A2%98"><span class="toc-number">2.1.3.</span> <span class="toc-text">思考题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%80%BC%E7%B1%BB%E5%9E%8B%EF%BC%9F%E6%8C%87%E9%92%88%E7%B1%BB%E5%9E%8B%EF%BC%9F%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%EF%BC%9F"><span class="toc-number">2.2.</span> <span class="toc-text">值类型？指针类型？引用类型？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%80%BC%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.2.1.</span> <span class="toc-text">值类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.2.2.</span> <span class="toc-text">指针类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.2.3.</span> <span class="toc-text">引用类型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#new%E5%92%8Cmake"><span class="toc-number">2.3.</span> <span class="toc-text">new和make</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#new%E5%87%BD%E6%95%B0"><span class="toc-number">2.3.1.</span> <span class="toc-text">new函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#make%E5%87%BD%E6%95%B0"><span class="toc-number">2.3.2.</span> <span class="toc-text">make函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#make%E5%92%8Cnew%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">2.3.3.</span> <span class="toc-text">make和new的区别</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">小结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/07/Untitled/" title="无题">无题</a><time datetime="2025-03-07T06:39:56.000Z" title="发表于 2025-03-07 14:39:56">2025-03-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E5%86%99%E4%BD%9C%E5%8A%A9%E6%89%8B-%E5%90%88%E5%B9%B6md%E6%96%87%E4%BB%B6-1741099573219/" title="无题">无题</a><time datetime="2025-03-04T14:46:16.000Z" title="发表于 2025-03-04 22:46:16">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E5%86%99%E4%BD%9C%E5%8A%A9%E6%89%8B-%E5%90%88%E5%B9%B6md%E6%96%87%E4%BB%B6-1741098965071/" title="无题">无题</a><time datetime="2025-03-04T14:36:08.000Z" title="发表于 2025-03-04 22:36:08">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/07/%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%E4%B8%A4%E5%85%84%E5%BC%9F%E2%80%94%E2%80%94%E6%95%B0%E7%BB%84%E5%92%8C%E5%88%87%E7%89%87%EF%BC%8C%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F/" title="顺序存储两兄弟——数组和切片，到底有什么区别？">顺序存储两兄弟——数组和切片，到底有什么区别？</a><time datetime="2024-11-07T05:04:09.000Z" title="发表于 2024-11-07 13:04:09">2024-11-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/10/24/%E4%BA%86%E8%A7%A3%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" title="了解基础数据类型">了解基础数据类型</a><time datetime="2024-10-24T09:57:13.000Z" title="发表于 2024-10-24 17:57:13">2024-10-24</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 随便寻个地方</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container').forEach(node => {
+            if (node.hasAttribute('display')) {
+              btf.wrap(node, 'div', { class: 'mathjax-overflow' })
+            } else {
+              btf.wrap(node, 'span', { class: 'mathjax-overflow' })
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

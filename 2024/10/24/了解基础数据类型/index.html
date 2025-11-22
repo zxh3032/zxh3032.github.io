@@ -1,0 +1,408 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>了解基础数据类型 | 随便寻个地方'Blog</title><meta name="author" content="随便寻个地方"><meta name="copyright" content="随便寻个地方"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="各位码农朋友们，在了解完 Go语言是如何声明变量和常量之后，我们要进行学习的就是变量和常量的类型了。只有真正地了解了这些数据类型的特性以及实现原理，我们才能在后面的编程生活中过的得心应手。 了解基础数据类型Go 是一种强类型语言。 这意味着你声明的每个变量都绑定到特定的数据类型，并且只接受与此类型匹配的值。 Go 有四类数据类型：  基本类型：数字、字符串和布尔值 聚合类型：数组和结构 引用类型：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="了解基础数据类型">
+<meta property="og:url" content="http://example.com/2024/10/24/%E4%BA%86%E8%A7%A3%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/index.html">
+<meta property="og:site_name" content="随便寻个地方&#39;Blog">
+<meta property="og:description" content="各位码农朋友们，在了解完 Go语言是如何声明变量和常量之后，我们要进行学习的就是变量和常量的类型了。只有真正地了解了这些数据类型的特性以及实现原理，我们才能在后面的编程生活中过的得心应手。 了解基础数据类型Go 是一种强类型语言。 这意味着你声明的每个变量都绑定到特定的数据类型，并且只接受与此类型匹配的值。 Go 有四类数据类型：  基本类型：数字、字符串和布尔值 聚合类型：数组和结构 引用类型：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/touxiang.png">
+<meta property="article:published_time" content="2024-10-24T09:57:13.000Z">
+<meta property="article:modified_time" content="2024-10-24T10:43:12.000Z">
+<meta property="article:author" content="随便寻个地方">
+<meta property="article:tag" content="求职必备">
+<meta property="article:tag" content="深入理解Go语言">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/touxiang.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2024/10/24/%E4%BA%86%E8%A7%A3%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '了解基础数据类型',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-10-24 18:43:12'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="随便寻个地方'Blog" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/touxiang.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">69</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="随便寻个地方'Blog"><span class="site-name">随便寻个地方'Blog</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">了解基础数据类型</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-10-24T09:57:13.000Z" title="发表于 2024-10-24 17:57:13">2024-10-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-10-24T10:43:12.000Z" title="更新于 2024-10-24 18:43:12">2024-10-24</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%A7%8B%E6%8B%9B%E7%89%B9%E8%BE%91/">秋招特辑</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="了解基础数据类型"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>各位码农朋友们，在了解完 Go语言是如何声明变量和常量之后，我们要进行学习的就是变量和常量的类型了。只有真正地了解了这些数据类型的特性以及实现原理，我们才能在后面的编程生活中过的得心应手。</p>
+<h1 id="了解基础数据类型"><a href="#了解基础数据类型" class="headerlink" title="了解基础数据类型"></a>了解基础数据类型</h1><p>Go 是一种强类型语言。 这意味着你声明的每个变量都绑定到特定的数据类型，并且只接受与此类型匹配的值。</p>
+<p>Go 有<strong>四类数据类型</strong>：</p>
+<ul>
+<li><strong>基本类型</strong>：数字、字符串和布尔值</li>
+<li><strong>聚合类型</strong>：数组和结构</li>
+<li><strong>引用类型</strong>：指针、切片、映射、函数和通道</li>
+<li><strong>接口类型</strong>：接口</li>
+</ul>
+<p>在此模块中，我们仅介绍基本类型（数字类型、布尔类型）的特性、原理以及注意事项。 如果你不知道其他类型是什么，请不要担心。 我们将在后续模块中进行介绍。</p>
+<h1 id="整数类型"><a href="#整数类型" class="headerlink" title="整数类型"></a>整数类型</h1><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>有无符号</th>
+<th>占用存储空间</th>
+<th>表示范围</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>int8</td>
+<td>有</td>
+<td>1字节</td>
+<td>-2^7 ~ 2^7-1</td>
+<td></td>
+</tr>
+<tr>
+<td>int16</td>
+<td>有</td>
+<td>2字节</td>
+<td>-2^15 ~ 2^15-1</td>
+<td></td>
+</tr>
+<tr>
+<td>int32</td>
+<td>有</td>
+<td>4字节</td>
+<td>-2^31 ~ 2^31-1</td>
+<td></td>
+</tr>
+<tr>
+<td>int64</td>
+<td>有</td>
+<td>8,字节</td>
+<td>-2^63 ~ 2^63-1</td>
+<td></td>
+</tr>
+<tr>
+<td>uint8</td>
+<td>无</td>
+<td>1字节</td>
+<td>0~2^8-1</td>
+<td></td>
+</tr>
+<tr>
+<td>uint16</td>
+<td>无</td>
+<td>2字节</td>
+<td>0~2^16-1</td>
+<td></td>
+</tr>
+<tr>
+<td>uint32</td>
+<td>无</td>
+<td>4字节</td>
+<td>0~2^32-1</td>
+<td></td>
+</tr>
+<tr>
+<td>uint64</td>
+<td>无</td>
+<td>8字节</td>
+<td>0~2^64-1</td>
+<td></td>
+</tr>
+<tr>
+<td>int</td>
+<td>有</td>
+<td>32位系统4字节</td>
+<td>-2^31 ~ 2^31-1</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>64位系统8字节</td>
+<td>-2^63 ~ 2^63-1</td>
+<td></td>
+</tr>
+<tr>
+<td>uint</td>
+<td>无</td>
+<td>32位系统4字节</td>
+<td>0 ~ 2^32-1</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>64位系统8字节</td>
+<td>0~2^64-1</td>
+<td></td>
+</tr>
+<tr>
+<td>rune</td>
+<td>有</td>
+<td>与int32一样</td>
+<td>-2^31 ~ 2^31-1</td>
+<td>等价int32，表示一个unicode码</td>
+</tr>
+<tr>
+<td>byte</td>
+<td>无</td>
+<td>与uint8一样</td>
+<td>0~2^8-1</td>
+<td>当要存储字符时使用byte</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h2><ul>
+<li>当没有明显指明整数的类型时，Go编译器会自动推断，默认为<code>int</code>。</li>
+<li>使用 <code>int</code> 时，32 位系统上的大小为 32 位，64 位系统上则为 64 位（大多数情况下如此，不过在不同计算机上或有所不同）。 </li>
+<li>如果需要将值表示为无符号数字，则可以使用 <code>uint</code>，但仅当有特定原因时才使用此类型。 此外，Go 还提供 <code>uint8</code>、<code>uint16</code>、<code>uint32</code> 和 <code>uint64</code> 类型。</li>
+<li><code>rune</code> 只是 <code>int32</code> 数据类型的别名。 它用于表示 Unicode 字符（或 Unicode 码位）。 </li>
+<li><code>byte</code> 是 <code>uint</code> 数据类型的别名。可以理解为 C语言中的 <code>char</code>，表示 ASCII 字符。</li>
+</ul>
+<h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><p>这些整数类型在内存中的存储方式其实就是二进制的位表示。比如<code>int8</code>用 8 个位来存储数字，<code>int16</code>用 16 个位，以此类推。这样就可以通过不同的位数来表示不同范围的数字啦。</p>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ul>
+<li>大多数情况下，你将使用 <code>int</code>，但需要了解其他整数类型，因为在 Go 中，<code>int</code> 与 <code>int32</code> 不同，即使整数的自然大小为 32 位也是如此。 换句话说，需要强制转换时，你需要进行显式转换。 如果尝试在不同类型之间执行数学运算，将会出现错误。</li>
+<li>在进行整数运算的时候，要注意溢出问题。如果两个很大的<code>int32</code>数字相加，结果可能会超出<code>int32</code>的范围，这时候就会出现奇怪的结果，就像数学考试算错了答案一样尴尬。</li>
+</ul>
+<h1 id="浮点数类型"><a href="#浮点数类型" class="headerlink" title="浮点数类型"></a>浮点数类型</h1><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>占用存储空间</th>
+<th>表示范围</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>单精度float32</td>
+<td>4字节</td>
+<td>-3.403E38~3.403E38</td>
+</tr>
+<tr>
+<td>双精度float64</td>
+<td>8字节</td>
+<td>-1.798E308~1.798E308</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="特性-1"><a href="#特性-1" class="headerlink" title="特性"></a>特性</h2><ul>
+<li><code>float32</code>和<code>float64</code>分别表示 32 位和 64 位的浮点数。<code>float64</code>的精度更高，可以表示更大范围的小数。</li>
+<li>浮点数在计算机中的存储方式可不是精确的哦，就像你用尺子量东西，总是会有一点误差。</li>
+<li>可以使用 <code>math</code> 包中提供的 <code>math.MaxFloat32</code> 和 <code>math.MaxFloat64</code> 常量来查找这两种类型的限制。</li>
+<li>整数部分为 0 时，可以省略不写；小数部分为 0 时，可以省略不写；但是要加上小数点 <code>.</code>。</li>
+</ul>
+<h2 id="实现原理-1"><a href="#实现原理-1" class="headerlink" title="实现原理"></a>实现原理</h2><p>浮点数在内存中的存储方式是采用科学计数法的形式。比如一个浮点数可以表示为<code>m × 2^e</code>，其中<code>m</code>是尾数，<code>e</code>是指数。这样就可以用有限的位数来表示很大范围的小数啦。</p>
+<h2 id="注意事项-1"><a href="#注意事项-1" class="headerlink" title="注意事项"></a>注意事项</h2><ul>
+<li>浮点数的比较可不能直接用<code>==</code>哦，因为浮点数有误差。比如你想判断两个浮点数是否相等，可能会得到错误的结果。正确的做法是比较它们的差值是否在一个很小的范围内。</li>
+<li>在进行浮点数运算的时候，也要注意精度问题。比如多次进行浮点数运算，误差可能会累积，最后得到的结果可能和你预期的不一样。就像你走迷宫，每一步都有点偏差，最后可能就走不到终点啦。</li>
+</ul>
+<h1 id="布尔类型"><a href="#布尔类型" class="headerlink" title="布尔类型"></a>布尔类型</h1><p>布尔类型只有两个值：<code>true</code>和<code>false</code>。它就像一个黑白分明的小法官，判断事情只有对和错。</p>
+<h2 id="特性-2"><a href="#特性-2" class="headerlink" title="特性"></a>特性</h2><ul>
+<li>布尔类型非常简单明了，要么是真，要么是假。</li>
+<li>可以用于条件判断、循环控制等地方。</li>
+</ul>
+<h2 id="实现原理-2"><a href="#实现原理-2" class="headerlink" title="实现原理"></a>实现原理</h2><p>布尔类型在内存中可能只占用一个位，0 表示<code>false</code>，1 表示<code>true</code>。不过具体的实现方式取决于编译器和操作系统。</p>
+<h2 id="注意事项-2"><a href="#注意事项-2" class="headerlink" title="注意事项"></a>注意事项</h2><ul>
+<li>在 Go 中，不能将布尔类型隐式转换为 0 或 1，必须显式执行此操作。</li>
+<li>布尔类型的赋值要小心哦，别把其他类型的值误赋值给布尔类型。比如把一个整数赋值给布尔类型，那肯定会出问题，就像你把苹果当成橘子吃，味道肯定不对呀！</li>
+<li>在进行布尔运算的时候，要注意逻辑的正确性。比如<code>&amp;&amp;</code>（与）和<code>||</code>（或）的运算顺序，别搞混了，不然程序可能会做出错误的判断。</li>
+</ul>
+<h1 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h1><p>在 Go 语言中，不同类型之间进行操作需要进行显式的强制转换。</p>
+<ul>
+<li>数字之间可以直接通过 <code>类型(变量名/变量值)</code>实现强制转换；</li>
+<li>字符串和数字之间的转换需要借助 <code>strconv</code> 包来实现；</li>
+</ul>
+<p>不同类型之间的转换可能会出现精度的丢失，需要谨慎使用。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在 Go语言中，基础的变量类型在使用时需要注意的点并不是很多，这也是其简单特性的体现之一。只有在使用浮点数类型时，需要注意其精度问题，有可能会出现一些奇怪的错误。由于字符串类型(string) 在Go语言中是一个比较特殊的存在，所以后面会单独去分析，这里就不提了，只需要知道字符串是不可更改的即可。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yinzhengjie2020/p/12247502.html">Golang的基础数据类型-浮点型</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.quanxiaoha.com/golang/golang-data-type-float.html">Go 语言浮点型 (小数类型)</a></li>
+<li><a target="_blank" rel="noopener" href="https://zsy-cn.github.io/ch1-07-%E4%BA%86%E8%A7%A3%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B.html">Go 了解基本数据类型</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xiximayou/p/11826991.html">（七）golang—变量之基本数据类型（看这篇就够了）</a></li>
+</ul>
+<p>写完博客不耽误做一个笔试，狗头保命。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">随便寻个地方</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2024/10/24/%E4%BA%86%E8%A7%A3%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">http://example.com/2024/10/24/%E4%BA%86%E8%A7%A3%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">随便寻个地方'Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%B1%82%E8%81%8C%E5%BF%85%E5%A4%87/">求职必备</a><a class="post-meta__tags" href="/tags/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Go%E8%AF%AD%E8%A8%80/">深入理解Go语言</a></div><div class="post_share"><div class="social-share" data-image="/img/touxiang.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/11/07/%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%E4%B8%A4%E5%85%84%E5%BC%9F%E2%80%94%E2%80%94%E6%95%B0%E7%BB%84%E5%92%8C%E5%88%87%E7%89%87%EF%BC%8C%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F/" title="顺序存储两兄弟——数组和切片，到底有什么区别？"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">顺序存储两兄弟——数组和切片，到底有什么区别？</div></div></a></div><div class="next-post pull-right"><a href="/2024/10/23/%E6%9F%A5%E8%AF%A2%E6%95%88%E7%8E%87%E6%9C%80%E5%BF%AB%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E2%80%94%E2%80%94map/" title="查询效率最快的数据结构——map"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">查询效率最快的数据结构——map</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2024/10/19/%E3%80%8A%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Go%E8%AF%AD%E8%A8%80%E3%80%8B/" title="《深入理解Go语言》"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-19</div><div class="title">《深入理解Go语言》</div></div></a></div><div><a href="/2024/10/23/%E5%91%BD%E5%90%8D%E3%80%81%E5%A3%B0%E6%98%8E%E5%92%8C%E8%B5%8B%E5%80%BC/" title="命名、声明和赋值"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-23</div><div class="title">命名、声明和赋值</div></div></a></div><div><a href="/2024/10/23/%E6%9F%A5%E8%AF%A2%E6%95%88%E7%8E%87%E6%9C%80%E5%BF%AB%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E2%80%94%E2%80%94map/" title="查询效率最快的数据结构——map"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-23</div><div class="title">查询效率最快的数据结构——map</div></div></a></div><div><a href="/2024/10/23/%E7%89%B9%E6%AE%8A%E7%9A%84%E5%AD%98%E5%9C%A8%E2%80%94%E2%80%94string/" title="特殊的存在——string"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-23</div><div class="title">特殊的存在——string</div></div></a></div><div><a href="/2024/11/07/%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%E4%B8%A4%E5%85%84%E5%BC%9F%E2%80%94%E2%80%94%E6%95%B0%E7%BB%84%E5%92%8C%E5%88%87%E7%89%87%EF%BC%8C%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F/" title="顺序存储两兄弟——数组和切片，到底有什么区别？"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-07</div><div class="title">顺序存储两兄弟——数组和切片，到底有什么区别？</div></div></a></div><div><a href="/2024/10/19/Go%E8%AF%AD%E8%A8%80%E5%88%9B%E4%B8%96%E7%BA%AA/" title="Go语言创世纪"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-19</div><div class="title">Go语言创世纪</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/touxiang.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">随便寻个地方</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">69</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%86%E8%A7%A3%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.</span> <span class="toc-text">了解基础数据类型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B4%E6%95%B0%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.</span> <span class="toc-text">整数类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%B9%E6%80%A7"><span class="toc-number">2.1.</span> <span class="toc-text">特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-number">2.2.</span> <span class="toc-text">实现原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">2.3.</span> <span class="toc-text">注意事项</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B5%AE%E7%82%B9%E6%95%B0%E7%B1%BB%E5%9E%8B"><span class="toc-number">3.</span> <span class="toc-text">浮点数类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%B9%E6%80%A7-1"><span class="toc-number">3.1.</span> <span class="toc-text">特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86-1"><span class="toc-number">3.2.</span> <span class="toc-text">实现原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9-1"><span class="toc-number">3.3.</span> <span class="toc-text">注意事项</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B8%83%E5%B0%94%E7%B1%BB%E5%9E%8B"><span class="toc-number">4.</span> <span class="toc-text">布尔类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%89%B9%E6%80%A7-2"><span class="toc-number">4.1.</span> <span class="toc-text">特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86-2"><span class="toc-number">4.2.</span> <span class="toc-text">实现原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9-2"><span class="toc-number">4.3.</span> <span class="toc-text">注意事项</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="toc-number">5.</span> <span class="toc-text">类型转换</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">6.</span> <span class="toc-text">总结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">6.1.</span> <span class="toc-text">参考</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/07/Untitled/" title="无题">无题</a><time datetime="2025-03-07T06:39:56.000Z" title="发表于 2025-03-07 14:39:56">2025-03-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E5%86%99%E4%BD%9C%E5%8A%A9%E6%89%8B-%E5%90%88%E5%B9%B6md%E6%96%87%E4%BB%B6-1741099573219/" title="无题">无题</a><time datetime="2025-03-04T14:46:16.000Z" title="发表于 2025-03-04 22:46:16">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E5%86%99%E4%BD%9C%E5%8A%A9%E6%89%8B-%E5%90%88%E5%B9%B6md%E6%96%87%E4%BB%B6-1741098965071/" title="无题">无题</a><time datetime="2025-03-04T14:36:08.000Z" title="发表于 2025-03-04 22:36:08">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/07/%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%E4%B8%A4%E5%85%84%E5%BC%9F%E2%80%94%E2%80%94%E6%95%B0%E7%BB%84%E5%92%8C%E5%88%87%E7%89%87%EF%BC%8C%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F/" title="顺序存储两兄弟——数组和切片，到底有什么区别？">顺序存储两兄弟——数组和切片，到底有什么区别？</a><time datetime="2024-11-07T05:04:09.000Z" title="发表于 2024-11-07 13:04:09">2024-11-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/10/24/%E4%BA%86%E8%A7%A3%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" title="了解基础数据类型">了解基础数据类型</a><time datetime="2024-10-24T09:57:13.000Z" title="发表于 2024-10-24 17:57:13">2024-10-24</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 随便寻个地方</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container').forEach(node => {
+            if (node.hasAttribute('display')) {
+              btf.wrap(node, 'div', { class: 'mathjax-overflow' })
+            } else {
+              btf.wrap(node, 'span', { class: 'mathjax-overflow' })
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

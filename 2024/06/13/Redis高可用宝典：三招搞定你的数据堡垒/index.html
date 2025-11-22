@@ -1,0 +1,588 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>Redis高可用宝典：三招搞定你的数据堡垒 | 随便寻个地方'Blog</title><meta name="author" content="随便寻个地方"><meta name="copyright" content="随便寻个地方"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="软件开发通常会提到一个名词 “三高”，即高并发、高性能、高可用。 具体的指标定义，如：高并发方面要求QPS 大于 10万；高性能方面要求请求延迟小于 100 ms；高可用方面要高于 99.99%。 在前面学习 Redis 时，我们也可以看出 Redis 已经实现了前两个“高”。今天，我们就来看一下 Redis 是否实现了第三个“高”——高可用。 什么是高可用？高可用(High Availabili">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis高可用宝典：三招搞定你的数据堡垒">
+<meta property="og:url" content="http://example.com/2024/06/13/Redis%E9%AB%98%E5%8F%AF%E7%94%A8%E5%AE%9D%E5%85%B8%EF%BC%9A%E4%B8%89%E6%8B%9B%E6%90%9E%E5%AE%9A%E4%BD%A0%E7%9A%84%E6%95%B0%E6%8D%AE%E5%A0%A1%E5%9E%92/index.html">
+<meta property="og:site_name" content="随便寻个地方&#39;Blog">
+<meta property="og:description" content="软件开发通常会提到一个名词 “三高”，即高并发、高性能、高可用。 具体的指标定义，如：高并发方面要求QPS 大于 10万；高性能方面要求请求延迟小于 100 ms；高可用方面要高于 99.99%。 在前面学习 Redis 时，我们也可以看出 Redis 已经实现了前两个“高”。今天，我们就来看一下 Redis 是否实现了第三个“高”——高可用。 什么是高可用？高可用(High Availabili">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/touxiang.png">
+<meta property="article:published_time" content="2024-06-13T11:10:16.000Z">
+<meta property="article:modified_time" content="2024-06-26T15:22:19.000Z">
+<meta property="article:author" content="随便寻个地方">
+<meta property="article:tag" content="数据库">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/touxiang.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2024/06/13/Redis%E9%AB%98%E5%8F%AF%E7%94%A8%E5%AE%9D%E5%85%B8%EF%BC%9A%E4%B8%89%E6%8B%9B%E6%90%9E%E5%AE%9A%E4%BD%A0%E7%9A%84%E6%95%B0%E6%8D%AE%E5%A0%A1%E5%9E%92/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Redis高可用宝典：三招搞定你的数据堡垒',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-06-26 23:22:19'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="随便寻个地方'Blog" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/touxiang.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">69</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="随便寻个地方'Blog"><span class="site-name">随便寻个地方'Blog</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Redis高可用宝典：三招搞定你的数据堡垒</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-06-13T11:10:16.000Z" title="发表于 2024-06-13 19:10:16">2024-06-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-06-26T15:22:19.000Z" title="更新于 2024-06-26 23:22:19">2024-06-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Redis/">Redis</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Redis高可用宝典：三招搞定你的数据堡垒"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>软件开发通常会提到一个名词 “三高”，即高并发、高性能、高可用。</p>
+<p>具体的指标定义，如：高并发方面要求QPS 大于 10万；高性能方面要求请求延迟小于 100 ms；高可用方面要高于 99.99%。</p>
+<p>在前面学习 Redis 时，我们也可以看出 Redis 已经实现了前两个“高”。今天，我们就来看一下 Redis 是否实现了第三个“高”——高可用。</p>
+<h1 id="什么是高可用？"><a href="#什么是高可用？" class="headerlink" title="什么是高可用？"></a>什么是高可用？</h1><p>高可用(High Availability,即HA)，指的是通过尽量缩短日常维护操作和突发的系统崩溃所导致的停机时间，以提高系统和应用的可用性。一个业务系统如果全年无一时刻不在提供服务，它的可用性可达100%。那么什么样的系统可以称之为高可用呢，业界一般用几个九来衡量系统的可用性，当系统运行时间达到4个九即99.99%时的系统为高可用的，全年宕机时间为52分钟左右。</p>
+<p> 高可用一般来说有两个含义：一是数据尽量不丢失，二是保证服务尽可能可用。 AOF 和 RDB 数据持久化保证了数据尽量不丢失，而多节点来保证服务尽可能提供服务。单个节点的系统缺点明显，一旦发生故障会导致服务不可用。而且，单个节点处理所有的请求，吞吐量有限，容量也有限。</p>
+<p>关于数据持久化，前面已经聊过了，今天要看的就是 Redis 如何保证服务尽可能可用。</p>
+<p>Redis 高可用的手段主要有以下三种：</p>
+<ul>
+<li>主从数据同步（主从复制）</li>
+<li>Redis 哨兵模式（Sentinel）</li>
+<li>Redis 集群（Cluster）</li>
+</ul>
+<p>主从数据同步可以将数据存储至多台服务器，这样当遇到一台服务器宕机之后，可以很快地切换至另一台服务器以继续提供服务；哨兵模式用于发生故障之后自动切换服务器；而 Redis 集群提供了多主多从的 Redis 分布式集群环境，用于提供性能更好的 Redis 服务，并且它自身拥有故障自动切换的能力。</p>
+<h1 id="主从复制-老少皆宜的经典菜"><a href="#主从复制-老少皆宜的经典菜" class="headerlink" title="主从复制 - 老少皆宜的经典菜"></a>主从复制 - 老少皆宜的经典菜</h1><p>主从复制（Master-Slave Replication）像是一道经典菜式，简单易懂，老少皆宜。主库写数据，从库读数据，轻松实现读写分离。</p>
+<blockquote>
+<p>主从复制，是指将一台 Redis 服务器的数据复制到其他的 Redis 服务器。前者成为<strong>主节点(master)</strong>，后者成为<strong>从节点(slave)</strong>；数据的复制是单向的，只能由主节点到从节点。</p>
+<p>主从模式实现读写分离，只有master节点提供数据的事务性操作（增删改），slave节点只提供读操作。所有slave节点的数据都是从master节点同步过来的，该模式的结构图如下：</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/db-redis-copy-1.png" alt="img"></p>
+<p><strong>主从复制的作用</strong>主要包括：</p>
+<ul>
+<li><strong>数据冗余</strong>：主从复制实现了数据的热备份，是持久化之外的一种数据冗余方式。</li>
+<li><strong>故障恢复</strong>：当主节点出现问题时，可以由从节点提供服务，实现快速的故障恢复；实际上是一种服务的冗余。</li>
+<li><strong>负载均衡</strong>：在主从复制的基础上，配合读写分离，可以由主节点提供写服务，由从节点提供读服务（即写Redis数据时应用连接主节点，读Redis数据时应用连接从节点），分担服务器负载；尤其是在写少读多的场景下，通过多个从节点分担读负载，可以大大提高Redis服务器的并发量。</li>
+<li><strong>高可用基石</strong>：除了上述作用以外，主从复制还是哨兵和集群能够实施的基础，因此说主从复制是Redis高可用的基础。</li>
+</ul>
+<h2 id="主从复制策略"><a href="#主从复制策略" class="headerlink" title="主从复制策略"></a>主从复制策略</h2><blockquote>
+<p>注意：在2.8版本之前只有全量复制，而2.8版本后有全量和增量复制：</p>
+</blockquote>
+<ul>
+<li><code>全量（同步）复制</code>：比如第一次同步时</li>
+<li><code>增量（同步）复制</code>：只会把主从库网络断连期间主库收到的命令，同步给从库</li>
+</ul>
+<h3 id="全量复制"><a href="#全量复制" class="headerlink" title="全量复制"></a>全量复制</h3><blockquote>
+<p>当我们启动多个 Redis 实例的时候，它们相互之间就可以通过 replicaof（Redis 5.0 之前使用 slaveof）形成主库和从库的关系，之后会按照三个阶段完成数据的第一次同步。</p>
+</blockquote>
+<p><strong>全量复制的三个阶段</strong></p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/db-redis-copy-2.jpg" alt="img"></p>
+<p><strong>第一个阶段是主从库建立连接、协商同步的过程，</strong>主要是为全量复制做准备/在这一步，从库和主库建立其连接，并告诉主库即将进行同步，主库确认回复后，主从库就可以开始同步了。</p>
+<p>具体来说，从库给主库发送 psync 命令，表示要进行数据同步，主库根据这个命令的参数来启动复制。psync 命令包含了主库的 runID 和复制进度 offset 两个参数。<strong>runID</strong>，是每个 Redis 实例启动时都会自动生成的一个随机 ID，用来唯一标记这个实例。当从库和主库第一次复制时，因为不知道主库的 runID，所以将 runID 设为“？”。<strong>offset</strong>，此时设为 -1，表示第一次复制。主库收到 psync 命令后，会用 FULLRESYNC 响应命令带上两个参数：主库 runID 和主库目前的复制进度 offset，返回给从库。从库收到响应后，会记录下这两个参数。这里有个地方需要注意，<strong>FULLRESYNC 响应表示第一次复制采用的全量复制，也就是说，主库会把当前所有的数据都复制给从库</strong>。</p>
+<p><strong>第二阶段，主库将所有数据同步到从库</strong>。从库收到数据后，在本地完成数据加载。这个过程依赖于内存快照生成的 RDB 文件。</p>
+<p>具体来说，主库执行 bgsave 命令，生成 RDB 文件，接着将文件发给从库。从库接收到 RDB 文件后，会先清空当前数据库，然后加载 RDB 文件。这是因为从库在通过 replicaof 命令开始和主库同步前，可能保存了其他数据。为了避免之前数据的影响，从库需要先把当前数据库清空。在主库将数据同步给从库的过程中，主库不会被阻塞，仍然可以正常接收请求。否则，Redis 的服务就被中断了。但是，这些请求中的写操作并没有记录到刚刚生成的 RDB 文件中。<strong>为了保证主从库的数据一致性，主库会在内存中用专门的 replication buffer，记录 RDB 文件生成后收到的所有写操作。</strong></p>
+<p><strong>第三阶段，主库会把第二阶段执行过程中新收到的写命令再发送给从库</strong>。</p>
+<p>具体的操作是，当主库完成 RDB 文件发送后，就会把此时 replication buffer 中的修改操作发给从库，从库再重新执行这些操作。这样一来，主从库就实现同步了。</p>
+<h3 id="增量复制"><a href="#增量复制" class="headerlink" title="增量复制"></a>增量复制</h3><blockquote>
+<p>在 Redis 2.8 版本引入了增量复制。</p>
+</blockquote>
+<p><strong>为什么要设计增量复制？</strong></p>
+<p>如果主从库在命令传播时出现了网络闪断，那么，从库就会和主库重新进行一次全量复制，开销非常大。从 Redis 2.8 开始，网络断了之后，主从库会采用增量复制的方式继续同步。</p>
+<p><strong>增量复制的流程</strong></p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/db-redis-copy-3.jpg" alt="img"></p>
+<p>先看两个概念： <code>replication buffer</code> 和 <code>repl_backlog_buffer</code></p>
+<p><code>repl_backlog_buffer</code>：它是为了从库断开之后，如何找到主从差异数据而设计的环形缓冲区，从而避免全量复制带来的性能开销。如果从库断开时间太久，repl_backlog_buffer环形缓冲区被主库的写命令覆盖了，那么从库连上主库后只能乖乖地进行一次全量复制，所以<strong>repl_backlog_buffer配置尽量大一些，可以降低主从断开后全量复制的概率</strong>。而在repl_backlog_buffer中找主从差异的数据后，如何发给从库呢？这就用到了replication buffer。</p>
+<p><code>replication buffer</code>：Redis和客户端通信也好，和从库通信也好，Redis都需要给分配一个 内存buffer进行数据交互，客户端是一个client，从库也是一个client，我们每个client连上Redis后，Redis都会分配一个client buffer，所有数据交互都是通过这个buffer进行的：Redis先把数据写到这个buffer中，然后再把buffer中的数据发到client socket中再通过网络发送出去，这样就完成了数据交互。所以主从在增量同步时，从库作为一个client，也会分配一个buffer，只不过这个buffer专门用来传播用户的写命令到从库，保证主从数据一致，我们通常把它叫做replication buffer。</p>
+<p><strong>如果在网络断开期间，repl_backlog_size环形缓冲区写满之后，从库是会丢失掉那部分被覆盖掉的数据，还是直接进行全量复制呢</strong>？</p>
+<p>对于这个问题来说，有两个关键点：</p>
+<ol>
+<li>一个从库如果和主库断连时间过长，造成它在主库repl_backlog_buffer的slave_repl_offset位置上的数据已经被覆盖掉了，此时从库和主库间将进行全量复制。</li>
+<li>每个从库会记录自己的slave_repl_offset，每个从库的复制进度也不一定相同。在和主库重连进行恢复时，从库会通过psync命令把自己记录的slave_repl_offset发给主库，主库会根据从库各自的复制进度，来决定这个从库可以进行增量复制，还是全量复制。</li>
+</ol>
+<h2 id="更加深入"><a href="#更加深入" class="headerlink" title="更加深入"></a>更加深入</h2><blockquote>
+<p>我们通过几个问题来深入理解主从复制。</p>
+</blockquote>
+<h3 id="当主服务器不进行持久化时复制的安全性"><a href="#当主服务器不进行持久化时复制的安全性" class="headerlink" title="当主服务器不进行持久化时复制的安全性"></a>当主服务器不进行持久化时复制的安全性</h3><blockquote>
+<p>在进行主从复制设置时，强烈建议在主服务器上开启持久化，当不能这么做时，比如考虑到延迟的问题，应该将实例配置为避免自动重启。</p>
+</blockquote>
+<p><strong>为什么不持久化的主服务器自动重启非常危险呢</strong>？为了更好的理解这个问题，看下面这个失败的例子，其中主服务器和从服务器中数据库都被删除了。</p>
+<ul>
+<li>我们设置节点A为主服务器，关闭持久化，节点B和C从节点A复制数据。</li>
+<li>这时出现了一个崩溃，但Redis具有自动重启系统，重启了进程，因为关闭了持久化，节点重启后只有一个空的数据集。</li>
+<li>节点B和C从节点A进行复制，现在节点A是空的，所以节点B和C上的复制数据也会被删除。</li>
+<li>当在高可用系统中使用Redis Sentinel，关闭了主服务器的持久化，并且允许自动重启，这种情况是很危险的。比如主服务器可能在很短的时间就完成了重启，以至于Sentinel都无法检测到这次失败，那么上面说的这种失败的情况就发生了。</li>
+</ul>
+<p>如果数据比较重要，并且在使用主从复制时关闭了主服务器持久化功能的场景中，都应该禁止实例自动重启。</p>
+<h3 id="为什么主从全量复制使用RDB而不使用AOF？"><a href="#为什么主从全量复制使用RDB而不使用AOF？" class="headerlink" title="为什么主从全量复制使用RDB而不使用AOF？"></a>为什么主从全量复制使用RDB而不使用AOF？</h3><ol>
+<li><p>RDB文件内容是经过压缩的二进制数据（不同数据类型数据做了针对性优化），文件很小。而AOF文件记录的是每一次写操作的命令，写操作越多文件会变得很大，其中还包括很多对同一个key的多次冗余操作。在主从全量数据同步时，传输RDB文件可以尽量降低对主库机器网络带宽的消耗，从库在加载RDB文件时，一是文件小，读取整个文件的速度会很快，二是因为RDB文件存储的都是二进制数据，从库直接按照RDB协议解析还原数据即可，速度会非常快，而AOF需要依次重放每个写命令，这个过程会经历冗长的处理逻辑，恢复速度相比RDB会慢得多，所以使用RDB进行主从全量复制的成本最低。</p>
+</li>
+<li><p>假设要使用AOF做全量复制，意味着必须打开AOF功能，打开AOF就要选择文件刷盘的策略，选择不当会严重影响Redis性能。而RDB只有在需要定时备份和主从全量复制数据时才会触发生成一次快照。而在很多丢失数据不敏感的业务场景，其实是不需要开启AOF的。</p>
+</li>
+</ol>
+<h3 id="为什么还有无磁盘复制模式？"><a href="#为什么还有无磁盘复制模式？" class="headerlink" title="为什么还有无磁盘复制模式？"></a>为什么还有无磁盘复制模式？</h3><p>Redis 默认是磁盘复制，但是<strong>如果使用比较低速的磁盘，这种操作会给主服务器带来较大的压力</strong>。Redis从2.8.18版本开始尝试支持无磁盘的复制。使用这种设置时，子进程直接将RDB通过网络发送给从服务器，不使用磁盘作为中间存储。</p>
+<p><strong>无磁盘复制模式</strong>：master创建一个新进程直接dump RDB到slave的socket，不经过主进程，不经过硬盘。适用于disk较慢，并且网络较快的时候。</p>
+<p>使用<code>repl-diskless-sync</code>配置参数来启动无磁盘复制。</p>
+<p>使用<code>repl-diskless-sync-delay</code> 参数来配置传输开始的延迟时间；master等待一个<code>repl-diskless-sync-delay</code>的秒数，如果没slave来的话，就直接传，后来的得排队等了; 否则就可以一起传。</p>
+<h3 id="主从级联模式分担全量复制时的主库压力"><a href="#主从级联模式分担全量复制时的主库压力" class="headerlink" title="主从级联模式分担全量复制时的主库压力"></a>主从级联模式分担全量复制时的主库压力</h3><p>通过分析主从库间第一次数据同步的过程，你可以看到，一次全量复制中，对于主库来说，需要完成两个耗时的操作：<strong>生成 RDB 文件和传输 RDB 文件</strong>。</p>
+<p>如果从库数量很多，而且都要和主库进行全量复制的话，就会导致主库忙于 fork 子进程生成 RDB 文件，进行数据全量复制。fork 这个操作会阻塞主线程处理正常请求，从而导致主库响应应用程序的请求速度变慢。此外，传输 RDB 文件也会占用主库的网络带宽，同样会给主库的资源使用带来压力。那么，有没有好的解决方法可以分担主库压力呢？</p>
+<p>其实是有的，这就是“主 - 从 - 从”模式。</p>
+<p>在刚才介绍的主从库模式中，所有的从库都是和主库连接，所有的全量复制也都是和主库进行的。现在，我们可以通过“主 - 从 - 从”模式<strong>将主库生成 RDB 和传输 RDB 的压力，以级联的方式分散到从库上</strong>。</p>
+<p>简单来说，我们在部署主从集群的时候，可以手动选择一个从库（比如选择内存资源配置较高的从库），用于级联其他的从库。然后，我们可以再选择一些从库（例如三分之一的从库），在这些从库上执行如下命令，让它们和刚才所选的从库，建立起主从关系。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">replicaof 所选从库的IP 6379</span><br></pre></td></tr></table></figure>
+<p>这样一来，这些从库就会知道，在进行同步时，不用再和主库进行交互了，只要和级联的从库进行写操作同步就行了，这就可以减轻主库上的压力，如下图所示：</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/db-redis-copy-4.jpg" alt="img"></p>
+<p>级联的“主-从-从”模式好了，到这里，我们了解了主从库间通过全量复制实现数据同步的过程，以及通过“主 - 从 - 从”模式分担主库压力的方式。那么，一旦主从库完成了全量复制，它们之间就会一直维护一个网络连接，主库会通过这个连接将后续陆续收到的命令操作再同步给从库，这个过程也称为基于长连接的命令传播，可以避免频繁建立连接的开销。</p>
+<h3 id="读写分离及其中的问题"><a href="#读写分离及其中的问题" class="headerlink" title="读写分离及其中的问题"></a>读写分离及其中的问题</h3><p>在主从复制基础上实现的读写分离，可以实现Redis的读负载均衡：由主节点提供写服务，由一个或多个从节点提供读服务（多个从节点既可以提高数据冗余程度，也可以最大化读负载能力）；在读负载较大的应用场景下，可以大大提高Redis服务器的并发量。下面介绍在使用Redis读写分离时，需要注意的问题。</p>
+<ul>
+<li><strong>延迟与不一致问题</strong></li>
+</ul>
+<p>前面已经讲到，由于主从复制的命令传播是异步的，延迟与数据的不一致不可避免。如果应用对数据不一致的接受程度程度较低，可能的优化措施包括：优化主从节点之间的网络环境（如在同机房部署）；监控主从节点延迟（通过offset）判断，如果从节点延迟过大，通知应用不再通过该从节点读取数据；使用集群同时扩展写负载和读负载等。</p>
+<p>在命令传播阶段以外的其他情况下，从节点的数据不一致可能更加严重，例如连接在数据同步阶段，或从节点失去与主节点的连接时等。从节点的slave-serve-stale-data参数便与此有关：它控制这种情况下从节点的表现；如果为yes（默认值），则从节点仍能够响应客户端的命令，如果为no，则从节点只能响应info、slaveof等少数命令。该参数的设置与应用对数据一致性的要求有关；如果对数据一致性要求很高，则应设置为no。</p>
+<ul>
+<li><strong>数据过期问题</strong></li>
+</ul>
+<p>在单机版Redis中，存在两种删除策略：</p>
+<ul>
+<li><code>惰性删除</code>：服务器不会主动删除数据，只有当客户端查询某个数据时，服务器判断该数据是否过期，如果过期则删除。</li>
+<li><code>定期删除</code>：服务器执行定时任务删除过期数据，但是考虑到内存和CPU的折中（删除会释放内存，但是频繁的删除操作对CPU不友好），该删除的频率和执行时间都受到了限制。</li>
+</ul>
+<p>在主从复制场景下，为了主从节点的数据一致性，从节点不会主动删除数据，而是由主节点控制从节点中过期数据的删除。由于主节点的惰性删除和定期删除策略，都不能保证主节点及时对过期数据执行删除操作，因此，当客户端通过Redis从节点读取数据时，很容易读取到已经过期的数据。</p>
+<p>Redis 3.2中，从节点在读取数据时，增加了对数据是否过期的判断：如果该数据已过期，则不返回给客户端；将Redis升级到3.2可以解决数据过期问题。</p>
+<ul>
+<li><strong>故障切换问题</strong></li>
+</ul>
+<p>在没有使用哨兵的读写分离场景下，应用针对读和写分别连接不同的Redis节点；当主节点或从节点出现问题而发生更改时，需要及时修改应用程序读写Redis数据的连接；连接的切换可以手动进行，或者自己写监控程序进行切换，但前者响应慢、容易出错，后者实现复杂，成本都不算低。</p>
+<h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><p><strong>优点</strong>：</p>
+<ol>
+<li>配置简单，易于实现。</li>
+<li>实现数据冗余，提高数据可靠性。</li>
+<li>读写分离，提高系统性能。</li>
+</ol>
+<p><strong>缺点</strong>：</p>
+<ol>
+<li>主节点故障时，需要手动切换到从节点，故障恢复时间较长。</li>
+<li>主节点承担所有写操作，可能成为性能瓶颈。</li>
+<li>无法实现数据分片，受单节点内存限制。</li>
+</ol>
+<h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><p>主从复制模式适用于以下场景：</p>
+<ol>
+<li>数据备份和容灾恢复：通过从节点备份主节点的数据，实现数据冗余。</li>
+<li>读写分离：将读操作分发到从节点，减轻主节点压力，提高系统性能。</li>
+<li>在线升级和扩展：在不影响主节点的情况下，通过增加从节点来扩展系统的读取能力。</li>
+</ol>
+<h1 id="哨兵模式-忠诚的侍卫队"><a href="#哨兵模式-忠诚的侍卫队" class="headerlink" title="哨兵模式 - 忠诚的侍卫队"></a>哨兵模式 - 忠诚的侍卫队</h1><p>Redis哨兵模式（Sentinel）就像是一队忠诚的侍卫，时刻守护着你的Redis主从结构。它们监控主库的健康状态，一旦主库挂了，马上选出一个新的主库，确保服务不间断。</p>
+<blockquote>
+<p>Redis Sentinel，即Redis哨兵，在Redis 2.8版本开始引入。哨兵的核心功能是主节点的自动故障转移。</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/db-redis-sen-1.png" alt="img"></p>
+<p>哨兵实现了什么功能呢？下面是Redis官方文档的描述：</p>
+<ul>
+<li><strong>监控（Monitoring）</strong>：哨兵会不断地检查主节点和从节点是否运作正常。</li>
+<li><strong>自动故障转移（Automatic failover）</strong>：当主节点不能正常工作时，哨兵会开始自动故障转移操作，它会将失效主节点的其中一个从节点升级为新的主节点，并让其他从节点改为复制新的主节点。</li>
+<li><strong>配置提供者（Configuration provider）</strong>：客户端在初始化时，通过连接哨兵来获得当前Redis服务的主节点地址。</li>
+<li><strong>通知（Notification）</strong>：哨兵可以将故障转移的结果发送给客户端。</li>
+</ul>
+<p>其中，监控和自动故障转移功能，使得哨兵可以及时发现主节点故障并完成转移；而配置提供者和通知功能，则需要在与客户端的交互中才能体现。</p>
+<h2 id="哨兵集群的组件"><a href="#哨兵集群的组件" class="headerlink" title="哨兵集群的组件"></a>哨兵集群的组件</h2><blockquote>
+<p>上图中哨兵集群是如何组件的呢？哨兵实例之间可以相互发现，要归功于 Redis 提供的 pub/sub 机制，也就是发布 / 订阅机制。</p>
+</blockquote>
+<p>在主从集群中，主库上有一个名为<code>__sentinel__:hello</code>的频道，不同哨兵就是通过它来相互发现，实现互相通信的。在下图中，哨兵 1 把自己的 IP（172.16.19.3）和端口（26579）发布到<code>__sentinel__:hello</code>频道上，哨兵 2 和 3 订阅了该频道。那么此时，哨兵 2 和 3 就可以从这个频道直接获取哨兵 1 的 IP 地址和端口号。然后，哨兵 2、3 可以和哨兵 1 建立网络连接。</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/db-redis-sen-6.jpg" alt="img"></p>
+<p>通过这个方式，哨兵 2 和 3 也可以建立网络连接，这样一来，哨兵集群就形成了。它们相互间可以通过网络连接进行通信，比如说对主库有没有下线这件事儿进行判断和协商。</p>
+<h2 id="哨兵监控-Redis-库"><a href="#哨兵监控-Redis-库" class="headerlink" title="哨兵监控 Redis 库"></a>哨兵监控 Redis 库</h2><blockquote>
+<p>哨兵监控什么呢？怎么监控呢？</p>
+</blockquote>
+<p>这是由哨兵向主库发送 INFO 命令来完成的。就像下图所示，哨兵 2 给主库发送 INFO 命令，主库接受到这个命令后，就会把从库列表返回给哨兵。接着，哨兵就可以根据从库列表中的连接信息，和每个从库建立连接，并在这个连接上持续地对从库进行监控。哨兵 1 和 3 可以通过相同的方法和从库建立连接。</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/db-redis-sen-7.jpg" alt="img"></p>
+<h2 id="主库下线的判定"><a href="#主库下线的判定" class="headerlink" title="主库下线的判定"></a>主库下线的判定</h2><blockquote>
+<p>哨兵如何判断主库已经下线了呢？</p>
+</blockquote>
+<p>首先要理解两个概念：<strong>主观下线</strong>和<strong>客观下线</strong></p>
+<ul>
+<li><strong>主观下线</strong>：任何一个哨兵都是可以监控探测，并作出Redis节点下线的判断；</li>
+<li><strong>客观下线</strong>：有哨兵集群共同决定Redis节点是否下线；</li>
+</ul>
+<p>当某个哨兵（如下图中的哨兵2）判断主库“主观下线”后，就会给其他哨兵发送 <code>is-master-down-by-addr</code> 命令。接着，其他哨兵会根据自己和主库的连接情况，做出 Y 或 N 的响应，Y 相当于赞成票，N 相当于反对票。</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/db-redis-sen-2.jpg" alt="img"></p>
+<p>如果赞成票数（这里是2）是大于等于哨兵配置文件中的 <code>quorum</code> 配置项（比如这里如果是quorum=2）, 则可以判定<strong>主库客观下线</strong>了。</p>
+<h2 id="哨兵集群的选举"><a href="#哨兵集群的选举" class="headerlink" title="哨兵集群的选举"></a>哨兵集群的选举</h2><blockquote>
+<p>判断完主库下线后，由哪个哨兵节点来执行主从切换呢？这里就需要哨兵集群的选举机制了。</p>
+</blockquote>
+<p><strong>为什么必然会出现选举/共识机制？</strong></p>
+<p>为了避免哨兵的单点情况发生，所以需要一个哨兵的分布式集群。作为分布式集群，必然涉及共识问题（即选举问题）；同时故障的转移和通知都只需要一个主的哨兵节点就可以了。</p>
+<p><strong>哨兵的选举机制是什么样的？</strong></p>
+<p>哨兵的选举机制其实很简单，就是一个Raft选举算法： <strong>选举的票数大于等于num(sentinels)/2+1时，将成为领导者，如果没有超过，继续选举</strong>。</p>
+<ul>
+<li>任何一个想成为 Leader 的哨兵，要满足两个条件： <ul>
+<li>第一，拿到半数以上的赞成票；</li>
+<li>第二，拿到的票数同时还需要大于等于哨兵配置文件中的 quorum 值。</li>
+</ul>
+</li>
+</ul>
+<p>需要注意的是，如果哨兵集群只有 2 个实例，此时，一个哨兵要想成为 Leader，必须获得2 票，而不是 1 票。所以，如果有个哨兵挂掉了，那么，此时的集群是无法进行主从库切换的。因此，通常我们至少会配置 3 个哨兵实例。这一点很重要，你在实际应用时可不能忽略了。</p>
+<blockquote>
+<p>更进一步理解</p>
+<p>这里很多人会搞混 <strong>判定客观下线</strong> 和 <strong>是否能够主从切换（用到选举机制）</strong> 两个概念，我们再看一个例子。</p>
+<p>Redis 1主4从，5个哨兵，哨兵配置quorum为2，如果3个哨兵故障，当主库宕机时，哨兵能否判断主库“客观下线”？能否自动切换？</p>
+<p>经过实际测试：</p>
+<p>1、哨兵集群可以判定主库“主观下线”。由于quorum=2，所以当一个哨兵判断主库“主观下线”后，询问另外一个哨兵后也会得到同样的结果，2个哨兵都判定“主观下线”，达到了quorum的值，因此，<strong>哨兵集群可以判定主库为“客观下线”</strong>。</p>
+<p>2、<strong>但哨兵不能完成主从切换</strong>。哨兵标记主库“客观下线后”，在选举“哨兵领导者”时，一个哨兵必须拿到超过多数的选票(5/2+1=3票)。但目前只有2个哨兵活着，无论怎么投票，一个哨兵最多只能拿到2票，永远无法达到<code>N/2+1</code>选票的结果。</p>
+</blockquote>
+<h2 id="选举新主库"><a href="#选举新主库" class="headerlink" title="选举新主库"></a>选举新主库</h2><blockquote>
+<p>主库既然判定客观下线了，那么如何从剩余的从库中选择一个新的主库呢？</p>
+</blockquote>
+<ul>
+<li>过滤掉不健康的（下线或断线），没有回复过哨兵ping响应的从节点</li>
+<li>选择<code>salve-priority</code>从节点优先级最高（redis.conf）的</li>
+<li>选择复制偏移量最大，只复制最完整的从节点</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/db-redis-sen-3.jpg" alt="img"></p>
+<h2 id="故障的转移"><a href="#故障的转移" class="headerlink" title="故障的转移"></a>故障的转移</h2><blockquote>
+<p>新的主库选择出来后，就可以开始进行故障的转移了。</p>
+</blockquote>
+<p>假设根据我们一开始的图：（我们假设：判断主库客观下线了，同时选出<code>sentinel 3</code>是哨兵leader）</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/image-20240613201758671.png" alt="image-20240613201758671"></p>
+<p><strong>故障转移流程如下</strong>：</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/db-redis-sen-4.png" alt="img"></p>
+<ul>
+<li>将slave-1脱离原从节点（PS: 5.0 中应该是<code>replicaof no one</code>)，升级主节点，</li>
+<li>将从节点slave-2指向新的主节点</li>
+<li>通知客户端主节点已更换</li>
+<li>将原主节点（oldMaster）变成从节点，指向新的主节点</li>
+</ul>
+<p><strong>转移之后</strong></p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/db-redis-sen-5.png" alt="img"></p>
+<h2 id="优缺点-1"><a href="#优缺点-1" class="headerlink" title="优缺点"></a>优缺点</h2><p><strong>优点</strong>：</p>
+<ol>
+<li>自动故障转移，提高系统的高可用性。</li>
+<li>具有主从复制模式的所有优点，如数据冗余和读写分离。</li>
+</ol>
+<p><strong>缺点</strong>：</p>
+<ol>
+<li>配置和管理相对复杂。</li>
+<li>依然无法实现数据分片，受单节点内存限制。</li>
+</ol>
+<h2 id="应用场景-1"><a href="#应用场景-1" class="headerlink" title="应用场景"></a>应用场景</h2><p>哨兵模式适用于以下场景：</p>
+<ol>
+<li>高可用性要求较高的场景：通过自动故障转移，确保服务的持续可用。</li>
+<li>数据备份和容灾恢复：在主从复制的基础上，提供自动故障转移功能。</li>
+</ol>
+<h1 id="集群模式-坚不可摧的堡垒"><a href="#集群模式-坚不可摧的堡垒" class="headerlink" title="集群模式 - 坚不可摧的堡垒"></a>集群模式 - 坚不可摧的堡垒</h1><p>Redis集群模式（Cluster）像是一座坚不可摧的堡垒，分片存储数据，每个节点都是独立的守卫，即使其中一个倒下，其余的仍能坚守阵地。</p>
+<p>当我们保存大量数据，单机的吞吐无法承受持续扩增的流量的时候，最好的办法是从横向（scale out） 和 纵向（scale up）两方面进行扩展。</p>
+<ul>
+<li>纵向扩展（scale up）：将单个实例的硬件资源做提升，比如 CPU核数量、内存容量、SSD容量。</li>
+<li>横向扩展（scale out）：横向扩增 Redis 实例数，这样每个节点只负责一部分数据就可以，分担一下压力，典型的分治思维。</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/167509-20220723113011412-1229895745.png" alt="image"></p>
+<p>那横向扩展和纵向扩展各有什么优缺点呢？</p>
+<ul>
+<li>scale up 虽然操作起来比较简易。但是没法解决Redis一些瓶颈问题，比如持久化（如轮式RDB快照还是AOF指令），遇到大数据量的时候，照样效率会很低，响应慢。另外，单台服务机硬件扩容也是有限制的，不可能无限操作。</li>
+<li>scale out 更容易扩展，分片的模式可以解决很多问题，包括单一实例节点的硬件扩容限制、成本限制，还可以分摊压力，精细化治理，精细化维护。但是同时也要面临分布式带来的一些问题</li>
+</ul>
+<p>现实情况下，在面对千万级甚至亿级别的流量的时候，很多大厂都是在千百台的实例节点组成的集群上进行流量调度、服务治理的。所以，使用Cluster模式，是业内广泛采用的模式。</p>
+<h2 id="什么是Cluster模式？"><a href="#什么是Cluster模式？" class="headerlink" title="什么是Cluster模式？"></a>什么是Cluster模式？</h2><p>Cluster 即 集群模式，类似MySQL，Redis 集群也是一种分布式数据库方案，集群通过分片（sharding）模式来对数据进行管理，并具备分片间数据复制、故障转移和流量调度的能力。</p>
+<p>Redis集群的做法是 将数据划分为 16384（2的14次方）个哈希槽（slots），如果你有多个实例节点，那么每个实例节点将管理其中一部分的槽位，槽位的信息会存储在各自所归属的节点中。以下图为例，该集群有4个 Redis 节点，每个节点负责集群中的一部分数据，数据量可以不均匀。比如性能好的实例节点可以多分担一些压力。</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/167509-20220723162102412-2114027779.png" alt="image"></p>
+<p>一个Redis集群一共有16384个哈希槽，你可以有1 ~ n个节点来分配这些哈希槽，可以不均匀分配，每个节点可以处理0个 到至多 16384 个槽点。<br>当16384个哈希槽都有节点进行管理的时候，集群处于online 状态。同样的，如果有一个哈希槽没有被管理到，那么集群处于offline状态。</p>
+<p>上面图中4个实例节点组成了一个集群，集群之间的信息通过 <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/37231c0455a9?u_atoken=8f004d09-69b0-426f-b061-eb2beec366bd&amp;u_asession=01kPy2LmGTRcCRkywzTBYEHCkosMcq1sc9kA_QMxQzS0laSORdnXM_dgnvDG1wTbw8X0KNBwm7Lovlpxjd_P_q4JsKWYrT3W_NKPr8w6oU7K-N03wKh1fGpdgnBALMXOj6nHmbkqVcEgdObpAroqY1_GBkFo3NEHBv0PZUm6pbxQU&amp;u_asig=05mlGEb2mTIXVShMltoDiqa8mmSULaVgG2oC6fDPX8mGfiV1LZT1wLbYW94ZRRUgNN2m30YJvBI8QN0vcGpawzqQ56Wvq9ANJ8evvyrzij6204SAUiczKrC3sz7bqPpXbYaozWZDEauebiZYp_CIfFOT2ReLQHIkgXR5cKZYDZCf_9JS7q8ZD7Xtz2Ly-b0kmuyAKRFSVJkkdwVUnyHAIJzRlYRaI5LXI74XoQdbRrBZ3vA9ftOKk0zloJSVmQmIfB6xbSxAaWh9ph0bRUFW-6vO3h9VXwMyh6PgyDIVSG1W_7c_dy_6Dl1wgLC3Whv7tuy_Ck9NIynL3sfTheEXzY-rYacisV-aUEZiNNy5yxHlkwafvmAr9jpurPBo8emYF2mWspDxyAEEo4kbsryBKb9Q&amp;u_aref=tGICtqx3upDt17e1WtJxSOZFJWU%3D">Gossip协议</a> 进行交互，这样就可以在某一节点记录其他节点的哈希槽（slots）的分配情况。</p>
+<h2 id="Cluster-实现原理"><a href="#Cluster-实现原理" class="headerlink" title="Cluster 实现原理"></a>Cluster 实现原理</h2><h3 id="集群的组群过程"><a href="#集群的组群过程" class="headerlink" title="集群的组群过程"></a>集群的组群过程</h3><p>集群是由一个个互相独立的节点（readis node）组成的， 所以刚开始的时候，他们都是隔离，毫无联系的。我们需要通过一些操作，把他们聚集在一起，最终才能组成真正的可协调工作的集群。<br>各个节点的联通是通过 CLUSTER MEET 命令完成的：<code>CLUSTER MEET &lt;ip&gt; &lt;port&gt;</code> 。<br>具体的做法是其中一个node向另外一个 node（指定 ip 和 port） 发送 CLUSTER MEET 命令，这样就可以让两个节点进行握手（handshake操作） ，握手成功之后，node 节点就会将握手另一侧的节点添加到当前节点所在的集群中。<br>这样一步步的将需要聚集的节点都圈入同一个集群中，如下图：<br><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/167509-20220723160118701-1673167327.png" alt="image"></p>
+<h3 id="集群数据分片原理"><a href="#集群数据分片原理" class="headerlink" title="集群数据分片原理"></a>集群数据分片原理</h3><p>现在的Redis集群分片的做法，主要是使用了官方提供的 Redis Cluster 方案。这种方案就是的核心就是集群的实例节点与哈希槽（slots）之间的划分、映射与管理。下面我们来看看他具体的步骤。</p>
+<p><strong>哈希槽（slots）的划分</strong></p>
+<p>这个前面已经说过了，我们会将整个Redis数据库划分为16384个哈希槽，你的Redis集群可能有n个实例节点，每个节点可以处理0个 到至多 16384 个槽点，这些节点把 16384个槽位瓜分完成。<br>而你实际存储的Redis键值信息也必然归属于这 16384 个槽的其中一个。slots 与 Redis Key 的映射是通过以下两个步骤完成的：</p>
+<ul>
+<li>使用 CRC16 算法计算键值对信息的Key，会得出一个 16 bit 的值。</li>
+<li>将 第1步中得到的 16 bit 的值对 16384 取模，得到的值会在 0 ～ 16383 之间，映射到对应到哈希槽中。<br>当然，可能在一些特殊的情况下，你想把某些key固定到某个slot上面，也就是同一个实例节点上。这时候可以用hash tag能力，强制 key 所归属的槽位等于 tag 所在的槽位。<br>其实现方式为在key中加个{}，例如test_key{1}。使用hash tag后客户端在计算key的crc16时，只计算{}中数据。如果没使用hash tag，客户端会对整个key进行crc16计算。下面演示下hash tag使用:</li>
+</ul>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">127.0.0.1:6380&gt;</span> cluster keyslot <span class="symbol">user:</span><span class="keyword">case</span>&#123;<span class="number">1</span>&#125;</span><br><span class="line">(integer) <span class="number">1024</span></span><br><span class="line"><span class="meta prompt_">127.0.0.1:6380&gt;</span> cluster keyslot <span class="symbol">user:</span>favor</span><br><span class="line">(integer) <span class="number">1023</span></span><br><span class="line"><span class="meta prompt_">127.0.0.1:6380&gt;</span> cluster keyslot <span class="symbol">user:</span>info&#123;<span class="number">1</span>&#125;</span><br><span class="line">(integer) <span class="number">1024</span></span><br></pre></td></tr></table></figure>
+<p>如上，使用hash tag 后会对应到通一个hash slot：1024中。</p>
+<p><strong>哈希槽（slots）的映射</strong></p>
+<p>一种是初始化的时候均匀分配 ，使用 cluster create 创建，会将 16384 个slots 平均分配在我们的集群实例上，比如你有n个节点，那每个节点的槽位就是 16384 / n 个了 。<br>另一种是通过 CLUSTER MEET 命令将 node1、node2、ndoe3、node4 4个节点联通成一个集群，刚联通的时候因为还没分配哈希槽，还是处于offline状态。我们使用 <code>cluster addslots</code> 命令来指定。<br>指定的好处就是性能好的实例节点可以多分担一些压力。</p>
+<p>可以通过 addslots 命令指定哈希槽范围，比如下图中，我们哈希槽是这么分配的：实例 1 管理 0 ～ 7120 哈希槽，实例 2 管理 7121~9945 哈希槽，实例 3 管理 9946 ～ 13005 哈希槽，实例 4 管理 13006 ～ 16383 哈希槽。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">redis-cli</span> <span class="string">-h</span> <span class="number">192.168</span><span class="number">.0</span><span class="number">.1</span> <span class="string">–p</span> <span class="number">6379 </span><span class="string">cluster</span> <span class="string">addslots</span> <span class="number">0</span><span class="string">,7120</span></span><br><span class="line"><span class="string">redis-cli</span> <span class="string">-h</span> <span class="number">192.168</span><span class="number">.0</span><span class="number">.2</span> <span class="string">–p</span> <span class="number">6379 </span><span class="string">cluster</span> <span class="string">addslots</span> <span class="number">7121</span><span class="string">,9945</span></span><br><span class="line"><span class="string">redis-cli</span> <span class="string">-h</span> <span class="number">192.168</span><span class="number">.0</span><span class="number">.3</span> <span class="string">–p</span> <span class="number">6379 </span><span class="string">cluster</span> <span class="string">addslots</span> <span class="number">9946</span><span class="string">,13005</span></span><br><span class="line"><span class="string">redis-cli</span> <span class="string">-h</span> <span class="number">192.168</span><span class="number">.0</span><span class="number">.4</span> <span class="string">–p</span> <span class="number">6379 </span><span class="string">cluster</span> <span class="string">addslots</span> <span class="number">13006</span><span class="string">,16383</span></span><br></pre></td></tr></table></figure>
+<p>slots 和 Redis 实例之间的映射关系如下：<br><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/167509-20220723163103375-2028951983.png" alt="image"></p>
+<p>key <code>testkey_1</code> 和 <code>testkey_2</code> 经过 CRC16 计算后再对slots的总个数 16384 取模，结果分别匹配到了 cache1 和 cache3 上。</p>
+<h3 id="数据复制过程和故障转移"><a href="#数据复制过程和故障转移" class="headerlink" title="数据复制过程和故障转移"></a>数据复制过程和故障转移</h3><p><strong>数据复制</strong></p>
+<p>Cluster 是具备Master 和 Slave模式，Redis 集群中的每个实例节点都负责一些槽位，比如上图中的四个节点分管了不同的槽位区间。而每个Master至少需要一个Slave节点，Slave 节点是通过主从复制方式同步主节点数据。 节点之间保持TCP通信，当Master发生了宕机，Redis Cluster自动会将对应的Slave节点选为Master，来继续提供服务。与纯主从模式不同的是，主从节点之间并没有读写分离， Slave 只用作 Master 宕机的高可用备份，所以更合理来说应该是主备模式。</p>
+<p>如果主节点没有从节点，那么一旦发生故障时，集群将完全处于不可用状态。 但也允许配置 <code>cluster-require-full-coverage</code>参数，及时部分节点不可用，其他节点正常提供服务，这是为了避免全盘宕机。</p>
+<p>主从切换之后，故障恢复的主节点，会转化成新主节点的从节点。这种自愈模式对提高可用性非常有帮助。</p>
+<p><strong>故障检测</strong></p>
+<p>一个节点认为某个节点宕机不能说明这个节点真的挂起了，无法提供服务了。只有占据多数的实例节点都认为某个节点挂起了，这时候cluster才进行下线和主从切换的工作。</p>
+<p>Redis 集群的节点采用 Gossip 协议来广播信息，每个节点都会定期向其他节点发送ping命令，如果接受 ping 消息的节点在指定时间内没有回复 pong，则会认为该节点失联了（PFail），则发送 ping 的节点就把接受 ping 的节点标记为主观下线。</p>
+<p>如果集群半数以上的主节点都将主节点 xxx 标记为主观下线，则节点 xxx 将被标记为客观下线，然后向整个集群广播，让其它节点也知道该节点已经下线，并立即对下线的节点进行主从切换。</p>
+<p><strong>主从故障转移</strong></p>
+<p>当一个从节点发现自己正在复制的主节点进入了已下线，则开始对下线主节点进行故障转移，故障转移的步骤如下：</p>
+<ul>
+<li>如果只有一个slave节点，则从节点会执行SLAVEOF no one命令，成为新的主节点。</li>
+<li>如果是多个slave节点，则采用选举模式进行，竞选出新的Master<ul>
+<li>集群中设立一个自增计数器，初始值为 0 ，每次执行故障转移选举，计数就会+1。</li>
+<li>检测到主节点下线的从节点向集群所有master广播一条CLUSTERMSG_TYPE_FAILOVER_AUTH_REQUEST消息，所有收到消息、并具备投票权的主节点都向这个从节点投票。</li>
+<li>如果收到消息、并具备投票权的主节点未投票给其他从节点（只能投一票哦，所以投过了不行），则返回一条CLUSTERMSG_TYPE_FAILOVER_AUTH_ACK消息，表示支持。</li>
+<li>参与选举的从节点都会接收CLUSTERMSG_TYPE_FAILOVER_AUTH_ACK消息，如果收集到的选票 大于等于 (n/2) + 1 支持，n代表所有具备选举权的master，那么这个从节点就被选举为新主节点。</li>
+<li>如果这一轮从节点都没能争取到足够多的票数，则发起再一轮选举（自增计数器+1），直至选出新的master。</li>
+</ul>
+</li>
+<li>新的主节点会撤销所有对已下线主节点的slots指派，并将这些slots全部指派给自己。</li>
+<li>新的主节点向集群广播一条PONG消息，这条PONG消息可以让集群中的其他节点立即知道这个节点已经由从节点变成了主节点，并且这个主节点已经接管了原本由已下线节点负责处理的槽。</li>
+<li>新的主节点开始接收和自己负责处理的槽有关的命令请求，故障转移完成。</li>
+</ul>
+<p>跟哨兵类似，两者都是基于 Raft 算法来实现的，流程如图所示：<br><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/167509-20220730150510040-589928276.png" alt="image"></p>
+<h2 id="client-访问数据集群的过程"><a href="#client-访问数据集群的过程" class="headerlink" title="client 访问数据集群的过程"></a>client 访问数据集群的过程</h2><blockquote>
+<p>Redis cluster采用去中心化的架构，集群的主节点各自负责一部分槽，客户端如何确定key到底会映射到哪个节点上呢？这就是我们要讲的请求重定向。</p>
+</blockquote>
+<p>在cluster模式下，<strong>节点对请求的处理过程</strong>如下：</p>
+<ul>
+<li>检查当前key是否存在当前NODE？ <ul>
+<li>通过crc16（key）/16384计算出slot</li>
+<li>查询负责该slot负责的节点，得到节点指针</li>
+<li>该指针与自身节点比较</li>
+</ul>
+</li>
+<li>若slot不是由自身负责，则返回MOVED重定向</li>
+<li>若slot由自身负责，且key在slot中，则返回该key对应结果</li>
+<li>若key不存在此slot中，检查该slot是否正在迁出（MIGRATING）？</li>
+<li>若key正在迁出，返回ASK错误重定向客户端到迁移的目的服务器上</li>
+<li>若Slot未迁出，检查Slot是否导入中？</li>
+<li>若Slot导入中且有ASKING标记，则直接操作</li>
+<li>否则返回MOVED重定向</li>
+</ul>
+<p>这个过程中有两点需要具体理解下： <strong>MOVED重定向</strong> 和 <strong>ASK重定向</strong>。</p>
+<h3 id="Moved-重定向"><a href="#Moved-重定向" class="headerlink" title="Moved 重定向"></a>Moved 重定向</h3><p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/redis-cluster-3.png" alt="img"></p>
+<ul>
+<li>槽命中：直接返回结果</li>
+<li>槽不命中：即当前键命令所请求的键不在当前请求的节点中，则当前节点会向客户端发送一个Moved 重定向，客户端根据Moved 重定向所包含的内容找到目标节点，再一次发送命令。</li>
+</ul>
+<h3 id="ASK-重定向"><a href="#ASK-重定向" class="headerlink" title="ASK 重定向"></a>ASK 重定向</h3><p>Ask重定向发生于集群伸缩时，集群伸缩会导致槽迁移，当我们去源节点访问时，此时数据可能已经迁移到了目标节点，使用Ask重定向来解决此种情况。</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/redis-cluster-5.png" alt="img"></p>
+<h3 id="smart客户端"><a href="#smart客户端" class="headerlink" title="smart客户端"></a>smart客户端</h3><p>上述两种重定向的机制使得客户端的实现更加复杂，提供了smart客户端（JedisCluster）来<strong>减低复杂性，追求更好的性能</strong>。客户端内部负责计算/维护键-&gt; 槽 -&gt; 节点映射，用于快速定位目标节点。</p>
+<p>实现原理：</p>
+<ul>
+<li>从集群中选取一个可运行节点，使用 cluster slots得到槽和节点的映射关系</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/redis-cluster-6.png" alt="img"></p>
+<ul>
+<li>将上述映射关系存到本地，通过映射关系就可以直接对目标节点进行操作（CRC16(key) -&gt; slot -&gt; node），很好地避免了Moved重定向，并为每个节点创建JedisPool</li>
+<li>至此就可以用来进行命令操作</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/redis-cluster-7.png" alt="img"></p>
+<h2 id="更加深入-1"><a href="#更加深入-1" class="headerlink" title="更加深入"></a>更加深入</h2><h3 id="为什么Redis-Cluster的Hash-Slot-是16384？"><a href="#为什么Redis-Cluster的Hash-Slot-是16384？" class="headerlink" title="为什么Redis Cluster的Hash Slot 是16384？"></a>为什么Redis Cluster的Hash Slot 是16384？</h3><p>我们知道一致性hash算法是2的16次方，为什么hash slot是2的14次方呢？</p>
+<p>在redis节点发送心跳包时需要把所有的槽放到这个心跳包里，以便让节点知道当前集群信息，16384=14k，在发送心跳包时使用char进行bitmap压缩后是<code>2k（2 * 8 (8 bit) * 1024(1k) = 16K）</code>，也就是说使用2k的空间创建了16k的槽数。</p>
+<p>虽然使用CRC16算法最多可以分配65535（2^16-1）个槽位，65535=65k，压缩后就是<code>8k（8 * 8 (8 bit) * 1024(1k) =65K）</code>，也就是说需要需要8k的心跳包，作者认为这样做不太值得；并且一般情况下一个redis集群不会有超过1000个master节点，所以16k的槽位是个比较合适的选择。</p>
+<h3 id="为什么Redis-Cluster中不建议使用发布订阅呢？"><a href="#为什么Redis-Cluster中不建议使用发布订阅呢？" class="headerlink" title="为什么Redis Cluster中不建议使用发布订阅呢？"></a>为什么Redis Cluster中不建议使用发布订阅呢？</h3><p>在集群模式下，所有的publish命令都会向所有节点（包括从节点）进行广播，造成每条publish数据都会在集群内所有节点传播一次，加重了带宽负担，对于在有大量节点的集群中频繁使用pub，会严重消耗带宽，不建议使用。（虽然官网上讲有时候可以使用Bloom过滤器或其他算法进行优化的）</p>
+<h2 id="优缺点-2"><a href="#优缺点-2" class="headerlink" title="优缺点"></a>优缺点</h2><p><strong>优点</strong>：</p>
+<ol>
+<li>数据分片，实现大规模数据存储。</li>
+<li>负载均衡，提高系统性能。</li>
+<li>自动故障转移，提高高可用性。</li>
+</ol>
+<p><strong>缺点</strong>：</p>
+<ol>
+<li>配置和管理较复杂。</li>
+<li>一些复杂的多键操作可能受到限制。</li>
+</ol>
+<h2 id="应用场景-2"><a href="#应用场景-2" class="headerlink" title="应用场景"></a>应用场景</h2><p>Cluster模式适用于以下场景：</p>
+<ol>
+<li>大规模数据存储：通过数据分片，突破单节点内存限制。</li>
+<li>高性能要求场景：通过负载均衡，提高系统性能。</li>
+<li>高可用性要求场景：通过自动故障转移，确保服务的持续可用。</li>
+</ol>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本文详细介绍了Redis的三大集群模式：主从复制、哨兵模式和Cluster模式。每种模式都有其特点和应用场景，具体如下：</p>
+<ol>
+<li><strong>主从复制模式</strong>：适用于数据备份和读写分离场景，配置简单，但在主节点故障时需要手动切换。</li>
+<li><strong>哨兵模式</strong>：在主从复制的基础上实现自动故障转移，提高高可用性，适用于高可用性要求较高的场景。</li>
+<li><strong>Cluster模式</strong>：通过数据分片和负载均衡实现大规模数据存储和高性能，适用于大规模数据存储和高性能要求场景。</li>
+</ol>
+<p>在实际应用中，可以根据系统的需求和特点选择合适的Redis集群模式，以实现高可用性、高性能和大规模数据存储。</p>
+<blockquote>
+<p>碎碎念阶段：</p>
+<p>今天是个好日子，虽然天气不是很好，但最起码我出门的时候天气一直都还不错。拍了张无敌的照片，就放做本文的封面吧。</p>
+<p>今天有参加了一个面试，不太明白为什么会出现这种情况，就问了一个技术相关的问题，答的不是很好，感觉永远都想不到面试官会问什么问题。字节今天下午约了下周二的面试，应该是要到实习时间了，被别人鸽了。不知道那一场面试有会以什么问题结束我的大厂梦呢。感觉面试都快PTSD了，一想到面试就开始心慌。祝我好运吧，毕竟之前高考后我的运气就变得好了一点。希望今年也能这样吧。</p>
+</blockquote>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/6997944007812710414">https://juejin.cn/post/6997944007812710414</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yangyixin/p/17436853.html">https://www.cnblogs.com/yangyixin/p/17436853.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://pdai.tech/md/db/nosql-redis/db-redis-x-copy.html">https://pdai.tech/md/db/nosql-redis/db-redis-x-copy.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://pdai.tech/md/db/nosql-redis/db-redis-x-sentinel.html">https://pdai.tech/md/db/nosql-redis/db-redis-x-sentinel.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://pdai.tech/md/db/nosql-redis/db-redis-x-cluster.html">https://pdai.tech/md/db/nosql-redis/db-redis-x-cluster.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/wzh2010/p/15886799.html">https://www.cnblogs.com/wzh2010/p/15886799.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yidengjiagou/p/17345831.html">https://www.cnblogs.com/yidengjiagou/p/17345831.html</a></li>
+</ul>
+<p>实际操作方面可以看下面的文章</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/Redis%20%e6%a0%b8%e5%bf%83%e5%8e%9f%e7%90%86%e4%b8%8e%e5%ae%9e%e6%88%98/36%20%e5%ae%9e%e6%88%98%ef%bc%9aRedis%20%e4%b8%bb%e4%bb%8e%e5%90%8c%e6%ad%a5.md">https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/Redis%20%e6%a0%b8%e5%bf%83%e5%8e%9f%e7%90%86%e4%b8%8e%e5%ae%9e%e6%88%98/36%20%e5%ae%9e%e6%88%98%ef%bc%9aRedis%20%e4%b8%bb%e4%bb%8e%e5%90%8c%e6%ad%a5.md</a></li>
+<li><a target="_blank" rel="noopener" href="https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/Redis%20%e6%a0%b8%e5%bf%83%e5%8e%9f%e7%90%86%e4%b8%8e%e5%ae%9e%e6%88%98/37%20%e5%ae%9e%e6%88%98%ef%bc%9aRedis%e5%93%a8%e5%85%b5%e6%a8%a1%e5%bc%8f%ef%bc%88%e4%b8%8a%ef%bc%89.md">https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/Redis%20%e6%a0%b8%e5%bf%83%e5%8e%9f%e7%90%86%e4%b8%8e%e5%ae%9e%e6%88%98/37%20%e5%ae%9e%e6%88%98%ef%bc%9aRedis%e5%93%a8%e5%85%b5%e6%a8%a1%e5%bc%8f%ef%bc%88%e4%b8%8a%ef%bc%89.md</a></li>
+<li><a target="_blank" rel="noopener" href="https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/Redis%20%e6%a0%b8%e5%bf%83%e5%8e%9f%e7%90%86%e4%b8%8e%e5%ae%9e%e6%88%98/38%20%e5%ae%9e%e6%88%98%ef%bc%9aRedis%20%e5%93%a8%e5%85%b5%e6%a8%a1%e5%bc%8f%ef%bc%88%e4%b8%8b%ef%bc%89.md">https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/Redis%20%e6%a0%b8%e5%bf%83%e5%8e%9f%e7%90%86%e4%b8%8e%e5%ae%9e%e6%88%98/38%20%e5%ae%9e%e6%88%98%ef%bc%9aRedis%20%e5%93%a8%e5%85%b5%e6%a8%a1%e5%bc%8f%ef%bc%88%e4%b8%8b%ef%bc%89.md</a></li>
+<li><a target="_blank" rel="noopener" href="https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/Redis%20%e6%a0%b8%e5%bf%83%e5%8e%9f%e7%90%86%e4%b8%8e%e5%ae%9e%e6%88%98/39%20%e5%ae%9e%e6%88%98%ef%bc%9aRedis%20%e9%9b%86%e7%be%a4%e6%a8%a1%e5%bc%8f%ef%bc%88%e4%b8%8a%ef%bc%89.md">https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/Redis%20%e6%a0%b8%e5%bf%83%e5%8e%9f%e7%90%86%e4%b8%8e%e5%ae%9e%e6%88%98/39%20%e5%ae%9e%e6%88%98%ef%bc%9aRedis%20%e9%9b%86%e7%be%a4%e6%a8%a1%e5%bc%8f%ef%bc%88%e4%b8%8a%ef%bc%89.md</a></li>
+<li><a target="_blank" rel="noopener" href="https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/Redis%20%e6%a0%b8%e5%bf%83%e5%8e%9f%e7%90%86%e4%b8%8e%e5%ae%9e%e6%88%98/40%20%e5%ae%9e%e6%88%98%ef%bc%9aRedis%20%e9%9b%86%e7%be%a4%e6%a8%a1%e5%bc%8f%ef%bc%88%e4%b8%8b%ef%bc%89.md">https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/Redis%20%e6%a0%b8%e5%bf%83%e5%8e%9f%e7%90%86%e4%b8%8e%e5%ae%9e%e6%88%98/40%20%e5%ae%9e%e6%88%98%ef%bc%9aRedis%20%e9%9b%86%e7%be%a4%e6%a8%a1%e5%bc%8f%ef%bc%88%e4%b8%8b%ef%bc%89.md</a></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">随便寻个地方</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2024/06/13/Redis%E9%AB%98%E5%8F%AF%E7%94%A8%E5%AE%9D%E5%85%B8%EF%BC%9A%E4%B8%89%E6%8B%9B%E6%90%9E%E5%AE%9A%E4%BD%A0%E7%9A%84%E6%95%B0%E6%8D%AE%E5%A0%A1%E5%9E%92/">http://example.com/2024/06/13/Redis%E9%AB%98%E5%8F%AF%E7%94%A8%E5%AE%9D%E5%85%B8%EF%BC%9A%E4%B8%89%E6%8B%9B%E6%90%9E%E5%AE%9A%E4%BD%A0%E7%9A%84%E6%95%B0%E6%8D%AE%E5%A0%A1%E5%9E%92/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">随便寻个地方'Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a></div><div class="post_share"><div class="social-share" data-image="/img/touxiang.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/06/17/%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E7%A7%92%E6%9D%80%E7%B3%BB%E7%BB%9F/" title="如何设计一个秒杀系统"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">如何设计一个秒杀系统</div></div></a></div><div class="next-post pull-right"><a href="/2024/06/12/Java%E5%85%AB%E8%82%A1%E6%96%87%E2%80%94%E2%80%94%E5%9F%BA%E7%A1%80%E7%AF%87%EF%BC%88%E4%BA%8C%EF%BC%89/" title="Java八股文——基础篇（二）"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Java八股文——基础篇（二）</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2024/06/02/%E4%BA%86%E8%A7%A3MongoDB%E2%80%94%E2%80%94%E4%BD%A0%E6%83%B3%E7%9F%A5%E9%81%93%E7%9A%84%E9%83%BD%E5%9C%A8%E8%BF%99/" title="了解MongoDB——你想知道的都在这"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-06-02</div><div class="title">了解MongoDB——你想知道的都在这</div></div></a></div><div><a href="/2024/06/10/%E5%88%86%E9%A1%B5%E4%B8%8E%E8%BF%87%E6%BB%A4%EF%BC%9ARedis%E4%B8%AD%E7%9A%84%E6%B8%90%E8%BF%9B%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E5%A6%99%E6%8B%9B/" title="分页与过滤：Redis中的渐进式数据处理妙招"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-06-10</div><div class="title">分页与过滤：Redis中的渐进式数据处理妙招</div></div></a></div><div><a href="/2024/06/10/%E7%AE%A1%E9%81%93%EF%BC%88Pipelining%EF%BC%89%EF%BC%9A%E6%8F%90%E5%8D%87%E6%80%A7%E8%83%BD%E7%9A%84%E5%88%A9%E5%99%A8-1/" title="深入解析管道（Pipelining）：提升性能的利器"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-06-10</div><div class="title">深入解析管道（Pipelining）：提升性能的利器</div></div></a></div><div><a href="/2024/06/08/Redis%E4%B8%BA%E4%BD%95%E5%BF%AB%E5%BE%97%E9%A3%9E%E8%B5%B7%EF%BC%9F%E8%A7%A3%E5%AF%86%E9%97%AA%E7%94%B5%E4%BE%A0%E7%9A%84%E5%86%85%E5%AD%98%E9%AD%94%E6%B3%95/" title="Redis为何快得飞起？解密闪电侠的内存魔法"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-06-08</div><div class="title">Redis为何快得飞起？解密闪电侠的内存魔法</div></div></a></div><div><a href="/2024/06/01/MySQL%E5%AE%9E%E6%88%98%E6%80%BB%E7%BB%93/" title="MySQL实战总结"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-06-01</div><div class="title">MySQL实战总结</div></div></a></div><div><a href="/2024/06/12/Redis%E4%BA%8B%E4%BB%B6%E6%9C%BA%E5%88%B6%EF%BC%9A%E9%AB%98%E6%95%88%E8%BF%90%E8%A1%8C%E7%9A%84%E7%A7%98%E5%AF%86%E6%AD%A6%E5%99%A8/" title="Redis事件机制：高效运行的秘密武器"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-06-12</div><div class="title">Redis事件机制：高效运行的秘密武器</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/touxiang.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">随便寻个地方</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">69</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E9%AB%98%E5%8F%AF%E7%94%A8%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">什么是高可用？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6-%E8%80%81%E5%B0%91%E7%9A%86%E5%AE%9C%E7%9A%84%E7%BB%8F%E5%85%B8%E8%8F%9C"><span class="toc-number">2.</span> <span class="toc-text">主从复制 - 老少皆宜的经典菜</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E7%AD%96%E7%95%A5"><span class="toc-number">2.1.</span> <span class="toc-text">主从复制策略</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A8%E9%87%8F%E5%A4%8D%E5%88%B6"><span class="toc-number">2.1.1.</span> <span class="toc-text">全量复制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A2%9E%E9%87%8F%E5%A4%8D%E5%88%B6"><span class="toc-number">2.1.2.</span> <span class="toc-text">增量复制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E5%8A%A0%E6%B7%B1%E5%85%A5"><span class="toc-number">2.2.</span> <span class="toc-text">更加深入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%93%E4%B8%BB%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8D%E8%BF%9B%E8%A1%8C%E6%8C%81%E4%B9%85%E5%8C%96%E6%97%B6%E5%A4%8D%E5%88%B6%E7%9A%84%E5%AE%89%E5%85%A8%E6%80%A7"><span class="toc-number">2.2.1.</span> <span class="toc-text">当主服务器不进行持久化时复制的安全性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%BB%E4%BB%8E%E5%85%A8%E9%87%8F%E5%A4%8D%E5%88%B6%E4%BD%BF%E7%94%A8RDB%E8%80%8C%E4%B8%8D%E4%BD%BF%E7%94%A8AOF%EF%BC%9F"><span class="toc-number">2.2.2.</span> <span class="toc-text">为什么主从全量复制使用RDB而不使用AOF？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%BF%98%E6%9C%89%E6%97%A0%E7%A3%81%E7%9B%98%E5%A4%8D%E5%88%B6%E6%A8%A1%E5%BC%8F%EF%BC%9F"><span class="toc-number">2.2.3.</span> <span class="toc-text">为什么还有无磁盘复制模式？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E4%BB%8E%E7%BA%A7%E8%81%94%E6%A8%A1%E5%BC%8F%E5%88%86%E6%8B%85%E5%85%A8%E9%87%8F%E5%A4%8D%E5%88%B6%E6%97%B6%E7%9A%84%E4%B8%BB%E5%BA%93%E5%8E%8B%E5%8A%9B"><span class="toc-number">2.2.4.</span> <span class="toc-text">主从级联模式分担全量复制时的主库压力</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB%E5%8F%8A%E5%85%B6%E4%B8%AD%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">2.2.5.</span> <span class="toc-text">读写分离及其中的问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="toc-number">2.3.</span> <span class="toc-text">优缺点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">2.4.</span> <span class="toc-text">应用场景</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%93%A8%E5%85%B5%E6%A8%A1%E5%BC%8F-%E5%BF%A0%E8%AF%9A%E7%9A%84%E4%BE%8D%E5%8D%AB%E9%98%9F"><span class="toc-number">3.</span> <span class="toc-text">哨兵模式 - 忠诚的侍卫队</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%93%A8%E5%85%B5%E9%9B%86%E7%BE%A4%E7%9A%84%E7%BB%84%E4%BB%B6"><span class="toc-number">3.1.</span> <span class="toc-text">哨兵集群的组件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%93%A8%E5%85%B5%E7%9B%91%E6%8E%A7-Redis-%E5%BA%93"><span class="toc-number">3.2.</span> <span class="toc-text">哨兵监控 Redis 库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E5%BA%93%E4%B8%8B%E7%BA%BF%E7%9A%84%E5%88%A4%E5%AE%9A"><span class="toc-number">3.3.</span> <span class="toc-text">主库下线的判定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%93%A8%E5%85%B5%E9%9B%86%E7%BE%A4%E7%9A%84%E9%80%89%E4%B8%BE"><span class="toc-number">3.4.</span> <span class="toc-text">哨兵集群的选举</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%89%E4%B8%BE%E6%96%B0%E4%B8%BB%E5%BA%93"><span class="toc-number">3.5.</span> <span class="toc-text">选举新主库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%85%E9%9A%9C%E7%9A%84%E8%BD%AC%E7%A7%BB"><span class="toc-number">3.6.</span> <span class="toc-text">故障的转移</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9-1"><span class="toc-number">3.7.</span> <span class="toc-text">优缺点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF-1"><span class="toc-number">3.8.</span> <span class="toc-text">应用场景</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9B%86%E7%BE%A4%E6%A8%A1%E5%BC%8F-%E5%9D%9A%E4%B8%8D%E5%8F%AF%E6%91%A7%E7%9A%84%E5%A0%A1%E5%9E%92"><span class="toc-number">4.</span> <span class="toc-text">集群模式 - 坚不可摧的堡垒</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFCluster%E6%A8%A1%E5%BC%8F%EF%BC%9F"><span class="toc-number">4.1.</span> <span class="toc-text">什么是Cluster模式？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Cluster-%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-number">4.2.</span> <span class="toc-text">Cluster 实现原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%86%E7%BE%A4%E7%9A%84%E7%BB%84%E7%BE%A4%E8%BF%87%E7%A8%8B"><span class="toc-number">4.2.1.</span> <span class="toc-text">集群的组群过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%86%E7%BE%A4%E6%95%B0%E6%8D%AE%E5%88%86%E7%89%87%E5%8E%9F%E7%90%86"><span class="toc-number">4.2.2.</span> <span class="toc-text">集群数据分片原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%A4%8D%E5%88%B6%E8%BF%87%E7%A8%8B%E5%92%8C%E6%95%85%E9%9A%9C%E8%BD%AC%E7%A7%BB"><span class="toc-number">4.2.3.</span> <span class="toc-text">数据复制过程和故障转移</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#client-%E8%AE%BF%E9%97%AE%E6%95%B0%E6%8D%AE%E9%9B%86%E7%BE%A4%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-number">4.3.</span> <span class="toc-text">client 访问数据集群的过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Moved-%E9%87%8D%E5%AE%9A%E5%90%91"><span class="toc-number">4.3.1.</span> <span class="toc-text">Moved 重定向</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ASK-%E9%87%8D%E5%AE%9A%E5%90%91"><span class="toc-number">4.3.2.</span> <span class="toc-text">ASK 重定向</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#smart%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-number">4.3.3.</span> <span class="toc-text">smart客户端</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E5%8A%A0%E6%B7%B1%E5%85%A5-1"><span class="toc-number">4.4.</span> <span class="toc-text">更加深入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88Redis-Cluster%E7%9A%84Hash-Slot-%E6%98%AF16384%EF%BC%9F"><span class="toc-number">4.4.1.</span> <span class="toc-text">为什么Redis Cluster的Hash Slot 是16384？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88Redis-Cluster%E4%B8%AD%E4%B8%8D%E5%BB%BA%E8%AE%AE%E4%BD%BF%E7%94%A8%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E5%91%A2%EF%BC%9F"><span class="toc-number">4.4.2.</span> <span class="toc-text">为什么Redis Cluster中不建议使用发布订阅呢？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9-2"><span class="toc-number">4.5.</span> <span class="toc-text">优缺点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF-2"><span class="toc-number">4.6.</span> <span class="toc-text">应用场景</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">5.1.</span> <span class="toc-text">参考</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/07/Untitled/" title="无题">无题</a><time datetime="2025-03-07T06:39:56.000Z" title="发表于 2025-03-07 14:39:56">2025-03-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E5%86%99%E4%BD%9C%E5%8A%A9%E6%89%8B-%E5%90%88%E5%B9%B6md%E6%96%87%E4%BB%B6-1741099573219/" title="无题">无题</a><time datetime="2025-03-04T14:46:16.000Z" title="发表于 2025-03-04 22:46:16">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E5%86%99%E4%BD%9C%E5%8A%A9%E6%89%8B-%E5%90%88%E5%B9%B6md%E6%96%87%E4%BB%B6-1741098965071/" title="无题">无题</a><time datetime="2025-03-04T14:36:08.000Z" title="发表于 2025-03-04 22:36:08">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/07/%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%E4%B8%A4%E5%85%84%E5%BC%9F%E2%80%94%E2%80%94%E6%95%B0%E7%BB%84%E5%92%8C%E5%88%87%E7%89%87%EF%BC%8C%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F/" title="顺序存储两兄弟——数组和切片，到底有什么区别？">顺序存储两兄弟——数组和切片，到底有什么区别？</a><time datetime="2024-11-07T05:04:09.000Z" title="发表于 2024-11-07 13:04:09">2024-11-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/10/24/%E4%BA%86%E8%A7%A3%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" title="了解基础数据类型">了解基础数据类型</a><time datetime="2024-10-24T09:57:13.000Z" title="发表于 2024-10-24 17:57:13">2024-10-24</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 随便寻个地方</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container').forEach(node => {
+            if (node.hasAttribute('display')) {
+              btf.wrap(node, 'div', { class: 'mathjax-overflow' })
+            } else {
+              btf.wrap(node, 'span', { class: 'mathjax-overflow' })
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

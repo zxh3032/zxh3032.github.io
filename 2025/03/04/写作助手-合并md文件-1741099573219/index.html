@@ -1,0 +1,736 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>随便寻个地方'Blog | 随便寻个地方'Blog</title><meta name="author" content="随便寻个地方"><meta name="copyright" content="随便寻个地方"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Gohub开发 title: Gohub开发categories: Go语言tags: 项目开发abbrlink: 25069 date: 2024-04-15 15:41:08本项目为从零构建一个高性能、功能齐全的 API 程序框架，主体内容和第一个项目相似。但是并没有做前端的内容，只针对相应功能做了 API 开发。 本项目主要设计一下三部分的知识点：  API 开发 命令行开发 构建高效率的程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="随便寻个地方&#39;Blog">
+<meta property="og:url" content="http://example.com/2025/03/04/%E5%86%99%E4%BD%9C%E5%8A%A9%E6%89%8B-%E5%90%88%E5%B9%B6md%E6%96%87%E4%BB%B6-1741099573219/index.html">
+<meta property="og:site_name" content="随便寻个地方&#39;Blog">
+<meta property="og:description" content="Gohub开发 title: Gohub开发categories: Go语言tags: 项目开发abbrlink: 25069 date: 2024-04-15 15:41:08本项目为从零构建一个高性能、功能齐全的 API 程序框架，主体内容和第一个项目相似。但是并没有做前端的内容，只针对相应功能做了 API 开发。 本项目主要设计一下三部分的知识点：  API 开发 命令行开发 构建高效率的程">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/touxiang.png">
+<meta property="article:published_time" content="2025-03-04T14:46:16.000Z">
+<meta property="article:modified_time" content="2025-11-22T16:22:37.673Z">
+<meta property="article:author" content="随便寻个地方">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/touxiang.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2025/03/04/%E5%86%99%E4%BD%9C%E5%8A%A9%E6%89%8B-%E5%90%88%E5%B9%B6md%E6%96%87%E4%BB%B6-1741099573219/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '随便寻个地方\'Blog',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-11-23 00:22:37'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="随便寻个地方'Blog" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/touxiang.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">69</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="随便寻个地方'Blog"><span class="site-name">随便寻个地方'Blog</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">无题</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-03-04T14:46:16.000Z" title="发表于 2025-03-04 22:46:16">2025-03-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-11-22T16:22:37.673Z" title="更新于 2025-11-23 00:22:37">2025-11-23</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Gohub开发"><a href="#Gohub开发" class="headerlink" title="Gohub开发"></a>Gohub开发</h1><hr>
+<p>title: Gohub开发<br>categories: Go语言<br>tags: 项目开发<br>abbrlink: 25069</p>
+<h2 id="date-2024-04-15-15-41-08"><a href="#date-2024-04-15-15-41-08" class="headerlink" title="date: 2024-04-15 15:41:08"></a>date: 2024-04-15 15:41:08</h2><p>本项目为从零构建一个高性能、功能齐全的 API 程序框架，主体内容和第一个项目相似。但是并没有做前端的内容，只针对相应功能做了 API 开发。</p>
+<p>本项目主要设计一下三部分的知识点：</p>
+<ul>
+<li>API 开发</li>
+<li>命令行开发</li>
+<li>构建高效率的程序结构</li>
+</ul>
+<p>主要功能为：</p>
+<ul>
+<li>用户的注册和登录</li>
+<li>安全验证码和图片验证码</li>
+<li>JWT 授权</li>
+<li>用户修改个人信息</li>
+</ul>
+<h1 id="项目统计"><a href="#项目统计" class="headerlink" title="项目统计"></a>项目统计</h1><h2 id="实现路由"><a href="#实现路由" class="headerlink" title="实现路由"></a>实现路由</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>请求方法</th>
+<th>API 地址</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST</td>
+<td>/api/v1/auth/login/using-phone</td>
+<td>短信 + 手机号登录</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/api/v1/auth/login/using-password</td>
+<td>手机号、用户名、邮箱 + 密码</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/api/v1/auth/login/refresh-token</td>
+<td>刷下 Token</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/api/v1/auth/password-reset/using-email</td>
+<td>邮件密码重置</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/api/v1/auth/password-reset/using-phone</td>
+<td>短信验证码密码重置</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/api/v1/auth/signup/using-phone</td>
+<td>使用手机号注册</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/api/v1/auth/signup/using-email</td>
+<td>使用邮箱注册</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/api/v1/auth/signup/phone/exist</td>
+<td>手机号是否已注册</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/api/v1/auth/signup/email/exist</td>
+<td>email 是否已支持</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/api/v1/auth/verify-codes/phone</td>
+<td>发送短信验证码</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/api/v1/auth/verify-codes/email</td>
+<td>发送邮件验证码</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/api/v1/auth/verify-codes/captcha</td>
+<td>获取图片验证码</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/api/v1/user</td>
+<td>获取当前用户</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/api/v1/users</td>
+<td>用户列表</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>/api/v1/users</td>
+<td>修改个人资料</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>/api/v1/users/email</td>
+<td>修改邮箱</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>/api/v1/users/phone</td>
+<td>修改手机号</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>/api/v1/users/password</td>
+<td>修改密码</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>/api/v1/users/avatar</td>
+<td>上传头像</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/api/v1/categories</td>
+<td>分类列表</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/api/v1/categories</td>
+<td>创建分类</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>/api/v1/categories/:id</td>
+<td>更新分类</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/api/v1/categories/:id</td>
+<td>删除分类</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/api/v1/topics</td>
+<td>话题列表</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/api/v1/topics</td>
+<td>创建话题</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>/api/v1/topics/:id</td>
+<td>更新话题</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/api/v1/topics/:id</td>
+<td>删除话题</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/api/v1/topics/:id</td>
+<td>获取话题</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/api/v1/links</td>
+<td>友情链接列表</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="第三方依赖"><a href="#第三方依赖" class="headerlink" title="第三方依赖"></a>第三方依赖</h2><p>使用到的开源库：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/gin-gonic/gin">gin</a> —— 路由、路由组、中间件</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/gin-contrib/zap">zap</a> —— 高性能日志方案</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/go-gorm/gorm">gorm</a> —— ORM 数据操作</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/spf13/cobra">cobra</a> —— 命令行结构</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/spf13/viper">viper</a> —— 配置信息</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/spf13/cast">cast</a> —— 类型转换</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/go-redis/redis/v8">redis</a> —— Redis 操作</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/golang-jwt/jwt">jwt</a> —— JWT 操作</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/mojocn/base64Captcha">base64Captcha</a> —— 图片验证码</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/thedevsaddam/govalidator">govalidator</a> —— 请求验证器</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/ulule/limiter/v3">limiter</a> —— 限流器</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/jordan-wright/email">email</a> —— SMTP 邮件发送</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/KenmyZhang/aliyun-communicate">aliyun-communicate</a> —— 发送阿里云短信</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/mgutz/ansi">ansi</a> —— 终端高亮输出</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/iancoleman/strcase">strcase</a> —— 字符串大小写操作</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/gertd/go-pluralize">pluralize</a> —— 英文字符单数复数处理</li>
+<li><a target="_blank" rel="noopener" href="https://learnku.com/courses/go-api/1.19/finish-up/github.com/bxcodec/faker">faker</a> —— 假数据填充</li>
+<li><a target="_blank" rel="noopener" href="https://learnku.com/courses/go-api/1.19/finish-up/github.com/disintegration/imaging">imaging</a> —— 图片裁切</li>
+</ul>
+<h2 id="自定义的包"><a href="#自定义的包" class="headerlink" title="自定义的包"></a>自定义的包</h2><p>现在来看下我们自建的库：</p>
+<ul>
+<li>app —— 应用对象</li>
+<li>auth —— 用户授权</li>
+<li>cache —— 缓存</li>
+<li>captcha —— 图片验证码</li>
+<li>config —— 配置信息</li>
+<li>console —— 终端</li>
+<li>database —— 数据库操作</li>
+<li>file —— 文件处理</li>
+<li>hash —— 哈希</li>
+<li>helpers —— 辅助方法</li>
+<li>jwt —— JWT 认证</li>
+<li>limiter —— API 限流</li>
+<li>logger —— 日志记录</li>
+<li>mail —— 邮件发送</li>
+<li>migrate —— 数据库迁移</li>
+<li>paginator —— 分页器</li>
+<li>redis —— Redis 数据库操作</li>
+<li>response —— 响应处理</li>
+<li>seed —— 数据填充</li>
+<li>sms —— 发送短信</li>
+<li>str —— 字符串处理</li>
+<li>verifycode —— 数字验证码</li>
+</ul>
+<h1 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h1><ol>
+<li>配置信息（使用 Viper，支持 .env 和 config 目录 ）</li>
+<li>API 版本</li>
+<li>API 错误码</li>
+<li>API 限流<ol>
+<li>支持秒、分钟、小时、天级的请求限制</li>
+<li>支持返回 API 请求量标头（限制数，剩余量、重置时间）</li>
+</ol>
+</li>
+<li>注册登录<ol>
+<li>注册<ol>
+<li>判断手机是否注册</li>
+<li>判断 Email 是否注册</li>
+<li>支持手机 + 短信验证码进行注册</li>
+<li>支持使用邮箱注册账号</li>
+</ol>
+</li>
+<li>登录<ol>
+<li>支持手机 + 短信进行登录</li>
+<li>支持密码登录（手机号、Email、用户名任选）</li>
+<li>支持更加安全的 Token Refresh 机制</li>
+</ol>
+</li>
+<li>找回密码<ol>
+<li>支持使用手机 + 短信验证码找回</li>
+<li>支持使用邮箱 + 邮箱验证码找回</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>JWT 授权</li>
+<li>整个应用使用命令行模式（默认运行 web 服务）</li>
+<li>内置命令行（ cobra，对比 cli 和 cobra）<ol>
+<li>key 命令生成 app key</li>
+<li>make 命令<ul>
+<li>make seeder —— 生成数据填充</li>
+<li>make policy —— 生成授权文件</li>
+<li>make apicontroller —— 生成 Restful API 控制器</li>
+<li>make model —— 生成模型文件</li>
+<li>make request —— 生成请求验证文件</li>
+<li>make factory —— 生成模型工厂文件</li>
+<li>make cmd —— 生成自定义命令文件</li>
+<li>make migration —— 生成数据库迁移文件</li>
+</ul>
+</li>
+<li>seed 数据填充<ul>
+<li>seed 所有数据</li>
+<li>seed 单条数据</li>
+<li>支持使用 faker 填充假数据</li>
+<li>支持模型工厂（ factory ）</li>
+</ul>
+</li>
+<li>migrate 数据库迁移<ol>
+<li>up —— 执行迁移</li>
+<li>rollback (down) —— 回滚上一步执行的迁移</li>
+<li>fresh —— 删除所有表，然后执行所有迁移</li>
+<li>reset —— 回滚所有迁移</li>
+<li>refresh —— 回滚所有迁移，然后再执行所有迁移</li>
+</ol>
+</li>
+<li>cache 缓存处理<ul>
+<li>cache clear —— 清除缓存</li>
+<li>cache forget —— 忘记某个 KEY 对应的缓存</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>分页<ol>
+<li>支持返回上下页链接，方便客户端调用</li>
+</ol>
+</li>
+<li>Cache 缓存包<ol>
+<li>支持 redis 缓存</li>
+<li>使用 interface ，支持使用多驱动</li>
+</ol>
+</li>
+<li>Redis 操作</li>
+<li>安全验证码<ol>
+<li>Email （发送邮箱，使用 Mailhog 进行测试）</li>
+<li>手机验证码（发送手机短信）</li>
+<li>内置 Redis 驱动，以接口方式编写，支持多驱动</li>
+</ol>
+</li>
+<li>图片验证码，防机器人滥用<ol>
+<li>支持通过配置信息自定义复杂度</li>
+<li>内置 Redis 驱动，以接口方式编写，支持多驱动</li>
+</ol>
+</li>
+<li>日志记录<ol>
+<li>集成 zap 高性能日志库</li>
+<li>支持命令行记录（方便开发时快速定位问题）</li>
+<li>命令行日志高亮</li>
+<li>支持文件记录（多文件和按日期分隔）</li>
+<li>记录 gorm 的 query log</li>
+<li>记录 HTTP 请求 log</li>
+<li>Panic Recovery 中间件</li>
+<li>合理的日志等级（debug, info, error, panic, fatal）</li>
+</ol>
+</li>
+<li>Policy 授权策略结构</li>
+<li>Request 请求验证方案<ol>
+<li>支持 JSON 请求、表单请求、URL Query</li>
+</ol>
+</li>
+<li>API 图片上传</li>
+<li>图片裁切</li>
+<li>数据库支持 mysql 和 sqlite</li>
+</ol>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>由于本项目是一个完全只涉及到 API 设计的内容，所以测试功能是否符合预期则是采用了 Postman 这款测试软件，有关 Redis 的可视化则是采用了 Another Redis Desktop Manager。</p>
+<p>考虑到篇幅的问题，项目的知识点总结会分开来写。所以这篇文章是用来提醒我去学习的。 </p>
+<h1 id="Gohub——日志"><a href="#Gohub——日志" class="headerlink" title="Gohub——日志"></a>Gohub——日志</h1><hr>
+<p>title: Gohub——日志<br>abbrlink: 24717<br>date: 2024-04-18 22:50:36<br>categories: Go语言</p>
+<h2 id="tags-项目开发"><a href="#tags-项目开发" class="headerlink" title="tags: 项目开发"></a>tags: 项目开发</h2><p>正经人谁写日记啊？</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/16c628a43e9b4afb882181cbc6372cfb%7Enoop.image" alt="img"></p>
+<p>欸欸欸，不好意思，来错片场了（手动狗头）。今天介绍的是项目中必不可少的一部分——日志。</p>
+<h1 id="日志系统"><a href="#日志系统" class="headerlink" title="日志系统"></a>日志系统</h1><p>虽然正经人不写日记，但是正经项目一定要记录日志。总所周知啊，Gohub 就是一个非常正经的项目，虽然还没有到企业级这么高的层次，但是也差不多了。</p>
+<p>在 Gohub 中，我们使用日志来记录整个系统的运行情况，可能但不限于：</p>
+<ul>
+<li>HTTP 请求数据</li>
+<li>数据库 SQL 请求日志</li>
+<li>Panic/Error 错误日志</li>
+<li>请求第三方接口日志（发送短信、发送邮件等）</li>
+<li>……</li>
+</ul>
+<p>好了，是时候掏出祖传的几个问题了，什么是日志？该怎么设置日志？下面将会一一解答。</p>
+<h2 id="什么是日志"><a href="#什么是日志" class="headerlink" title="什么是日志"></a>什么是日志</h2><p>日志系统是一种记录系统活动、事件或消息的工具或机制。在计算机领域，日志系统通常用于记录应用程序、操作系统或者其他软件系统的运行时信息。这些信息可以包括错误、警告、调试信息、用户操作记录等等。</p>
+<p>日志系统的主要目的是帮助开发人员或管理员了解系统的状态和运行情况，以便进行故障排除、性能优化、安全审计等工作。通过分析日志，可以追踪问题的根源，监视系统的健康状况，并且可以在系统发生故障或异常时进行及时的响应和处理。</p>
+<p>日志系统通常具有以下特点：</p>
+<ol>
+<li><strong>可配置性：</strong> 可以根据需求配置日志记录的级别、格式、存储位置等参数。</li>
+<li><strong>实时性：</strong> 能够实时记录系统的运行状态，以便及时发现问题。</li>
+<li><strong>可扩展性：</strong> 能够处理大量的日志数据，并支持水平扩展以应对不断增长的系统负载。</li>
+<li><strong>安全性：</strong> 对日志数据进行安全存储和访问控制，以防止未经授权的访问或篡改。</li>
+<li><strong>分析性：</strong> 提供日志分析工具或接口，帮助用户对日志数据进行搜索、过滤、统计、可视化等操作。</li>
+</ol>
+<p>常见的日志系统包括开源项目如ELK Stack（Elasticsearch、Logstash、Kibana）、Splunk、Fluentd等，以及云服务提供商提供的日志管理服务。</p>
+<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><p><strong>本地开发</strong></p>
+<p>本地开发时，虽然我们可以很方便地使用 Debuger 来调试程序，但是日志将会是我们最廉价】最便捷地作物定位工具。</p>
+<p><strong>线上环境</strong></p>
+<p>日志是程序在生产环境下的健康监控。当程序出错时，或者某块业务逻辑出现问题，我们将依赖日志来知道具体哪一行代码出了问题。</p>
+<p><strong>如何记录？</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>使用环境</th>
+<th>记录的载体</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>开发环境（local）</td>
+<td>命令行终端</td>
+<td>高亮、打印调用堆栈</td>
+</tr>
+<tr>
+<td>线上环境（production）</td>
+<td>记录到日志文件</td>
+<td>JSON 格式，方便导入专业的日志工具</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>日志系统在计算机领域有广泛的使用场景，以下是一些常见的应用场景：</p>
+<ol>
+<li><p><strong>故障排查与调试：</strong> 当系统出现错误或异常时，日志可以记录错误信息、异常堆栈跟踪等，帮助开发人员快速定位并修复问题。</p>
+</li>
+<li><p><strong>性能优化：</strong> 通过分析系统的性能日志，可以了解系统各个组件的性能瓶颈，从而进行优化，提升系统整体性能。</p>
+</li>
+<li><p><strong>安全审计与监控：</strong> 日志记录系统的操作、访问权限、安全事件等信息，有助于进行安全审计和监控，及时发现潜在的安全威胁。</p>
+</li>
+<li><p><strong>用户行为分析：</strong> 在网络应用或移动应用中，记录用户的操作行为可以帮助分析用户偏好、行为趋势，从而进行个性化推荐、用户体验优化等工作。</p>
+</li>
+<li><p><strong>合规性需求：</strong> 许多行业或政府监管机构要求企业记录和保留特定类型的数据，日志系统可以满足这些合规性需求，并提供必要的审计跟踪。</p>
+</li>
+<li><p><strong>容灾备份与恢复：</strong> 日志记录系统的备份和恢复功能可以帮助恢复因硬件故障、自然灾害或人为错误导致的数据丢失或损坏。</p>
+</li>
+<li><p><strong>业务分析与决策支持：</strong> 通过分析系统产生的日志数据，可以了解业务运营情况、用户行为趋势等，为业务决策提供数据支持。</p>
+</li>
+<li><p><strong>监控与警报：</strong> 基于日志数据设定监控规则，当系统出现异常或达到预定的阈值时，触发警报并通知相关人员进行处理。</p>
+</li>
+</ol>
+<p>这些场景只是日志系统的一部分应用，实际上日志系统在各个领域都有着重要的作用，帮助保障系统的稳定性、安全性和可靠性。</p>
+<h2 id="日志的等级"><a href="#日志的等级" class="headerlink" title="日志的等级"></a>日志的等级</h2><p>日志系统通常定义了不同的日志等级，用于标识和区分不同类型的日志信息，常见的日志等级包括：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>日志等级</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>debug</strong></td>
+<td>信息量大，一般调试时打开。<strong>系统模块详细运行的日志</strong>，例如 HTTP 请求、数据库请求、发送邮件、发送短信</td>
+</tr>
+<tr>
+<td><strong>info</strong></td>
+<td><strong>业务级别的运行日志</strong>，如用户登录、用户退出、订单撤销。</td>
+</tr>
+<tr>
+<td><strong>warn</strong></td>
+<td><strong>感兴趣、需要引起关注的信息。</strong> 例如，调试时候打印调试信息（命令行输出会有高亮）。</td>
+</tr>
+<tr>
+<td><strong>error</strong></td>
+<td><strong>记录错误信息</strong>，用于记录程序发生的错误，这些错误可能导致程序无法正常工作，但不会使程序完全崩溃。Panic 或者 Error。如数据库连接错误、HTTP 端口被占用等。一般生产环境使用的等级。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>日志等级规则：</strong></p>
+<ul>
+<li>日志等级在两个地方使用；<ul>
+<li>配置信息（config）中可以配置日志等级；</li>
+<li>代码中调用不同的方法（<code>Debug()</code>、<code>Info()</code>…）记录不同等级的日志。</li>
+</ul>
+</li>
+<li>日志等级具备<strong>过滤信息</strong>的属性；</li>
+<li>配置信息里设置为高等级时，低于这个等级的信息将忽略。如日志等级设为 <strong>warn</strong> ，只有 <code>Warn()</code> 和 <code>Error()</code> 方法记录的日志会有效，<code>Debug()</code> 和 <code>Info()</code> 方法记录的日志会被忽略；</li>
+</ul>
+<h2 id="日志过载"><a href="#日志过载" class="headerlink" title="日志过载"></a>日志过载</h2><p>日志过载是指日志系统产生的日志数量超出了处理能力或存储容量，导致系统无法有效地处理和存储所有的日志信息。这种情况可能会对系统的性能、稳定性和安全性造成负面影响。</p>
+<p>日志过载可能出现在以下几种情况下：</p>
+<ol>
+<li><p><strong>异常情况爆发：</strong> 当系统遭遇大规模的异常或错误时，日志系统可能会产生大量的错误日志，导致日志系统过载。</p>
+</li>
+<li><p><strong>频繁的警告信息：</strong> 如果系统产生大量的警告信息，而这些警告信息又被记录在日志中，就会增加日志系统的负担。</p>
+</li>
+<li><p><strong>日志频率过高：</strong> 如果系统的日志频率过高，比如记录了过多的调试信息或者每个请求都生成了大量的日志记录，就会导致日志系统过载。</p>
+</li>
+<li><p><strong>存储容量不足：</strong> 如果日志系统的存储容量不足以存储所有的日志数据，就会导致部分日志被丢弃或被覆盖，从而丧失了一部分重要的信息。</p>
+</li>
+<li><p><strong>日志记录不当：</strong> 如果日志记录的内容过于冗长或者包含了大量的无关信息，会增加日志系统的负担，导致日志过载。</p>
+</li>
+</ol>
+<p>日志过载可能会导致以下问题：</p>
+<ul>
+<li><strong>性能下降：</strong> 过多的日志记录会占用系统资源，降低系统的性能和响应速度。</li>
+<li><strong>数据丢失：</strong> 如果日志系统无法处理所有的日志数据，部分重要的日志信息可能会被丢弃，导致问题的排查和分析变得困难。</li>
+<li><strong>安全风险：</strong> 日志过载可能会导致系统无法及时记录和响应安全事件，增加系统遭受攻击的风险。</li>
+</ul>
+<p>为了避免日志过载，需要合理配置日志系统的参数，包括日志等级、存储策略、日志格式等，并定期清理和归档历史日志数据，确保日志系统能够有效地处理和存储日志信息。</p>
+<p>记录日志的行为完全掌控在开发者手上。日志等级的错误使用，会导致<strong>日志信息过载</strong>，有违『快速定位问题』的设计初衷。</p>
+<p>所以记录日志时，参与项目的开发者之间需要做好约定，或者说<strong>规范</strong>。</p>
+<ul>
+<li>功能模块的详细运行情况，使用 <code>Debug()</code> 方法，如 HTTP 请求日志、数据库 SQL 日志；</li>
+<li>业务级别的运行日志，使用 <code>Info()</code>，如果信息量太大，例如说一个请求会记录十几条 <code>Info()</code> 日志，要改用 <code>Debug()</code>；</li>
+<li>控制好记录日志的量，切勿滥用，滥用会导致日志信息过载；</li>
+<li>开发调试时，使用 <code>Warn()</code> ，调试完成后记得删除调试信息；</li>
+<li>保持 warn 及以上日志级别的干净；</li>
+<li>线上环境开启 error 等级，接到错误反馈时，再开启 debug 进行调试，调试完成后重新设置为 error 等级，保持线上日志的干净；</li>
+<li>系统运行出错，才能使用 <code>Error()</code> 记录，如数据库连接出错，或出现 500 错误。</li>
+</ul>
+<h1 id="杂项"><a href="#杂项" class="headerlink" title="杂项"></a>杂项</h1><h2 id="gitignore-文件"><a href="#gitignore-文件" class="headerlink" title=".gitignore 文件"></a>.gitignore 文件</h2><p>在开发 Go 项目时，我们的项目目录下经常会出现一些文件，例如编译文件、log 文件、编辑器配置文件、系统生成的一些文件，这些文件我们不希望提交到代码仓库中。</p>
+<p>在任何当前工作的 Git 仓库中，每个文件都是这样的：</p>
+<ul>
+<li><strong>追踪的（tracked）</strong>- 这些是 Git 所知道的所有文件或目录。这些是新添加（用 <code>git add</code> 添加）和提交（用 <code>git commit</code> 提交）到主仓库的文件和目录。</li>
+<li><strong>未被追踪的（untracked）</strong> - 这些是在工作目录中创建的，但还没有被暂存（或用 <code>git add</code> 命令添加）的任何新文件或目录。</li>
+<li><strong>被忽略的（ignored）</strong> - 这些是 Git 知道的要全部排除、忽略或在 Git 仓库中不需要注意的所有文件或目录。本质上，这是一种告诉 Git 哪些未被追踪的文件应该保持不被追踪并且永远不会被提交的方法。</li>
+</ul>
+<p>所有被忽略的文件都会被保存在一个 <code>.gitignore</code> 文件中。</p>
+<p><code>.gitignore</code> 文件是一个纯文本文件，包含了项目中所有指定的文件和文件夹的列表，这些文件和文件夹是 Git 应该忽略和不追踪的。</p>
+<p>在 <code>.gitignore</code> 中，可以通过提及特定文件或文件夹的名称或模式来告诉 Git 只忽略一个文件或一个文件夹。也可以用同样的方法告诉 Git 忽略多个文件或文件夹。</p>
+<h2 id="配置信息的设置"><a href="#配置信息的设置" class="headerlink" title="配置信息的设置"></a>配置信息的设置</h2><p>在项目中，配置信息通常指的是一些参数、选项或设置，这些信息用于指导项目的行为、功能或外部依赖的配置。</p>
+<p>Gohub 中的配置信息，将分为两个层级：</p>
+<ul>
+<li>env</li>
+<li>config</li>
+</ul>
+<h3 id="env"><a href="#env" class="headerlink" title=".env"></a>.env</h3><p>一般来讲，项目会运行在多个环境下，例如：</p>
+<ul>
+<li>local —— 本地开发环境（我的机器上、其他开发同事的机器上）</li>
+<li>testing —— 自动化测试环境</li>
+<li>stage —— 接近线上环境的测试环境，方便其他成员访问和测试（编辑人员、产品经理、项目经理）</li>
+<li>production —— 线上生产环境</li>
+</ul>
+<p>不同的环境下，我们将使用不同的配置。例如 local 环境里，发送短信使用的是测试账号，production 环境下，我们将使用验证了公司信息的发信账号。</p>
+<p><code>.env</code> 文件通常用于存储环境变量和敏感配置信息，它的作用包括：</p>
+<ol>
+<li><strong>配置管理：</strong> <code>.env</code> 文件可以用来集中管理项目的配置信息，如数据库连接信息、API 密钥、密码、密钥等。将这些配置信息存储在 <code>.env</code> 文件中有助于统一管理，减少硬编码，提高项目的灵活性和可维护性。</li>
+<li><strong>环境分离：</strong> 使用 <code>.env</code> 文件可以将不同环境（如开发环境、测试环境和生产环境）的配置信息分离开来，避免在代码中硬编码不同环境下的配置，提高代码的可移植性和可重用性。</li>
+<li><strong>安全性：</strong> <code>.env</code> 文件通常位于项目根目录之外，并且可以通过 <code>.gitignore</code> 文件排除在版本控制系统中，从而保护敏感信息不被泄露到公共代码仓库中，提高项目的安全性。</li>
+<li><strong>便捷性：</strong> 通过 <code>.env</code> 文件，可以方便地修改和管理项目的配置信息，无需修改源代码，减少了部署和维护的复杂性。</li>
+<li><strong>跨平台兼容性：</strong> <code>.env</code> 文件的格式通常是简单的键值对格式，易于解析和处理，可以跨多种编程语言和操作系统使用。</li>
+</ol>
+<hr>
+<p>单独的 .env 的设计，是满足一台机器一套环境变量的需求。<strong>多个 .env 文件是满足一台机器上运行多套环境变量的需求</strong>。</p>
+<p>开发时，除了 local 环境变量，很多时候还需要 testing 测试相关的环境变量，testing 的配置有别于 local 。例如测试时，一般需要使用不同的数据库，这样才能不污染我们的开发数据库。</p>
+<p>我们可以利用程序参数，在命令行运行主程序时，传参 <code>--env=testing</code> 的参数，程序接收到这个参数后会读取 <strong>.env.testing</strong> 文件，而不是 <code>.env</code> 文件。</p>
+<p><code>--env</code> 的参数不需要限制值，取到以后直接读取对应的文件即可。以下是几个例子：</p>
+<ul>
+<li><code>--env=testing</code> 读取 <strong>.env.testing</strong> 文件，用以在测试环境使用不同的数据库</li>
+<li><code>--env=production</code> 读取 <strong>.env.production</strong> 文件，用以在本地环境中调试线上的第三方服务配置信息（短信、邮件）</li>
+</ul>
+<h3 id="config"><a href="#config" class="headerlink" title="config"></a>config</h3><p>config 是将配置信息存放于 config 目录下，按照单独的逻辑区分单独的配置文件，例如数据库连接信息存放于 config/database.go 文件下。</p>
+<p>config 里加载 .env 里的配置项，且可设置缺省值。</p>
+<p><strong>既然有 .env 文件，为何还要 config 呢？</strong></p>
+<p>config 可以提高配置方案灵活度。在 config 里，我们可以为每个配置项设置默认值。也可以做一些简单的数学运算，或者调用 Go 函数进行默认值的处理。我们甚至可以为配置项设置一个回调函数。</p>
+<p>config 文件是要加入代码版本控制器中的，这些代码是固定的。如果要修改一个 config 配置项，就修改其对应的 .env 文件中的配置项即可。</p>
+<h1 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h1><p>本文较短，主要记录了在 Gohub 开发设计日志时学到的相关的知识。其实在这个项目中用户使用的功能并没有什么太大的变化，即使增加了一些功能也都只是一种变式，核心并没有发生太大的变化，因此也就没有像之前一样逐个功能地去记录。那为什么还要去做新的项目呢，主要是因为舍友吧两个教程都买了，白嫖完了第一个肯定要继续白嫖第二个了。</p>
+<p>做完第二个项目发现虽然一个叫 Gohub，一个叫 Goblog，两个看起来好像一样，但是实际开发地体验简直就是天上地下。Goblog 入门项目开发，学习怎么搭建 Web 应用；Gohub 才是真正的后端开发，更加专业，也让我学到了更多的东西。后悔啊，为什么上学期开始学 Go 的时候不好好写项目呢，要不然面试的时候也不会被拷打的那么惨了。不过这两个月确实还是学到了不少东西，比前两年半（没有玩梗，非常认真）加一起的都多了。</p>
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><p>传统艺能了，每篇文章都像一个模子里刻出来的，不过本文并没有参考什么文章，只参考了教程和 ChatGPT的回答。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">随便寻个地方</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2025/03/04/%E5%86%99%E4%BD%9C%E5%8A%A9%E6%89%8B-%E5%90%88%E5%B9%B6md%E6%96%87%E4%BB%B6-1741099573219/">http://example.com/2025/03/04/%E5%86%99%E4%BD%9C%E5%8A%A9%E6%89%8B-%E5%90%88%E5%B9%B6md%E6%96%87%E4%BB%B6-1741099573219/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">随便寻个地方'Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/img/touxiang.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2025/03/07/Untitled/" title=""><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info"></div></div></a></div><div class="next-post pull-right"><a href="/2025/03/04/%E5%86%99%E4%BD%9C%E5%8A%A9%E6%89%8B-%E5%90%88%E5%B9%B6md%E6%96%87%E4%BB%B6-1741098965071/" title=""><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info"></div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/touxiang.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">随便寻个地方</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">69</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Gohub%E5%BC%80%E5%8F%91"><span class="toc-number">1.</span> <span class="toc-text">Gohub开发</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#date-2024-04-15-15-41-08"><span class="toc-number">1.1.</span> <span class="toc-text">date: 2024-04-15 15:41:08</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%9F%E8%AE%A1"><span class="toc-number">2.</span> <span class="toc-text">项目统计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E8%B7%AF%E7%94%B1"><span class="toc-number">2.1.</span> <span class="toc-text">实现路由</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%96%B9%E4%BE%9D%E8%B5%96"><span class="toc-number">2.2.</span> <span class="toc-text">第三方依赖</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84%E5%8C%85"><span class="toc-number">2.3.</span> <span class="toc-text">自定义的包</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9"><span class="toc-number">3.</span> <span class="toc-text">知识点</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Gohub%E2%80%94%E2%80%94%E6%97%A5%E5%BF%97"><span class="toc-number">5.</span> <span class="toc-text">Gohub——日志</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#tags-%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91"><span class="toc-number">5.1.</span> <span class="toc-text">tags: 项目开发</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F"><span class="toc-number">6.</span> <span class="toc-text">日志系统</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%97%A5%E5%BF%97"><span class="toc-number">6.1.</span> <span class="toc-text">什么是日志</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">6.2.</span> <span class="toc-text">使用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A5%E5%BF%97%E7%9A%84%E7%AD%89%E7%BA%A7"><span class="toc-number">6.3.</span> <span class="toc-text">日志的等级</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A5%E5%BF%97%E8%BF%87%E8%BD%BD"><span class="toc-number">6.4.</span> <span class="toc-text">日志过载</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9D%82%E9%A1%B9"><span class="toc-number">7.</span> <span class="toc-text">杂项</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#gitignore-%E6%96%87%E4%BB%B6"><span class="toc-number">7.1.</span> <span class="toc-text">.gitignore 文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF%E7%9A%84%E8%AE%BE%E7%BD%AE"><span class="toc-number">7.2.</span> <span class="toc-text">配置信息的设置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#env"><span class="toc-number">7.2.1.</span> <span class="toc-text">.env</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#config"><span class="toc-number">7.2.2.</span> <span class="toc-text">config</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93-1"><span class="toc-number">8.</span> <span class="toc-text">总结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-number">8.1.</span> <span class="toc-text">参考文献</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/07/Untitled/" title="无题">无题</a><time datetime="2025-03-07T06:39:56.000Z" title="发表于 2025-03-07 14:39:56">2025-03-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E5%86%99%E4%BD%9C%E5%8A%A9%E6%89%8B-%E5%90%88%E5%B9%B6md%E6%96%87%E4%BB%B6-1741099573219/" title="无题">无题</a><time datetime="2025-03-04T14:46:16.000Z" title="发表于 2025-03-04 22:46:16">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E5%86%99%E4%BD%9C%E5%8A%A9%E6%89%8B-%E5%90%88%E5%B9%B6md%E6%96%87%E4%BB%B6-1741098965071/" title="无题">无题</a><time datetime="2025-03-04T14:36:08.000Z" title="发表于 2025-03-04 22:36:08">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/07/%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%E4%B8%A4%E5%85%84%E5%BC%9F%E2%80%94%E2%80%94%E6%95%B0%E7%BB%84%E5%92%8C%E5%88%87%E7%89%87%EF%BC%8C%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F/" title="顺序存储两兄弟——数组和切片，到底有什么区别？">顺序存储两兄弟——数组和切片，到底有什么区别？</a><time datetime="2024-11-07T05:04:09.000Z" title="发表于 2024-11-07 13:04:09">2024-11-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/10/24/%E4%BA%86%E8%A7%A3%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" title="了解基础数据类型">了解基础数据类型</a><time datetime="2024-10-24T09:57:13.000Z" title="发表于 2024-10-24 17:57:13">2024-10-24</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 随便寻个地方</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container').forEach(node => {
+            if (node.hasAttribute('display')) {
+              btf.wrap(node, 'div', { class: 'mathjax-overflow' })
+            } else {
+              btf.wrap(node, 'span', { class: 'mathjax-overflow' })
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

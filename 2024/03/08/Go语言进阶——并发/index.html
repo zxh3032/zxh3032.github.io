@@ -1,0 +1,267 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>Go语言进阶——并发 | 随便寻个地方'Blog</title><meta name="author" content="随便寻个地方"><meta name="copyright" content="随便寻个地方"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前言本周是正式系统性学习整理Go语言的第二周，上周把基础知识学过后，这周开始学习进阶知识。说到Go语言的特性，那就是高并发，所以进阶学习的第一部分只是就是关于并发的。总结内容和之前一样，并不会过多的记录书本里的东西，更多的是这一周学习的困难和解决的过程。 学习思考本周学习内容主要有两个部分，并发基础和算法，学习这些的原因是因为最近开始找实习了，发现确实落下了太多东西。 什么是并发第一次了解并发是在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go语言进阶——并发">
+<meta property="og:url" content="http://example.com/2024/03/08/Go%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6%E2%80%94%E2%80%94%E5%B9%B6%E5%8F%91/index.html">
+<meta property="og:site_name" content="随便寻个地方&#39;Blog">
+<meta property="og:description" content="前言本周是正式系统性学习整理Go语言的第二周，上周把基础知识学过后，这周开始学习进阶知识。说到Go语言的特性，那就是高并发，所以进阶学习的第一部分只是就是关于并发的。总结内容和之前一样，并不会过多的记录书本里的东西，更多的是这一周学习的困难和解决的过程。 学习思考本周学习内容主要有两个部分，并发基础和算法，学习这些的原因是因为最近开始找实习了，发现确实落下了太多东西。 什么是并发第一次了解并发是在">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/touxiang.png">
+<meta property="article:published_time" content="2024-03-08T05:21:04.000Z">
+<meta property="article:modified_time" content="2024-06-11T15:55:56.000Z">
+<meta property="article:author" content="随便寻个地方">
+<meta property="article:tag" content="学习周报">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/touxiang.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2024/03/08/Go%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6%E2%80%94%E2%80%94%E5%B9%B6%E5%8F%91/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Go语言进阶——并发',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-06-11 23:55:56'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="随便寻个地方'Blog" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/touxiang.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">69</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="随便寻个地方'Blog"><span class="site-name">随便寻个地方'Blog</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Go语言进阶——并发</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-03-08T05:21:04.000Z" title="发表于 2024-03-08 13:21:04">2024-03-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-06-11T15:55:56.000Z" title="更新于 2024-06-11 23:55:56">2024-06-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Go%E8%AF%AD%E8%A8%80/">Go语言</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Go语言进阶——并发"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本周是正式系统性学习整理Go语言的第二周，上周把基础知识学过后，这周开始学习进阶知识。说到Go语言的特性，那就是高并发，所以进阶学习的第一部分只是就是关于并发的。总结内容和之前一样，并不会过多的记录书本里的东西，更多的是这一周学习的困难和解决的过程。</p>
+<h1 id="学习思考"><a href="#学习思考" class="headerlink" title="学习思考"></a>学习思考</h1><p>本周学习内容主要有两个部分，并发基础和算法，学习这些的原因是因为最近开始找实习了，发现确实落下了太多东西。</p>
+<h2 id="什么是并发"><a href="#什么是并发" class="headerlink" title="什么是并发"></a>什么是并发</h2><p>第一次了解并发是在学习计算机系统的时候，不再只让计算机做完一件事之后再开始做另外一件事，而是让计算机同时做多件事情，这就是并发。</p>
+<p>说到并发就一定绕不开两个概念——进程和线程。</p>
+<ul>
+<li>在启动一个软件的时候，操作系统会为这个软件创建一个<strong>进程</strong>，这个进程就是该软件的工作空间，它包含了软件运行所需的所有资源。</li>
+<li><strong>线程</strong>是进程的执行空间，一个进程可以有多个线程，线程被操作系统调度执行。</li>
+</ul>
+<p>一个程序启动就会有一个进程被创建，同时进程也会启动一个线程，这个线程被称为主线程，如果主线程结束，那么整个程序就退出了。有了主线程，就可以从主线程里启动很多其他线程，也就有了<strong>多线程的并发</strong>。</p>
+<hr>
+<p>在Go语言中并没有线程的概念，只有<strong>协程</strong>，也成为 <strong><code>goroutine</code></strong> 先比线程来说，协程更加轻量，一个程序可以随意启功成千上万个协程。</p>
+<p><code>goroutine</code> 被 <code>Go routime</code>所调度，也就是说，Go语言的并发是由Go自己调度的，这对于开发者来说完全透明。</p>
+<h2 id="如何通信"><a href="#如何通信" class="headerlink" title="如何通信"></a>如何通信</h2><p>当我们同时启动了多个 goroutine 时，它们之间要怎么通信？</p>
+<p>Go语言提供了用于通信的<strong>管道</strong>—— <code>channel</code></p>
+<ul>
+<li>当需要从管道中接受值时，如果管道为空，那么会阻塞等待，知道管道中有值可以接受为之。</li>
+</ul>
+<p>管道分类：</p>
+<ul>
+<li><strong>无缓冲管道</strong>：容量为0，只起到传输数据的作用，又被称为<strong>同步管道</strong>；</li>
+<li><strong>有缓冲管道</strong>：类似于一个可阻塞的对列，内部元素先进先出</li>
+</ul>
+<p>可以通过 <code>select + channel</code> 来实现多路复用的效果。</p>
+<p>在Go语言中，提倡通过通信来共享内存，而不是通过共享内存来通信，所以在数据流动、传递的场景中要优先使用 channel，它是并发安全的。</p>
+<hr>
+<p>思考题：channel是如何实现并发安全的？</p>
+<p>channel内部使用了互斥锁来保证并发的安全。</p>
+<h2 id="并发中的Map是否安全"><a href="#并发中的Map是否安全" class="headerlink" title="并发中的Map是否安全"></a>并发中的Map是否安全</h2><p>Go 中的标准 <code>map</code> 类型是非并发安全的，这意味着在多个 <code>Goroutine</code> 中并发读写同一个 map 可能导致数据竞争和不确定的行为。为了在并发环境中使用  map，Go 提供了  <code>sync</code> 包中的 <code>sync.Map</code> 类型，它是一种并发安全的映射。</p>
+<p>无须初始化，直接声明即可。<br>sync.Map 不能使用 map 的方式进行取值和设置等操作，而是使用 sync.Map 的方法进行调用，Store 表示存储，Load 表示获取，Delete 表示删除。<br>使用 Range 配合一个回调函数进行遍历操作，通过回调函数返回内部遍历出来的值，Range 参数中回调函数的返回值在需要继续迭代遍历时，返回 true，终止迭代遍历时，返回 false。</p>
+<p><strong>sync.Map提供的常用方法有如下七个</strong>:</p>
+<ul>
+<li>Load：通过参数key查询对应的value，如果不存在则返回nil；ok表示是否找到对应的值。</li>
+<li>Store：该方法相当于对sync.Map的更新或新增，参数是键值对。</li>
+<li>LoadOrStore：该方法的参数为key和value。该方法会先根据参数key查找对应的value，如果找到则不修改原来的值并通过actual返回，并且loaded为true；如果通过key无法查找到对应的value，则存储key-value并且将存储的value通过actual返回，loaded为false。</li>
+<li>Delete：通过key删除键值对。</li>
+<li>LoadAndDelete：通过key删除键的值，如果有，则返回上一个值。</li>
+<li>Range：遍历sync.Map的元素，注意for…range map是对内置map类型的用法，sync.Map需要使用单独的Range方法。</li>
+</ul>
+<p>并发安全的 sync.Map 演示代码如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;fmt&quot;</span></span><br><span class="line">    <span class="string">&quot;sync&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">//声明sync.Map</span></span><br><span class="line"><span class="keyword">var</span> syncmap sync.Map</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//Store方法将键值对保存到sync.Map</span></span><br><span class="line">    syncmap.Store(<span class="string">&quot;zhangsan&quot;</span>, <span class="number">97</span>)</span><br><span class="line">    syncmap.Store(<span class="string">&quot;lisi&quot;</span>, <span class="number">100</span>)</span><br><span class="line">    syncmap.Store(<span class="string">&quot;wangmazi&quot;</span>, <span class="number">200</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// LoadOrStore key不存在</span></span><br><span class="line">    v, ok := syncmap.LoadOrStore(<span class="string">&quot;three&quot;</span>,<span class="number">3</span>)</span><br><span class="line">    fmt.Println(v, ok) <span class="comment">// 3 false</span></span><br><span class="line">    <span class="comment">// LoadOrStore key存在</span></span><br><span class="line">    v, ok = syncmap.LoadOrStore(<span class="string">&quot;wangmazi&quot;</span>, <span class="number">200</span>)</span><br><span class="line">    fmt.Println(v, ok) <span class="comment">// 200 ture</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Load方法获取sync.Map 键所对应的值</span></span><br><span class="line">    fmt.Println(syncmap.Load(<span class="string">&quot;lisi&quot;</span>))</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Delete方法键删除对应的键值对</span></span><br><span class="line">    syncmap.Delete(<span class="string">&quot;lisi&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> syncmap sync.Map</span><br><span class="line">    <span class="comment">// LoadAndDelete key不存在</span></span><br><span class="line">    v, ok = syncmap.LoadAndDelete(<span class="string">&quot;xiaomi&quot;</span>)</span><br><span class="line">    fmt.Println(v, ok) <span class="comment">// &lt;nil&gt; false</span></span><br><span class="line">    syncmap.Store(<span class="string">&quot;xiaomi&quot;</span>, <span class="string">&quot;xiaomi&quot;</span>)</span><br><span class="line">    <span class="comment">// LoadAndDelete key存在</span></span><br><span class="line">    v, ok = syncmap.LoadAndDelete(<span class="string">&quot;xiaomi&quot;</span>)</span><br><span class="line">    fmt.Println(v, ok) <span class="comment">// xiaomi true</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// Range遍历所有sync.Map中的键值对</span></span><br><span class="line">    syncmap.Range(<span class="function"><span class="keyword">func</span><span class="params">(k, v <span class="keyword">interface</span>&#123;&#125;)</span></span> <span class="type">bool</span> &#123;</span><br><span class="line">        fmt.Println(k, v)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>声明 score，类型为 sync.Map，注意，sync.Map 不能使用 make 创建。</li>
+<li>将一系列键值对保存到 sync.Map 中，sync.Map 将键和值以 interface{} 类型进行保存。</li>
+<li>Range() 方法可以遍历 sync.Map，遍历需要提供一个匿名函数，参数为 k、v，类型为 interface{}，每次 Range() 在遍历一个元素时，都会调用这个匿名函数把结果返回。</li>
+<li>sync.Map 没有提供获取 map 数量的方法，替代方法是在获取 sync.Map 时遍历自行计算数量，sync.Map 为了保证并发安全有一些性能损失，因此在非并发情况下，使用 map 相比使用 sync.Map 会有更好的性能。</li>
+</ul>
+<h1 id="刷题思考"><a href="#刷题思考" class="headerlink" title="刷题思考"></a>刷题思考</h1><p>已经连续五天的刷题生活或许并没有给我带来什么真正有意义的思考，但还是想要记录一下。</p>
+<p>毕竟从大一下学完数据结构之后就基本没怎么做过算法题了，所以刚开始这几天还是在找做题的感觉，有一种在高三备战高考的感觉，有时候也会觉得很折磨，看着别人想出来的完美算法，就会觉得自己和别人的差距太大了，只能一步一步来了。</p>
+<p>这一周都只做了关于数组方面的题目，更多看到的题目标签是贪心、动态规划等等熟悉又陌生的字眼。</p>
+<p>总之在做了几天题之后，发现自己的思维确实变慢了不少，还有就是把自然语言转换成代码语言的能力不行。</p>
+<p>菜就多练喽！</p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>本周学习内容主要是并发和算法，在Go语言项目上并没有投入什么精力，认真学习过并发之后就会正式开始学习做一些小项目来补充一下这方面的空白。</p>
+<p>算法方面就希望下周能够找到做题的感觉，希望自己的小脑袋瓜赶紧转起来吧，继续积累经验。</p>
+<p>关于Go语言八股文也确实应该腾出更多的时间来看了，希望下周能够完成计划吧。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">随便寻个地方</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2024/03/08/Go%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6%E2%80%94%E2%80%94%E5%B9%B6%E5%8F%91/">http://example.com/2024/03/08/Go%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B6%E2%80%94%E2%80%94%E5%B9%B6%E5%8F%91/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">随便寻个地方'Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%AD%A6%E4%B9%A0%E5%91%A8%E6%8A%A5/">学习周报</a></div><div class="post_share"><div class="social-share" data-image="/img/touxiang.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/03/12/%E6%B7%B1%E5%85%A5Go%E8%AF%AD%E8%A8%80%E2%80%94%E2%80%94%E5%86%85%E5%AD%98/" title="深入Go语言——内存"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">深入Go语言——内存</div></div></a></div><div class="next-post pull-right"><a href="/2024/03/01/%E6%89%93%E5%BC%80GO%E8%AF%AD%E8%A8%80%E4%B9%8B%E9%97%A8/" title="打开Go语言之门"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">打开Go语言之门</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2024/04/14/%E5%94%89%E2%80%A6%E2%80%A6/" title="唉……"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-04-14</div><div class="title">唉……</div></div></a></div><div><a href="/2024/04/20/%E6%B7%B1%E5%85%A5Go%E8%AF%AD%E8%A8%802%E2%80%94%E2%80%94%E5%8F%8D%E5%B0%84%E4%B8%8Eunsafe/" title="深入Go语言2——反射与unsafe"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-04-20</div><div class="title">深入Go语言2——反射与unsafe</div></div></a></div><div><a href="/2024/03/12/%E6%B7%B1%E5%85%A5Go%E8%AF%AD%E8%A8%80%E2%80%94%E2%80%94%E5%86%85%E5%AD%98/" title="深入Go语言——内存"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-03-12</div><div class="title">深入Go语言——内存</div></div></a></div><div><a href="/2024/03/01/%E6%89%93%E5%BC%80GO%E8%AF%AD%E8%A8%80%E4%B9%8B%E9%97%A8/" title="打开Go语言之门"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-03-01</div><div class="title">打开Go语言之门</div></div></a></div><div><a href="/2024/06/03/%E7%BB%86%E8%AF%B4%E7%A9%BA%E7%BB%93%E6%9E%84%E4%BD%93%EF%BC%9AGo%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E5%A5%87%E5%A6%99%E7%94%A8%E9%80%94/" title="细说空结构体：Go语言中的奇妙用途"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-06-03</div><div class="title">细说空结构体：Go语言中的奇妙用途</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/touxiang.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">随便寻个地方</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">69</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%A6%E4%B9%A0%E6%80%9D%E8%80%83"><span class="toc-number">2.</span> <span class="toc-text">学习思考</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%B9%B6%E5%8F%91"><span class="toc-number">2.1.</span> <span class="toc-text">什么是并发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E9%80%9A%E4%BF%A1"><span class="toc-number">2.2.</span> <span class="toc-text">如何通信</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%B6%E5%8F%91%E4%B8%AD%E7%9A%84Map%E6%98%AF%E5%90%A6%E5%AE%89%E5%85%A8"><span class="toc-number">2.3.</span> <span class="toc-text">并发中的Map是否安全</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%B7%E9%A2%98%E6%80%9D%E8%80%83"><span class="toc-number">3.</span> <span class="toc-text">刷题思考</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-number">4.</span> <span class="toc-text">小结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/07/Untitled/" title="无题">无题</a><time datetime="2025-03-07T06:39:56.000Z" title="发表于 2025-03-07 14:39:56">2025-03-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E5%86%99%E4%BD%9C%E5%8A%A9%E6%89%8B-%E5%90%88%E5%B9%B6md%E6%96%87%E4%BB%B6-1741099573219/" title="无题">无题</a><time datetime="2025-03-04T14:46:16.000Z" title="发表于 2025-03-04 22:46:16">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E5%86%99%E4%BD%9C%E5%8A%A9%E6%89%8B-%E5%90%88%E5%B9%B6md%E6%96%87%E4%BB%B6-1741098965071/" title="无题">无题</a><time datetime="2025-03-04T14:36:08.000Z" title="发表于 2025-03-04 22:36:08">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/07/%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%E4%B8%A4%E5%85%84%E5%BC%9F%E2%80%94%E2%80%94%E6%95%B0%E7%BB%84%E5%92%8C%E5%88%87%E7%89%87%EF%BC%8C%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F/" title="顺序存储两兄弟——数组和切片，到底有什么区别？">顺序存储两兄弟——数组和切片，到底有什么区别？</a><time datetime="2024-11-07T05:04:09.000Z" title="发表于 2024-11-07 13:04:09">2024-11-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/10/24/%E4%BA%86%E8%A7%A3%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" title="了解基础数据类型">了解基础数据类型</a><time datetime="2024-10-24T09:57:13.000Z" title="发表于 2024-10-24 17:57:13">2024-10-24</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 随便寻个地方</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container').forEach(node => {
+            if (node.hasAttribute('display')) {
+              btf.wrap(node, 'div', { class: 'mathjax-overflow' })
+            } else {
+              btf.wrap(node, 'span', { class: 'mathjax-overflow' })
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
