@@ -1,0 +1,264 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>Why Java? Why not Java? | 随便寻个地方'Blog</title><meta name="author" content="随便寻个地方"><meta name="copyright" content="随便寻个地方"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="对的，没错，这是一篇记录笔者从零开始学习 Java 的博客，后面还会有更多关于 Java 的博客被记录。 关于 Java 学习过程中的那些基础知识，在这里就不过多的去介绍了，没什么意义，更多还是去聊一下面向对象或者一些新奇的东西。 既然是开篇之作，还是多写一点轻松的内容，其实就是还没有总结完。所以文本就简单写一下我对 Java 的认识吧。 我与 Java关于 Java，应该是除了 C++ 之外我最">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Why Java? Why not Java?">
+<meta property="og:url" content="http://example.com/2024/06/10/Why%20Java%20Why%20not%20Java/index.html">
+<meta property="og:site_name" content="随便寻个地方&#39;Blog">
+<meta property="og:description" content="对的，没错，这是一篇记录笔者从零开始学习 Java 的博客，后面还会有更多关于 Java 的博客被记录。 关于 Java 学习过程中的那些基础知识，在这里就不过多的去介绍了，没什么意义，更多还是去聊一下面向对象或者一些新奇的东西。 既然是开篇之作，还是多写一点轻松的内容，其实就是还没有总结完。所以文本就简单写一下我对 Java 的认识吧。 我与 Java关于 Java，应该是除了 C++ 之外我最">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/touxiang.png">
+<meta property="article:published_time" content="2024-06-10T08:57:14.000Z">
+<meta property="article:modified_time" content="2024-06-10T12:42:36.417Z">
+<meta property="article:author" content="随便寻个地方">
+<meta property="article:tag" content="Java学习指北">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/touxiang.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2024/06/10/Why%20Java%20Why%20not%20Java/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Why Java? Why not Java?',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-06-10 20:42:36'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="随便寻个地方'Blog" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/touxiang.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">69</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="随便寻个地方'Blog"><span class="site-name">随便寻个地方'Blog</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Why Java? Why not Java?</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-06-10T08:57:14.000Z" title="发表于 2024-06-10 16:57:14">2024-06-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-06-10T12:42:36.417Z" title="更新于 2024-06-10 20:42:36">2024-06-10</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Java%EF%BC%9FJava%EF%BC%81%EF%BC%81%EF%BC%81/">Java？Java！！！</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Why Java? Why not Java?"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>对的，没错，这是一篇记录笔者从零开始学习 Java 的博客，后面还会有更多关于 Java 的博客被记录。</p>
+<p>关于 Java 学习过程中的那些基础知识，在这里就不过多的去介绍了，没什么意义，更多还是去聊一下面向对象或者一些新奇的东西。</p>
+<p>既然是开篇之作，还是多写一点轻松的内容，其实就是还没有总结完。所以文本就简单写一下我对 Java 的认识吧。</p>
+<h1 id="我与-Java"><a href="#我与-Java" class="headerlink" title="我与 Java"></a>我与 Java</h1><p>关于 Java，应该是除了 C++ 之外我最先了解到的编程语言了，其实在大一上没结束的时候我就已经开始准备选择一个语言进行学习，为以后找工作打算了。</p>
+<p>大一的我提起 Java，觉得不够有趣，选择 Python；大二的我提起 Java，嗤之以鼻，想着学了它，那我和大专的学生有什么区别；大三的我提起 Java，想到被 Go 语言的实习打击的惨样，悲从中来，后悔没有早点学。呜呜呜……</p>
+<p>就像这个系列里的分类一样，我对 Java 的态度从”Java？狗都不学“ 到 ”Java！！！世界上最好的语言“。很抽象，但没办法。</p>
+<hr>
+<p>不知道你有没有想过，世界上有那么多编程语言，每种语言都有自己的特性，为什么 Java 能如此流行，在各行各业都被广泛使用，兴趣才是学习的第一动力，所以还是应该先了解一下 Java 的历史和设计哲学。</p>
+<h1 id="Java-的诞生"><a href="#Java-的诞生" class="headerlink" title="Java 的诞生"></a>Java 的诞生</h1><p>计算机业内一般认为：B 语言导致了 C 语言的诞生，C 语言演变出了 C++，而 C++ 会被 Java 语言所打败。是什么导致了 Java 的诞生？想要解决这个问题，我们先来看看 Java 的前辈们。</p>
+<h2 id="C-语言的诞生"><a href="#C-语言的诞生" class="headerlink" title="C 语言的诞生"></a>C 语言的诞生</h2><p>C 语言的产生是人们追求结构化、高效率、高级语言的结果，它可以替代汇编进行开发，它的出现改变了人们之前的编程方法和思路。</p>
+<p>C 语言的出现解决了之前语言的各种不足，比如：FORTRAN 高效但不适用于编写系统程序。BASIC 虽然容易学习，但是功能不够强大。汇编高效，但是学习成本很大，且很难调试。</p>
+<p>另外，C 语言之前的语言没有考虑结构化设计。它们大量使用 <code>GOTO</code> 语句来对程序进行控制。这样做的结果是<strong>程序极其混乱</strong>，各种跳转和条件分支交织在一起极大地影响了程序的可读性。人们解决该问题的愿望非常强烈，且日益迫切。20世界70年代初，计算机革命开始，人们对于软件的需求日益增加，使用当时的语言开发软件已经无法满足需求。人们在此期间进行了很多的尝试，但是没有发明出更好的语言。直到一个新机遇的到来：<strong>计算机硬件资源的富余</strong>。由于计算机硬件的增多，程序员可以随意的使用计算机，随意进行各种尝试，这就给了他们开发自己工具的机会。后来Ken Thompson (同样是 Go 语言之父) 发明了 B 语言，B 语言演化到了 C 语言。1989年美国国家标准化组织制定了 C 语言的标准，C 语言被正式标准化。C 语言是由程序员对编程实践的总结而发明出来的，它能够解决早期语言的种种缺陷。</p>
+<h2 id="C-的诞生"><a href="#C-的诞生" class="headerlink" title="C++ 的诞生"></a>C++ 的诞生</h2><p>C语言被用的好好的，为何出现了C++呢？原因是C语言太复杂了。当一个工程项目达到一定规模之后，使用结构化编程方法，编程人员就无法对它的复杂性进行有效管理。20世纪80年代初期，许多工程项目的复杂性都超过了结构化方法的极限。为了解决这个问题，面向对象诞生了。<strong>面向对象的特性：继承，封装，多态</strong>是用来帮助组织复杂程序的编程方法。因此出现了C++，C++ 的产生是基于 C 的，它包含了 C 的所有特征，属性和优点。</p>
+<h2 id="Java出现的时机到了"><a href="#Java出现的时机到了" class="headerlink" title="Java出现的时机到了"></a>Java出现的时机到了</h2><p>在20世纪80年代末到90年代初，使用面向对象的 C++ 语言占主导地位。然而，推动计算机语言进化的力量正在酝酿。万维网（WWW）和Internet在随后的几年达到了临界状态，这就促成了编程的另一场革命。</p>
+<h3 id="Java-诞生"><a href="#Java-诞生" class="headerlink" title="Java 诞生"></a>Java 诞生</h3><p>由于嵌入式系统的发展，人们对一种独立于平台的语言更加渴望，这种语言可以嵌入微波炉，遥控器等各种家用电器设备的软件。用作控制器芯片的CPU是多种多样的，但是C和C++只能对特定目标进行编译。比如某个CPU要编译C++代码，那么就要创建一个针对该CPU的C++编译器，而创建编译器是一项耗时耗长，耗资大的工作。为了解决这个问题，Gosling和其他人一直在开发一种可移植，跨平台的语言。该语言能够生成运行于不同环境，不同CPU芯片上的代码。经过不懈的努力，在1991年被James Gosling，Patrick Naughton，Chris Warth，Ed Frank和Mike Sheridan发明出来。第一版花了18个月。刚开始叫 Oak，于1995年更名为 Java。</p>
+<blockquote>
+<p>有趣的知识：JAVA其实是印度尼西亚一座岛屿的名称，中文名也叫爪哇，因盛产咖啡而出名。据说许多程序设计师工作之余都喜欢来一杯热腾腾的香浓咖啡，，并从中得到灵感，JAVA的寓意是为世人端上一杯热咖啡，因此JAVA的logo就是一个热气腾腾的咖啡形状。</p>
+<p>  Oak正是由JAVA之父James Gosling领导的绿色计划(Green Project)中的产品，在1995年更名为JAVA，并在SunWord大会上正式提出了”Write Once，Run Anywhere”口号。<strong>岁月如流，转眼间距离第一个JAVA版本诞生到现在已经20多年的时间，通过下面的时间线，一起回顾那些年我们学习过的JAVA。</strong></p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/d30e34758a114691af5f058489b158df%7Etplv-k3u1fbpfcp-zoom-in-crop-mark%3A1512%3A0%3A0%3A0.awebp" alt="image-20211129234040459"></p>
+<h3 id="Java-流行"><a href="#Java-流行" class="headerlink" title="Java 流行"></a>Java 流行</h3><p>在万维网（WWW）出现之前Java处于有用、默默无闻的用于电子消费品编程的状态。然而由于万维网的出现，Java被推到了计算机语言的设计的最前沿，<strong>因为万维网也需要可移植的程序。</strong></p>
+<p>因特网是由不同的、分布式的系统组成，其中包含各种类型的计算机，操作系统和CPU。尽管许多类型的平台都可以与因特网连接，但是用户仍然希望他们能够运行同样的程序。</p>
+<p>1993年，Java设计小组的成员发现解决嵌入式控制器可移植性的方法，也可以用来解决因特网的代码的可移植性问题。也就是Java不仅可以用来解决小范围的问题，也可以用来解决大范围的问题。这样他们将Java的重心由电子消费品，转移到Internet编程上。</p>
+<h1 id="Java-能够长久不衰的原因"><a href="#Java-能够长久不衰的原因" class="headerlink" title="Java 能够长久不衰的原因"></a>Java 能够长久不衰的原因</h1><p>从1995年在Sun World大会上的1.0版本正式提出“Write Once,Run Anywhere”到现在常年占据编程语言流行排行榜Top3，JAVA为什么能够如此受欢迎？下面我们就来盘点盘点！</p>
+<h2 id="面向对象编程"><a href="#面向对象编程" class="headerlink" title="面向对象编程"></a>面向对象编程</h2><p>所谓面向对象指的是在进行程序开发时将应用程序的数据及操作方法封装成一个便于我们理解的”对象”的特性，使我们在开发过程能够更易理解、并实现信息的封装及模块化。</p>
+<p>简单讲就是一个程序就可以被抽象成一个人，一个人会有两个眼睛、一个嘴巴等属性，可以有吃饭、行走等行为，程序也可以抽象成类似的属性和行为。</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/image-20240610203303974.png" alt="image-20240610203303974"></p>
+<h2 id="简单性"><a href="#简单性" class="headerlink" title="简单性"></a>简单性</h2><p>说一个东西简不简单其实是需要有东西对比才能够体现出来，了解或者学习过其他语言(如C++)的小伙伴就知道，JAVA中大体上语法和C++相类似，但是C++中一些比较难以理解、容易混淆的概念在JAVA中是没有的(如指针)，JAVA是通过一种更清楚、更易理解的方式(即引用)来实现这些容易让人混淆的概念，所以对比起来就会感觉JAVA是更加简单的。</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/d7c27d9ddd7d45788812403d93d407b3%7Etplv-k3u1fbpfcp-zoom-in-crop-mark%3A1512%3A0%3A0%3A0.awebp" alt="image-20211130233811412"></p>
+<h2 id="跨平台"><a href="#跨平台" class="headerlink" title="跨平台"></a>跨平台</h2><p><strong>跨平台指的是使用JAVA语言开发的程序能够运行在不同的软件平台和硬件平台上。</strong> 程序最终的执行是需要转成计算机硬件的机器指令来执行，而不同操作系统的、不同的计算机硬件是存在差异的，因此专门为某一种计算机硬件或者软件开发的程序直接放在另一个计算机硬件上是无法执行的(就像让大人穿小孩子的衣服，撑爆了也穿不进去)，至少需要做移植操作，比如有些在Windows系统上编译的应用程序是无法直接拿到Unix系统上运行的。</p>
+<p>想要解决这个问题，则需要程序语言不依赖于特定的操作系统或硬件，JAVA语言则正好满足这个条件，<strong>JAVA中引入了虚拟机概念，JVM实现了不同平台的JAVA接口，屏蔽了底层硬件的差异性，JAVA编译器将JAVA语言开发的程序编程成与计算机结构无关的字节码(也就是我们常说的class文件),只要安装了JAVA虚拟机，JAVA应用程序就可以在相应的环境下被执行。</strong>因此，Java 也有着“一次编译，到处运行”的顺口溜。</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/javase-5.png" alt="编译与解释"></p>
+<h2 id="健壮性"><a href="#健壮性" class="headerlink" title="健壮性"></a>健壮性</h2><p><strong>何为健壮性：通俗理解含义是软件(程序)对于规范要求以外的输入能够判断出这个输入不符合规范要求，并能有合理的处理方式。</strong> 比如：一个字段取值只允许为数组和字母，但是用户却输入了中文，此时，对于规范以外(非数组和字母)的输入，程序需要能够作出合理的响应(如提示用户输入不符合规范)，而不是直接报错或者无响应。</p>
+<p>再举个通俗的例子：你到银行提款机取钱，但是输入密码后提款机就卡死了，该怎么办？这时候你可以请求柜员帮助，柜员可以理解为银行为异常情况提供了一个兜底方案，这时候你肯定会给银行好评，因为如果没有柜员，提款机卡死后你除了等待就无法做其他事情，想要拿回银行卡就可能需要等到银行派专门人来才行，这时候用户体验就会非常差，程序亦是如此。</p>
+<p>使用JAVA语言编写的程序则具有这方面的特性。<strong>首先JAVA语言程序会在编译和运行时对可能出现的问题进行检查，减少因未知原因导致程序崩溃的情况。同时，JAVA语言提供了异常处理机制，它能够在编译时提示未被处理异常或者为运行抛出异常提供兜底方案，防止程序崩溃。</strong></p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/image-20240610203738049.png" alt=""></p>
+<h2 id="安全性"><a href="#安全性" class="headerlink" title="安全性"></a>安全性</h2><p>JAVA可以说是一种安全的网络语言，它屏蔽了指针类型，对内存的操作通过对象实例实现，同时，JAVA还在编译、解释层面进行了安全性的保证。</p>
+<p>如：在编译层，JAVA会进行各种语法检测，不满足语法的写法在编译时报错无法被解释执行，在解释层，会对JAVA程序编译出来的字节码校验，同时还会进行代码段格式、类型转换是否合法等方面的检查，从而保障程序执行的一个安全性。</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/8278d53ec1924334a91697ed46d83ba2%7Etplv-k3u1fbpfcp-zoom-in-crop-mark%3A1512%3A0%3A0%3A0.awebp" alt="image-20211201220414352"></p>
+<h2 id="并发编程"><a href="#并发编程" class="headerlink" title="并发编程"></a>并发编程</h2><p>随着科技的发展，人们对软件的使用体验有了更高的要求，响应速度就是其中非常重要的指标。JAVA内置了多线程的支持，通过多线程，计算机可以同时处理多个任务，因为处理器处速度远快于人接受信息的速度，人们会感觉软件的响应非常快，用户体验非常好。</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/19953134ae51449eafd911ada0b9df85%7Etplv-k3u1fbpfcp-zoom-in-crop-mark%3A1512%3A0%3A0%3A0.awebp" alt="image-20211201221700156"></p>
+<h2 id="可移植性"><a href="#可移植性" class="headerlink" title="可移植性"></a>可移植性</h2><p>JAVA的可移植性主要与它的跨平台(平台无关性)有关，JAVA中的类库也实现了与平台无关的接口，从而具有了可移植性。JAVA的编译器也是使用JAVA语言编写的(源码可查看：<a href="https://link.juejin.cn?target=http%3A%2F%2Fhg.openjdk.java.net%2Fjdk6%2Fjdk6%2Flangtools%2Ffile%2F779c45081059%2Fsrc%2Fshare%2Fclasses%2Fcom%2Fsun%2Ftools%2Fjavac">JAVA编译器实现</a>)，解释器则是由标准的C实现，所以整个JAVA系统都具有可移植性。</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/800b98d785ea421e97439302cf8a046f%7Etplv-k3u1fbpfcp-zoom-in-crop-mark%3A1512%3A0%3A0%3A0.awebp" alt="image-20211201222423285"></p>
+<h2 id="动态性"><a href="#动态性" class="headerlink" title="动态性"></a>动态性</h2><p>JAVA中基础的单元就是类，类可以是开发者自定义，也可以是引用第三方定义好的类库，<strong>在JAVA中，类是运行时动态进行状态的，因此对类库添加新的属性和方法无序重新编译程序，这样JAVA就实现了动态维护程序和引用的类库。</strong></p>
+<p>而C/C++则是在编译时将相应的函数库或类库中使用到的类、函数生成机器码，如果后续类库升级如添加了新的函数，则C/C++程序想要使用类库中新增的功能，需要对程序进行重新修改、编译。</p>
+<h2 id="社区活跃度高、文档齐全"><a href="#社区活跃度高、文档齐全" class="headerlink" title="社区活跃度高、文档齐全"></a>社区活跃度高、文档齐全</h2><p>这个特点是得益于前面的描述的8个特点，正是因为JAVA语言有简单、跨平台等特性，才会吸引大量的开发者，社区的活跃度才会高，层层嵌套，所以JAVA才会流行至今。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>什么？你要学 Java？你为什么学 Java？</p>
+<p>这是我的朋友们在知道我开始学 Java 之后问的最多的问题，在开始学之前，我们问了自己很多次这些问题。我为什么要从头开始学 Java？实在是现如今几乎所有公司都在使用 Java 这门语言，它好像一个无所不能的神，统治者国内的大小公司。</p>
+<p>Go 语言绝对算得上目前为止我最喜欢得一个编程语言了，这一是我坚持学习时间最长得语言，但是找了三个月的实习，实在是太艰难了，大厂只有几家可以投，大多数科技公司都不会使用 Go 语言进行开发，小厂就更不用提了，所有的加在一起估计都没有 Java 的零头多。我毕竟不是一个理想主义者，还是务实一点的。</p>
+<p>其实如果不是时间紧张，我应该也会对 Java 感兴趣，但是学习时间实在是太短了，而且暂时还没有找到很好的教程，只能像一个没头苍蝇一样到处乱撞。在更加深入学习之前，还是要先摆平心态。</p>
+<p>本文到此就正式结束了，其实就是想说一下我要开始学 Java 了，最近几天要整理一下基础的知识点，在下一篇博客中记录。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">随便寻个地方</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2024/06/10/Why%20Java%20Why%20not%20Java/">http://example.com/2024/06/10/Why%20Java%20Why%20not%20Java/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">随便寻个地方'Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Java%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8C%97/">Java学习指北</a></div><div class="post_share"><div class="social-share" data-image="/img/touxiang.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/06/11/Java%E5%85%AB%E8%82%A1%E6%96%87%E2%80%94%E2%80%94%E5%9F%BA%E7%A1%80%E7%AF%87%EF%BC%88%E4%B8%80%EF%BC%89/" title="Java八股文——基础篇（一）"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Java八股文——基础篇（一）</div></div></a></div><div class="next-post pull-right"><a href="/2024/06/10/Redis%E5%AE%B6%E6%97%8F%E5%86%8D%E6%B7%BB%E6%96%B0%E6%88%90%E5%91%98%EF%BC%9A%E6%8E%A2%E7%B4%A2Bitmaps%E3%80%81HyperLogLog%E5%92%8CGeo%E7%9A%84%E9%AD%85%E5%8A%9B/" title="Redis家族再添新成员：探索Bitmaps、HyperLogLog和Geo的魅力"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Redis家族再添新成员：探索Bitmaps、HyperLogLog和Geo的魅力</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2024/06/11/Java%E5%85%AB%E8%82%A1%E6%96%87%E2%80%94%E2%80%94%E5%9F%BA%E7%A1%80%E7%AF%87%EF%BC%88%E4%B8%80%EF%BC%89/" title="Java八股文——基础篇（一）"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-06-11</div><div class="title">Java八股文——基础篇（一）</div></div></a></div><div><a href="/2024/06/12/Java%E5%85%AB%E8%82%A1%E6%96%87%E2%80%94%E2%80%94%E5%9F%BA%E7%A1%80%E7%AF%87%EF%BC%88%E4%BA%8C%EF%BC%89/" title="Java八股文——基础篇（二）"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-06-12</div><div class="title">Java八股文——基础篇（二）</div></div></a></div><div><a href="/2024/06/19/Java%E5%85%AB%E8%82%A1%E6%96%87%E2%80%94%E2%80%94%E5%9F%BA%E7%A1%80%E7%AF%87%EF%BC%88%E4%B8%89%EF%BC%89/" title="Java八股文——基础篇（三）"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-06-19</div><div class="title">Java八股文——基础篇（三）</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/touxiang.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">随便寻个地方</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">69</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%88%91%E4%B8%8E-Java"><span class="toc-number">1.</span> <span class="toc-text">我与 Java</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Java-%E7%9A%84%E8%AF%9E%E7%94%9F"><span class="toc-number">2.</span> <span class="toc-text">Java 的诞生</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#C-%E8%AF%AD%E8%A8%80%E7%9A%84%E8%AF%9E%E7%94%9F"><span class="toc-number">2.1.</span> <span class="toc-text">C 语言的诞生</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-%E7%9A%84%E8%AF%9E%E7%94%9F"><span class="toc-number">2.2.</span> <span class="toc-text">C++ 的诞生</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java%E5%87%BA%E7%8E%B0%E7%9A%84%E6%97%B6%E6%9C%BA%E5%88%B0%E4%BA%86"><span class="toc-number">2.3.</span> <span class="toc-text">Java出现的时机到了</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Java-%E8%AF%9E%E7%94%9F"><span class="toc-number">2.3.1.</span> <span class="toc-text">Java 诞生</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java-%E6%B5%81%E8%A1%8C"><span class="toc-number">2.3.2.</span> <span class="toc-text">Java 流行</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Java-%E8%83%BD%E5%A4%9F%E9%95%BF%E4%B9%85%E4%B8%8D%E8%A1%B0%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="toc-number">3.</span> <span class="toc-text">Java 能够长久不衰的原因</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B"><span class="toc-number">3.1.</span> <span class="toc-text">面向对象编程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E6%80%A7"><span class="toc-number">3.2.</span> <span class="toc-text">简单性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%A8%E5%B9%B3%E5%8F%B0"><span class="toc-number">3.3.</span> <span class="toc-text">跨平台</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%81%A5%E5%A3%AE%E6%80%A7"><span class="toc-number">3.4.</span> <span class="toc-text">健壮性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E6%80%A7"><span class="toc-number">3.5.</span> <span class="toc-text">安全性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B"><span class="toc-number">3.6.</span> <span class="toc-text">并发编程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AF%E7%A7%BB%E6%A4%8D%E6%80%A7"><span class="toc-number">3.7.</span> <span class="toc-text">可移植性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E6%80%A7"><span class="toc-number">3.8.</span> <span class="toc-text">动态性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A4%BE%E5%8C%BA%E6%B4%BB%E8%B7%83%E5%BA%A6%E9%AB%98%E3%80%81%E6%96%87%E6%A1%A3%E9%BD%90%E5%85%A8"><span class="toc-number">3.9.</span> <span class="toc-text">社区活跃度高、文档齐全</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/07/Untitled/" title="无题">无题</a><time datetime="2025-03-07T06:39:56.000Z" title="发表于 2025-03-07 14:39:56">2025-03-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E5%86%99%E4%BD%9C%E5%8A%A9%E6%89%8B-%E5%90%88%E5%B9%B6md%E6%96%87%E4%BB%B6-1741099573219/" title="无题">无题</a><time datetime="2025-03-04T14:46:16.000Z" title="发表于 2025-03-04 22:46:16">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E5%86%99%E4%BD%9C%E5%8A%A9%E6%89%8B-%E5%90%88%E5%B9%B6md%E6%96%87%E4%BB%B6-1741098965071/" title="无题">无题</a><time datetime="2025-03-04T14:36:08.000Z" title="发表于 2025-03-04 22:36:08">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/07/%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%E4%B8%A4%E5%85%84%E5%BC%9F%E2%80%94%E2%80%94%E6%95%B0%E7%BB%84%E5%92%8C%E5%88%87%E7%89%87%EF%BC%8C%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F/" title="顺序存储两兄弟——数组和切片，到底有什么区别？">顺序存储两兄弟——数组和切片，到底有什么区别？</a><time datetime="2024-11-07T05:04:09.000Z" title="发表于 2024-11-07 13:04:09">2024-11-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/10/24/%E4%BA%86%E8%A7%A3%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" title="了解基础数据类型">了解基础数据类型</a><time datetime="2024-10-24T09:57:13.000Z" title="发表于 2024-10-24 17:57:13">2024-10-24</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 随便寻个地方</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container').forEach(node => {
+            if (node.hasAttribute('display')) {
+              btf.wrap(node, 'div', { class: 'mathjax-overflow' })
+            } else {
+              btf.wrap(node, 'span', { class: 'mathjax-overflow' })
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

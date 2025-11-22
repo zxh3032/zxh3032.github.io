@@ -1,0 +1,496 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>命名、声明和赋值 | 随便寻个地方'Blog</title><meta name="author" content="随便寻个地方"><meta name="copyright" content="随便寻个地方"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Go语言和其他编程语言一样，一个大的程序是由很多小的基础构件组成的。变量保存值，简单的加法和减法运算被组合成较复杂的表达式。基础类型被聚合为数组或结构体等更复杂的数据结构。然后使用 if 和 for 之类的控制语句来组织和控制表达式的执行流程。然后多个语句被组织到一个个函数中，以便代码的隔离和复用。函数以源文件和包的方式被组织。 在本章中，我们将深入讨论在 Go语言中变量和常量的命名、声明以及赋值">
+<meta property="og:type" content="article">
+<meta property="og:title" content="命名、声明和赋值">
+<meta property="og:url" content="http://example.com/2024/10/23/%E5%91%BD%E5%90%8D%E3%80%81%E5%A3%B0%E6%98%8E%E5%92%8C%E8%B5%8B%E5%80%BC/index.html">
+<meta property="og:site_name" content="随便寻个地方&#39;Blog">
+<meta property="og:description" content="Go语言和其他编程语言一样，一个大的程序是由很多小的基础构件组成的。变量保存值，简单的加法和减法运算被组合成较复杂的表达式。基础类型被聚合为数组或结构体等更复杂的数据结构。然后使用 if 和 for 之类的控制语句来组织和控制表达式的执行流程。然后多个语句被组织到一个个函数中，以便代码的隔离和复用。函数以源文件和包的方式被组织。 在本章中，我们将深入讨论在 Go语言中变量和常量的命名、声明以及赋值">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/touxiang.png">
+<meta property="article:published_time" content="2024-10-23T06:35:15.000Z">
+<meta property="article:modified_time" content="2024-10-24T09:52:57.404Z">
+<meta property="article:author" content="随便寻个地方">
+<meta property="article:tag" content="求职必备">
+<meta property="article:tag" content="深入理解Go语言">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/touxiang.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2024/10/23/%E5%91%BD%E5%90%8D%E3%80%81%E5%A3%B0%E6%98%8E%E5%92%8C%E8%B5%8B%E5%80%BC/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '命名、声明和赋值',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-10-24 17:52:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="随便寻个地方'Blog" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/touxiang.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">69</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="随便寻个地方'Blog"><span class="site-name">随便寻个地方'Blog</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">命名、声明和赋值</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-10-23T06:35:15.000Z" title="发表于 2024-10-23 14:35:15">2024-10-23</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-10-24T09:52:57.404Z" title="更新于 2024-10-24 17:52:57">2024-10-24</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%A7%8B%E6%8B%9B%E7%89%B9%E8%BE%91/">秋招特辑</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="命名、声明和赋值"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>Go语言和其他编程语言一样，一个大的程序是由很多小的基础构件组成的。变量保存值，简单的加法和减法运算被组合成较复杂的表达式。基础类型被聚合为数组或结构体等更复杂的数据结构。然后使用 <code>if</code> 和 <code>for</code> 之类的控制语句来组织和控制表达式的执行流程。然后多个语句被组织到一个个函数中，以便代码的隔离和复用。函数以源文件和包的方式被组织。</p>
+<p>在本章中，我们将深入讨论在 Go语言中变量和常量的命名、声明以及赋值方式，学习不同声明方式的区别和使用方法，以及变量和常量的特点。通过简单学习基础的变量和常量的结构来进入 Go语言的世界。此外，关于一些非常细节或者简单的声明要注意的点，在本文中不会显示。</p>
+<h1 id="Go语言是什么类型的语言？"><a href="#Go语言是什么类型的语言？" class="headerlink" title="Go语言是什么类型的语言？"></a>Go语言是什么类型的语言？</h1><p><strong>Go 语言是一个什么类型的语言？强/弱类型、动态/静态检查类型。</strong></p>
+<p>首先需要明确的是，什么是强/弱类型？什么是动态/静态类型？</p>
+<ul>
+<li><strong>强类型：</strong>强类型的编程语言在编译期间会有严格的类型限制，也就是编译器会在编译期间发现变量赋值、返回值和函数调用时的类型错误。</li>
+<li><strong>弱类型：</strong>弱类型的编程语言在出现类型错误时可能会在运行时进行隐式类型转化，这可能会造成运行错误。</li>
+<li><strong>动态检查类型：</strong>静态类型检查是基于对源代码的分析来确定运行程序类型安全的过程，如果我们的代码能够通过静态类型检查，那么当前程序在一定程度上可以满足类型安全的要求，它能够减少程序在运行时的类型检查，也可以被看作是一种代码优化的方式。</li>
+<li><strong>静态检查类型：</strong>动态类型检查是在运行时确定程序类型安全的过程，它需要编程语言在编译时为所有的对象加入类型标签等信息，运行时可以使用这些存储的类型信息来实现动态派发、向下转型、反射以及其他特性。</li>
+</ul>
+<p>因此，Go 语言是静态强类型语言，同时 Go 语言也是编译型语言。</p>
+<h1 id="如何命名？"><a href="#如何命名？" class="headerlink" title="如何命名？"></a>如何命名？</h1><p><strong>命名规则如下：</strong></p>
+<ul>
+<li>以字母或下划线开头(Go语言中多不以_开头)；</li>
+<li>后面可以是任意数量的字符、数字和下划线；</li>
+<li>区分大小写；</li>
+<li>不能是关键字(关键字具备特定含义)；</li>
+</ul>
+<p><strong>关键字如下：</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>break</th>
+<th>default</th>
+<th>func</th>
+<th>interface</th>
+<th>select</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>case</strong></td>
+<td><strong>defer</strong></td>
+<td><strong>go</strong></td>
+<td><strong>map</strong></td>
+<td><strong>struct</strong></td>
+</tr>
+<tr>
+<td><strong>chan</strong></td>
+<td><strong>else</strong></td>
+<td><strong>goto</strong></td>
+<td><strong>package</strong></td>
+<td><strong>switch</strong></td>
+</tr>
+<tr>
+<td><strong>const</strong></td>
+<td><strong>fallthrough</strong></td>
+<td><strong>if</strong></td>
+<td><strong>range</strong></td>
+<td><strong>type</strong></td>
+</tr>
+<tr>
+<td><strong>continue</strong></td>
+<td><strong>for</strong></td>
+<td><strong>import</strong></td>
+<td><strong>return</strong></td>
+<td><strong>var</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>可以是保留字,但是建议不使用保留字做为变量名；</li>
+</ul>
+<p><strong>保留字如下：</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>true</th>
+<th>false</th>
+<th>iota</th>
+<th>nil</th>
+<th>int</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>int8</strong></td>
+<td><strong>int16</strong></td>
+<td><strong>int32</strong></td>
+<td><strong>int64</strong></td>
+<td><strong>unit</strong></td>
+</tr>
+<tr>
+<td><strong>unit8</strong></td>
+<td><strong>unit16</strong></td>
+<td><strong>unit32</strong></td>
+<td><strong>unitptr</strong></td>
+<td><strong>float32</strong></td>
+</tr>
+<tr>
+<td><strong>float64</strong></td>
+<td><strong>complex128</strong></td>
+<td><strong>complex64</strong></td>
+<td><strong>bool</strong></td>
+<td><strong>byte</strong></td>
+</tr>
+<tr>
+<td><strong>rune</strong></td>
+<td><strong>string</strong></td>
+<td><strong>error</strong></td>
+<td><strong>make</strong></td>
+<td><strong>len</strong></td>
+</tr>
+<tr>
+<td><strong>cap</strong></td>
+<td><strong>new</strong></td>
+<td><strong>append</strong></td>
+<td><strong>copy</strong></td>
+<td><strong>close</strong></td>
+</tr>
+<tr>
+<td><strong>deletecomplex</strong></td>
+<td><strong>real</strong></td>
+<td><strong>imag</strong></td>
+<td><strong>panic</strong></td>
+<td><strong>recover</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li>在同一范围内不允许出现同名变量</li>
+<li>Go语言要求变量声明后至少使用一次(赋值不属于使用)</li>
+</ul>
+<hr>
+<p>Go语言为开发者提供了简单的基础语法，开发者在短期内即可完全掌握这些语法并编写可用于生成环境的代码。本部分将详述在Go基础语法层面有哪些高质量 Go 代码的惯用法和有效实践，内容涵盖变量声明、无类型常量的作用、枚举常量的定义、零值可用类型的意义等。</p>
+<h1 id="使用一致的变量声明形式"><a href="#使用一致的变量声明形式" class="headerlink" title="使用一致的变量声明形式"></a>使用一致的变量声明形式</h1><p>和Python、Ruby等动态脚本语言不同，Go语言沿袭了静态编译型语言的传统：<strong>使用变量之前需要先进行变量的声明</strong>。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a <span class="type">int32</span></span><br><span class="line"><span class="keyword">var</span> s <span class="type">string</span> = <span class="string">&quot;hello&quot;</span></span><br><span class="line"><span class="keyword">var</span> i = <span class="number">13</span></span><br><span class="line">n := <span class="number">17</span></span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">    crlf       = []<span class="type">byte</span>(<span class="string">&quot;\r\n&quot;</span>)</span><br><span class="line">    colonSpace = []<span class="type">byte</span>(<span class="string">&quot;: &quot;</span>)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>Go语言有两类变量：</p>
+<ul>
+<li>包级变量（package variable）：在package级别可见的变量。如果是导出变量，则该包级变量也可以被视为全局变量。</li>
+<li>局部变量（local variable）：函数或方法体内声明的变量，仅在函数或方法体内可见。</li>
+</ul>
+<p>下面来分别说明实现这两类变量在声明形式选择上保持一致性的一些最佳实践。</p>
+<h2 id="包级变量的声明方式"><a href="#包级变量的声明方式" class="headerlink" title="包级变量的声明方式"></a>包级变量的声明方式</h2><p>包级变量只能使用带有 <code>var</code> 关键字的变量声明形式，但在形式细节上仍然有一定的灵活度。我们从生命变量时是否延迟初始化这个角度对包级变量进行一次分类。</p>
+<h3 id="声明并同时显式初始化"><a href="#声明并同时显式初始化" class="headerlink" title="声明并同时显式初始化"></a>声明并同时显式初始化</h3><p>源码示例：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// $GOROOT/src/io/pipe.go</span></span><br><span class="line"><span class="keyword">var</span> ErrClosedPipe = errors.New(<span class="string">&quot;io: read/write on closed pipe&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// $GOROOT/src/io/io.go</span></span><br><span class="line"><span class="keyword">var</span> EOF = errors.New(<span class="string">&quot;EOF&quot;</span>)</span><br><span class="line"><span class="keyword">var</span> ErrShortWrite = errors.New(<span class="string">&quot;short write&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>从上面的源码可以看出，对于声明变量的同时进行显式初始化的这类包级别变量，实践中常常会用到的格式是：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> variableName = InitExpression</span><br></pre></td></tr></table></figure>
+<p>Go 编译器会自动根据等号右侧的 <code>InitExpression</code> 表达式求值的类型确定左侧所声明变量的类型。</p>
+<p>如果 <code>InitExpression</code> 采用的是不带有类型信息的常量表达式，如下面的语句：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">17</span></span><br><span class="line"><span class="keyword">var</span> f = <span class="number">3.14</span></span><br></pre></td></tr></table></figure>
+<p>则包级变量会被设置为常量表达式的默认类型：</p>
+<ul>
+<li>以整型值初始化的变量a，Go编译器会将之设置为默认类型<code>int</code>；</li>
+<li>而以浮点值初始化的变量f，Go编译器会将之设置为默认类型<code>float64</code>。</li>
+</ul>
+<p>如果不接受默认类型，而是要显式为包级变量a和f指定类型，那么有以下两种声明方式：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 第一种</span></span><br><span class="line"><span class="keyword">var</span> a <span class="type">int32</span> = <span class="number">17</span></span><br><span class="line"><span class="keyword">var</span> f <span class="type">float32</span> = <span class="number">3.14</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 第二种</span></span><br><span class="line"><span class="keyword">var</span> a = <span class="type">int32</span>(<span class="number">17</span>)</span><br><span class="line"><span class="keyword">var</span> f = <span class="type">float32</span>(<span class="number">3.14</span>)</span><br></pre></td></tr></table></figure>
+<p>从声明一致性的角度出发，Go语言官方更推荐后者，这样就统一了接受默认类型和显式指定类型两种声明形式。尤其是在将这些变量放在一个var块中声明时，我们更青睐这样的形式：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> (</span><br><span class="line">    a = <span class="number">17</span></span><br><span class="line">    f = <span class="type">float32</span>(<span class="number">3.14</span>)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>而不是下面这种看起来不一致的声明形式：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> (</span><br><span class="line">    a  = <span class="number">17</span></span><br><span class="line">    f <span class="type">float32</span> = <span class="number">3.14</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h3 id="声明但延迟初始化"><a href="#声明但延迟初始化" class="headerlink" title="声明但延迟初始化"></a>声明但延迟初始化</h3><p>对于声明时并不显式初始化的包级变量，我们使用最基本的声明形式：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a <span class="type">int32</span></span><br><span class="line"><span class="keyword">var</span> f <span class="type">float64</span></span><br></pre></td></tr></table></figure>
+<p>虽然没有显式初始化，但 Go语言会让这些变量拥有初始的<strong>“零值”</strong>。如果是自定义的类型，<strong>保证其零值可用</strong>是非常必要的。</p>
+<h3 id="声明聚类与就近原则"><a href="#声明聚类与就近原则" class="headerlink" title="声明聚类与就近原则"></a>声明聚类与就近原则</h3><p>Go语言提供 <code>var</code> 块用于将多个变量声明语句放在一起，并且在语法上不会限制放置在 <code>var</code> 块中的声明类型。</p>
+<p>但是我们一般将同一类的变量声明放在一个 <code>var</code> 块中，将不同类的声明放在不同的 <code>var</code> 块中；或者将延迟初始化的变量声明放在一个 <code>var</code> 块中，而将声明并显式初始化的变量放在另一个 <code>var</code> 块中，可以称之为<strong>“声明聚类”</strong>。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// $GOROOT/src/net/http/server.go</span></span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">    bufioReaderPool   sync.Pool</span><br><span class="line">    bufioWriter2kPool sync.Pool</span><br><span class="line">    bufioWriter4kPool sync.Pool</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> copyBufPool = sync.Pool &#123;</span><br><span class="line">    New: <span class="function"><span class="keyword">func</span><span class="params">()</span></span> <span class="keyword">interface</span>&#123;&#125; &#123;</span><br><span class="line">        b := <span class="built_in">make</span>([]<span class="type">byte</span>, <span class="number">32</span>*<span class="number">1024</span>)</span><br><span class="line">        <span class="keyword">return</span> &amp;b</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment">// $GOROOT/src/net/net.go</span></span><br><span class="line"><span class="keyword">var</span> (</span><br><span class="line">    aLongTimeAgo = time.Unix(<span class="number">1</span>, <span class="number">0</span>)</span><br><span class="line">    noDeadline = time.Time&#123;&#125;</span><br><span class="line">    noCancel   = (<span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;)(<span class="literal">nil</span>)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> threadLimit <span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>关于声明包级变量，或许大家还会有一个新的问题：<strong>是否应当将包级变量的声明全部集中放在源文件头部呢？</strong></p>
+<p>使用静态编程语言的开发人员都知道，变量声明最佳实践中还有一条：<strong>就近原则</strong>，即尽可能在靠近第一次使用变量的位置声明该变量。就近原则实际上是变量的作用域最小化的一种实现手段。</p>
+<h2 id="局部变量的声明方式"><a href="#局部变量的声明方式" class="headerlink" title="局部变量的声明方式"></a>局部变量的声明方式</h2><p>与包级变量相比，局部变量多了一种短变量声明形式，这也是局部变量采用最多的一种声明形式。</p>
+<h3 id="对于延迟初始化的局部变量声明，采用带有-var-关键字的声明形式"><a href="#对于延迟初始化的局部变量声明，采用带有-var-关键字的声明形式" class="headerlink" title="对于延迟初始化的局部变量声明，采用带有 var 关键字的声明形式"></a>对于延迟初始化的局部变量声明，采用带有 var 关键字的声明形式</h3><p>和全局变量类似，看个例子就行了：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Foo</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> err <span class="type">error</span></span><br><span class="line">    <span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">            ...</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">    err = Bar()</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="对于声明且显式初始化的局部变量，建议使用短变量生命形式"><a href="#对于声明且显式初始化的局部变量，建议使用短变量生命形式" class="headerlink" title="对于声明且显式初始化的局部变量，建议使用短变量生命形式"></a>对于声明且显式初始化的局部变量，建议使用短变量生命形式</h3><p>短变量声明形式是局部变量最常用的声明形式，它遍布Go标准库代码。对于接受默认类型的变量，可以使用下面的形式：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a := <span class="number">17</span></span><br><span class="line">f := <span class="number">3.14</span></span><br><span class="line">s := <span class="string">&quot;hello, gopher!&quot;</span></span><br></pre></td></tr></table></figure>
+<p>同样，Go 编译器会根据右边的数据类型自动推测左边变量的类型，如果没有明显声明，则使用默认类型。</p>
+<p>对于不接受默认类型的变量，依然可以使用短变量声明形式，只是在<code>:=</code>右侧要进行显式转型：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a := <span class="type">int32</span>(<span class="number">17</span>)</span><br><span class="line">f := <span class="type">float32</span>(<span class="number">3.14</span>)</span><br><span class="line">s := []<span class="type">byte</span>(<span class="string">&quot;hello, gopher!&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="尽量在分支控制时应用短变量声明形式"><a href="#尽量在分支控制时应用短变量声明形式" class="headerlink" title="尽量在分支控制时应用短变量声明形式"></a>尽量在分支控制时应用短变量声明形式</h3><p>这应该是Go中短变量声明形式应用最广泛的场景了。在编写Go代码时，我们很少单独声明在分支控制语句中使用的变量，而是通过短变量声明形式将其与<code>if</code>、<code>for</code>等融合在一起。</p>
+<p>由于良好的函数/方法设计讲究的是“<strong>单一职责</strong>”，因此每个函数/方法规模都不大，很少需要应用var块来聚类声明局部变量。当然，如果你在声明局部变量时遇到适合聚类的应用场景，你也应该毫不犹豫地使用var块来声明多个局部变量。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// $GOROOT/src/net/dial.go</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(r *Resolver)</span></span> resolveAddrList(ctx context.Context, op, network,</span><br><span class="line">                            addr <span class="type">string</span>, hint Addr) (addrList, <span class="type">error</span>) &#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">var</span> (</span><br><span class="line">        tcp      *TCPAddr</span><br><span class="line">        udp      *UDPAddr</span><br><span class="line">        ip       *IPAddr</span><br><span class="line">        wildcard <span class="type">bool</span></span><br><span class="line">    )</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>要想做好代码中变量声明的一致性，需要明确要声明的变量是包级变量还是局部变量、是否要延迟初始化、是否接受默认类型、是否为分支控制变量，并结合聚类和就近原则。</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/image-20241024163145530.png" alt="image-20241024163145530"></p>
+<h1 id="使用无类型常量简化代码"><a href="#使用无类型常量简化代码" class="headerlink" title="使用无类型常量简化代码"></a>使用无类型常量简化代码</h1><p>常量是现代编程语言中最常见的语法元素。在类型系统十分严格的Go语言中，常量还兼具特殊的作用。</p>
+<h2 id="Go常量溯源"><a href="#Go常量溯源" class="headerlink" title="Go常量溯源"></a>Go常量溯源</h2><p>在看 Go语言的常量之前，我们先来回顾一下 C语言中的常量是什么样的。</p>
+<p>在 C语言中，字面量（literal）担负着常量的角色（针对整型值，还可以使用枚举常量）。可以使用整型、浮点型、字符串型、字符型字面值来满足不同场合下对常量的需求：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x12345678</span></span><br><span class="line"><span class="number">10086</span></span><br><span class="line"><span class="number">3.1415926</span></span><br><span class="line"><span class="string">&quot;Hello, Gopher&quot;</span></span><br><span class="line"><span class="string">&#x27;a&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>为了不让这些魔数（magic number）充斥于源码各处，早期C语言的常用实践是使用宏（macro）定义记号来指代这些字面值：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> MAX_LEN 0x12345678</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CMCC_SERVICE_PHONE_NUMBER 10086</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PI 3.1415926</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> WELCOME_TO_GO <span class="string">&quot;Hello, Gopher&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> A_CHAR <span class="string">&#x27;a&#x27;</span></span></span><br></pre></td></tr></table></figure>
+<p>这种定义“具名字面值”的实践也被称为宏定义常量。虽然后续的 C标准中提供了 <code>const</code> 关键字来定义在程序运行过程中不可改变的变量（又称“只读变量”），但使用宏定义常量的习惯依然被沿袭下来，并且依旧是 C编码中的主流风格。</p>
+<p>宏定义的常量有着诸多不足，比如：</p>
+<ul>
+<li>仅是预编译阶段进行替换的字面值，继承了宏替换的复杂性和易错性；</li>
+<li>是类型不安全的；</li>
+<li>无法在调试时通过宏名字输出常量的值。</li>
+</ul>
+<p>而 C语言中 <code>const</code> 修饰的标识符本质上还是变量，和其他变量一样，编译器不能像对待真正的常量那样对其进行代码优化，也无法将其作为数组声明时的初始长度。</p>
+<p>Go语言是站在 C语言等编程语言的肩膀之上诞生的，它原生提供常量定义的关键字<code>const</code>。<strong>Go语言中的<code>const</code>整合了 C语言中宏定义常量、<code>const</code>只读变量和枚举常量三种形式，并消除了每种形式的不足，使得Go常量成为类型安全且对编译器优化友好的语法元素。</strong>Go中所有与常量有关的声明都通过const来进行。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// $GOROOT/src/os/file.go</span></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">    O_RDONLY <span class="type">int</span> = syscall.O_RDONLY</span><br><span class="line">    O_WRONLY <span class="type">int</span> = syscall.O_WRONLY</span><br><span class="line">    O_RDWR   <span class="type">int</span> = syscall.O_RDWR</span><br><span class="line">    O_APPEND <span class="type">int</span> = syscall.O_APPEND</span><br><span class="line">    ...</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>上面对常量的声明方式仅仅是Go标准库中的少数个例，绝大多数情况下，Go常量在声明时并不显式指定类型，也就是说使用的是无类型常量（untyped constant）。比如：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// $GOROOT/src/io/io.go</span></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">    SeekStart   = <span class="number">0</span></span><br><span class="line">    SeekCurrent = <span class="number">1</span></span><br><span class="line">    SeekEnd     = <span class="number">2</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>无类型常量是Go语言在语法设计方面的一个“微创新”，也是“追求简单”设计哲学的又一体现，它可以让你的Go代码更加简洁。</p>
+<h2 id="有类型常量带来的烦恼"><a href="#有类型常量带来的烦恼" class="headerlink" title="有类型常量带来的烦恼"></a>有类型常量带来的烦恼</h2><p>Go是对类型安全要求十分严格的编程语言。Go要求，两个类型即便拥有相同的底层类型（underlying type），也仍然是不同的数据类型，不可以被相互比较或混在一个表达式中进行运算：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> myInt <span class="type">int</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> a <span class="type">int</span> = <span class="number">5</span></span><br><span class="line">    <span class="keyword">var</span> b myInt = <span class="number">6</span></span><br><span class="line">    fmt.Println(a + b) <span class="comment">// 编译器会给出错误提示：invalid operation: a + b (mismatched  types int and myInt)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们看到，Go 在处理不同类型的变量间的运算时不支持隐式的类型转换。Go 的设计者认为，隐式转换带来的便利性不足以抵消其带来的诸多问题。要解决上面的编译错误，必须进行显式类型转换：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> myInt <span class="type">int</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> a <span class="type">int</span> = <span class="number">5</span></span><br><span class="line">    <span class="keyword">var</span> b myInt = <span class="number">6</span></span><br><span class="line">    fmt.Println(a + <span class="type">int</span>(b)) <span class="comment">// 输出：11</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>而将有类型常量与变量混合在一起进行运算求值时也要遵循这一要求，即如果有类型常量与变量的类型不同，那么混合运算的求值操作会报错：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> myInt <span class="type">int</span></span><br><span class="line"><span class="keyword">const</span> n myInt = <span class="number">13</span></span><br><span class="line"><span class="keyword">const</span> m <span class="type">int</span> = n + <span class="number">5</span>        <span class="comment">// 编译器错误提示：cannot use n + 5 (type myInt) as type  int in const initializer</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> a <span class="type">int</span> = <span class="number">5</span></span><br><span class="line">    fmt.Println(a + n)     <span class="comment">// 编译器错误提示：invalid operation: a + n (mismatched  types int and myInt)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>唯有进行显式类型转换才能让上面的代码正常工作：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> myInt <span class="type">int</span></span><br><span class="line"><span class="keyword">const</span> n myInt = <span class="number">13</span></span><br><span class="line"><span class="keyword">const</span> m <span class="type">int</span> = <span class="type">int</span>(n) + <span class="number">5</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> a <span class="type">int</span> = <span class="number">5</span></span><br><span class="line">    fmt.Println(a + <span class="type">int</span>(n)) <span class="comment">// 输出：18</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>有类型常量给代码简化带来了麻烦，但这也是Go语言对类型安全严格要求的结果。</p>
+<h2 id="无类型常量消除烦恼，简化代码"><a href="#无类型常量消除烦恼，简化代码" class="headerlink" title="无类型常量消除烦恼，简化代码"></a>无类型常量消除烦恼，简化代码</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> myInt <span class="type">int</span></span><br><span class="line"><span class="keyword">type</span> myFloat <span class="type">float32</span></span><br><span class="line"><span class="keyword">type</span> myString <span class="type">string</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> j myInt = <span class="number">5</span></span><br><span class="line">    <span class="keyword">var</span> f myFloat = <span class="number">3.1415926</span></span><br><span class="line">    <span class="keyword">var</span> str myString = <span class="string">&quot;Hello, Gopher&quot;</span></span><br><span class="line"></span><br><span class="line">    fmt.Println(j)    <span class="comment">// 输出：5</span></span><br><span class="line">    fmt.Println(f)    <span class="comment">// 输出：3.1415926</span></span><br><span class="line">    fmt.Println(str)  <span class="comment">// 输出：Hello, Gopher</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到这三个字面值无须显式类型转换就可以直接赋值给对应的三个自定义类型的变量，这等价于下面的代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> j myInt = myInt(<span class="number">5</span>)</span><br><span class="line"><span class="keyword">var</span> f myFloat = myFloat(<span class="number">3.1415926</span>)</span><br><span class="line"><span class="keyword">var</span> str myString = myString(<span class="string">&quot;Hello, Gopher&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>但显然之前的无须显式类型转换的代码更为简洁。</p>
+<p>Go的无类型常量恰恰就拥有像字面值这样的特性，该特性使得无类型常量在参与变量赋值和计算过程时无须显式类型转换，从而达到简化代码的目的：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> (</span><br><span class="line">    a  = <span class="number">5</span></span><br><span class="line">    pi = <span class="number">3.1415926</span></span><br><span class="line">    s  = <span class="string">&quot;Hello, Gopher&quot;</span></span><br><span class="line">    c  = <span class="string">&#x27;a&#x27;</span></span><br><span class="line">    b  = <span class="literal">false</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> myInt <span class="type">int</span></span><br><span class="line"><span class="keyword">type</span> myFloat <span class="type">float32</span></span><br><span class="line"><span class="keyword">type</span> myString <span class="type">string</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> j myInt = a</span><br><span class="line">    <span class="keyword">var</span> f myFloat = pi</span><br><span class="line">    <span class="keyword">var</span> str myString = s</span><br><span class="line">    <span class="keyword">var</span> e <span class="type">float64</span> = a + pi</span><br><span class="line"></span><br><span class="line">    fmt.Println(j)    <span class="comment">// 输出：5</span></span><br><span class="line">    fmt.Println(f)                <span class="comment">// 输出：3.1415926</span></span><br><span class="line">    fmt.Println(str)              <span class="comment">// 输出：Hello, Gopher</span></span><br><span class="line">    fmt.Printf(<span class="string">&quot;%T, %v\n&quot;</span>, e, e)  <span class="comment">// float64, 8.1415926</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>无类型常量使得Go在处理表达式混合数据类型运算时具有较大的灵活性，代码编写也有所简化，我们无须再在求值表达式中做任何显式类型转换了。</p>
+<p>除此之外，无类型常量也拥有自己的默认类型：无类型的布尔型常量、整数常量、字符常量、浮点数常量、复数常量、字符串常量对应的默认类型分别为bool、int、int32(rune)、float64、complex128和string。当常量被赋值给无类型变量、接口变量时，常量的默认类型对于确定无类型变量的类型及接口对应的动态类型是至关重要的。示例如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> (</span><br><span class="line">    a = <span class="number">5</span></span><br><span class="line">    s = <span class="string">&quot;Hello, Gopher&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    n := a</span><br><span class="line">    <span class="keyword">var</span> i <span class="keyword">interface</span>&#123;&#125; = a</span><br><span class="line"></span><br><span class="line">    fmt.Printf(<span class="string">&quot;%T\n&quot;</span>, n)         <span class="comment">// 输出：int</span></span><br><span class="line">    fmt.Printf(<span class="string">&quot;%T\n&quot;</span>, i)         <span class="comment">// 输出：int</span></span><br><span class="line">    i = s</span><br><span class="line">    fmt.Printf(<span class="string">&quot;%T\n&quot;</span>, i)         <span class="comment">// 输出：string</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="使用-itoa-实现枚举常量"><a href="#使用-itoa-实现枚举常量" class="headerlink" title="使用 itoa 实现枚举常量"></a>使用 itoa 实现枚举常量</h1><p>C家族的主流编程语言（如C++、Java等）都提供定义枚举常量的语法。比如在C语言中，枚举是一个具名的整型常数的集合。下面是使用枚举定义的Weekday类型：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// C语法</span></span><br><span class="line">enum Weekday &#123;</span><br><span class="line">    SUNDAY,</span><br><span class="line">    MONDAY,</span><br><span class="line">    TUESDAY,</span><br><span class="line">    WEDNESDAY,</span><br><span class="line">    THURSDAY,</span><br><span class="line">    FRIDAY,</span><br><span class="line">    SATURDAY</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> main() &#123;</span><br><span class="line">    enum Weekday d = SATURDAY;</span><br><span class="line">    printf(<span class="string">&quot;%d\n&quot;</span>, d); <span class="comment">// 6</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>C语言针对枚举类型提供了很多语法上的便利，比如：如果没有显式给枚举常量赋初始值，那么枚举类型的第一个常量的值为0，后续常量的值依次加1。</p>
+<p>与使用define宏定义的常量相比，C编译器可以对专用的枚举类型进行严格的类型检查，使得程序更为安全。</p>
+<p>枚举的存在代表了一类现实需求：有限数量标识符构成的集合，且多数情况下并不关心集合中标识符实际对应的值；注重类型安全。</p>
+<p>与其他C家族主流语言（如C++、Java）不同，Go语言没有提供定义枚举常量的语法。我们通常使用常量语法定义枚举常量，比如要在Go中定义上面的Weekday类型，可以这样写：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> (</span><br><span class="line">    Sunday    = <span class="number">0</span></span><br><span class="line">    Monday    = <span class="number">1</span></span><br><span class="line">    Tuesday   = <span class="number">2</span></span><br><span class="line">    Wednesday = <span class="number">3</span></span><br><span class="line">    Thursday  = <span class="number">4</span></span><br><span class="line">    Friday    = <span class="number">5</span></span><br><span class="line">    Saturday  = <span class="number">6</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>如果仅仅能支持到这种程度，那么Go就算不上是“站在巨人的肩膀上”了。Go的<code>const</code>语法提供了“隐式重复前一个<strong>“非空表达式”</strong>的机制，来看下面的代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> (</span><br><span class="line">    Apple, Banana = <span class="number">11</span>, <span class="number">22</span></span><br><span class="line">    Strawberry, Grape</span><br><span class="line">    Pear, Watermelon</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>常量定义的后两行没有显式给予初始赋值，Go编译器将为其隐式使用第一行的表达式，这样上述定义等价于：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> (</span><br><span class="line">    Apple, Banana = <span class="number">11</span>, <span class="number">22</span></span><br><span class="line">    Strawberry, Grape  = <span class="number">11</span>, <span class="number">22</span></span><br><span class="line">    Pear, Watermelon  = <span class="number">11</span>, <span class="number">22</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>不过这显然仍无法满足枚举的要求，Go在这个机制的基础上又提供了神器iota。有了iota，我们就可以定义满足各种场景的枚举常量了。</p>
+<p><code>iota</code>是 Go语言的一个预定义标识符，它表示的是<code>const</code>声明块（包括单行声明）中每个常量所处位置在块中的偏移值（从零开始）。同时，每一行中的<code>iota</code>自身也是一个无类型常量，可以像无类型常量那样自动参与不同类型的求值过程，而无须对其进行显式类型转换操作。下面是Go标准库中<code>sync/mutex.go</code>中的一段枚举常量的定义：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// $GOROOT/src/sync/mutex.go (go 1.12.7)</span></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">    mutexLocked = <span class="number">1</span> &lt;&lt; <span class="literal">iota</span>			<span class="comment">//1</span></span><br><span class="line">    mutexWoken						<span class="comment">//2</span></span><br><span class="line">    mutexStarving					<span class="comment">//4</span></span><br><span class="line">    mutexWaiterShift = <span class="literal">iota</span>			<span class="comment">//3</span></span><br><span class="line">    starvationThresholdNs = <span class="number">1e6</span>		<span class="comment">//1e6	</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>iota 的本质：它仅代表常量声明的索引，所以它会表示出以下<strong>特征</strong>：</p>
+<ul>
+<li>单个 const 声明块中从 0 开始取值；</li>
+<li>单个 const 声明块中，每增加一行声明，iota 的取值增 1，即便声明中没有使用 iota 也是如此；</li>
+<li>单行声明语句中，即便出现多个 iota，iota 的取值也保持不变。</li>
+</ul>
+<p>iota的加入让Go在枚举常量定义上的表达力大增，主要体现在如下几方面：</p>
+<ol>
+<li>iota预定义标识符能够以更为灵活的形式为枚举常量赋初值；</li>
+<li>Go的枚举常量不限于整型值，也可以定义浮点型的枚举常量；</li>
+<li>iota使得维护枚举常量列表更容易；</li>
+<li>使用有类型枚举常量保证类型安全；</li>
+</ol>
+<h1 id="尽量定义零值可用的类型"><a href="#尽量定义零值可用的类型" class="headerlink" title="尽量定义零值可用的类型"></a>尽量定义零值可用的类型</h1><blockquote>
+<p>保持零值可用。——Go谚语</p>
+</blockquote>
+<p>在Go语言中，零值不仅在变量初始化阶段避免了变量值不确定可能带来的潜在问题，而且定义零值可用的类型也是Go语言积极倡导的最佳实践之一，就像上面那句Go谚语所说的那样。</p>
+<h2 id="Go-语言中的零值"><a href="#Go-语言中的零值" class="headerlink" title="Go 语言中的零值"></a>Go 语言中的零值</h2><p>在使用 C语言进行开发时，我们不难发现一个问题，在声明一个变量但没有显式初始化时，它的值是不确定的。即<strong>未被显式初始化且具有自动存储持续时间的对象，其值是不确定的。</strong></p>
+<p>Go 语言的选择却恰恰相反，<strong>当通过声明或调用new为变量分配存储空间，或者通过复合文字字面量或调用make创建新值，且不提供显式初始化时，Go会为变量或值提供默认值</strong>。</p>
+<p>Go语言中的每个原生类型都有其默认值，这个默认值就是这个类型的零值。下面是Go规范定义的内置原生类型的默认值（零值）：</p>
+<ul>
+<li>整型类型：0</li>
+<li>浮点类型：0.0</li>
+<li>布尔类型：false</li>
+<li>字符串类型：””</li>
+<li>指针、interface、切片（slice）、channel、map、function：nil</li>
+<li>另外，Go的零值初始是递归的，即数组、结构体等类型的零值初始化就是对其组成元素逐一进行零值初始化。</li>
+</ul>
+<h2 id="零值可用"><a href="#零值可用" class="headerlink" title="零值可用"></a>零值可用</h2><p>当我们申明了一个变量，但是未对其进行显示初始化时，go语言编译器就会把该变量置为默认零值，且可以直接使用该变量。 例如：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a []<span class="type">int</span>              </span><br><span class="line">fmt.Println(a)</span><br><span class="line">a = <span class="built_in">append</span>(a, <span class="number">6</span>)</span><br><span class="line">fmt.Println(a)</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/be08366185f042319777d3bb24f6b064%7Etplv-k3u1fbpfcp-zoom-in-crop-mark%3A1512%3A0%3A0%3A0.awebp" alt="image.png"></p>
+<p>但是不能直接对<strong>切片</strong>进行赋值操作这样会出现错误，同样的还有<strong>map</strong>。</p>
+<h2 id="零值可用的好处"><a href="#零值可用的好处" class="headerlink" title="零值可用的好处"></a>零值可用的好处</h2><ul>
+<li>开箱即用：Go语言零值让程序变得简单了，有些场景我们不需要初始化变量就可以直接进行使用。 例如上面的slice、map还有基础类型。</li>
+<li>方法的归纳：利用零值可用的特性，我们可以通过定义一个空的结构体，配合空结构体方法接收者属性，将一些方法组合起来，在业务代码中便于后续的拓展和维护。</li>
+<li>标准库中可以不显示初始化：在GO标准库和运行时代码中,典型的零值可用：<code>sync.Mutex</code> 和 <code>bytes.Buffer</code>。</li>
+</ul>
+<p>零值可用的类型要注意尽量避免值复制。</p>
+<h1 id="使用复合字面值作为初值构造器"><a href="#使用复合字面值作为初值构造器" class="headerlink" title="使用复合字面值作为初值构造器"></a>使用复合字面值作为初值构造器</h1><p>在上一条中，我们了解到零值可用对于编写出符合Go惯用法的代码是大有裨益的。</p>
+<p>但有些时候，零值并非最好的选择，我们有必要为变量赋予适当的初值以保证其后续以正确的状态参与业务流程计算，尤其是Go语言中的一些复合类型的变量。</p>
+<p>Go语言中的复合类型包括结构体、数组、切片和map。对于复合类型变量，最常见的值构造方式就是对其内部元素进行逐个赋值，比如：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> s myStruct</span><br><span class="line">s.name = <span class="string">&quot;tony&quot;</span></span><br><span class="line">s.age = <span class="number">23</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a [<span class="number">5</span>]<span class="type">int</span></span><br><span class="line">a[<span class="number">0</span>] = <span class="number">13</span></span><br><span class="line">a[<span class="number">1</span>] = <span class="number">14</span></span><br><span class="line">...</span><br><span class="line">a[<span class="number">4</span>] = <span class="number">17</span></span><br><span class="line"></span><br><span class="line">sl := <span class="built_in">make</span>([]<span class="type">int</span>, <span class="number">5</span>, <span class="number">5</span>)</span><br><span class="line">sl[<span class="number">0</span>] = <span class="number">23</span></span><br><span class="line">sl[<span class="number">1</span>] = <span class="number">24</span></span><br><span class="line">...</span><br><span class="line">sl[<span class="number">4</span>] = <span class="number">27</span></span><br><span class="line"></span><br><span class="line">m := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">int</span>]<span class="type">string</span>)</span><br><span class="line">m[<span class="number">1</span>] = <span class="string">&quot;hello&quot;</span></span><br><span class="line">m[<span class="number">2</span>] = <span class="string">&quot;gopher&quot;</span></span><br><span class="line">m[<span class="number">3</span>] = <span class="string">&quot;!&quot;</span></span><br></pre></td></tr></table></figure>
+<p>但这样的值构造方式让代码显得有些烦琐，尤其是在构造组成较为复杂的复合类型变量的初值时。Go提供的复合字面值（composite literal）语法可以作为复合类型变量的初值构造器。上述代码可以使用复合字面值改写成下面这样：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">s := myStruct&#123;<span class="string">&quot;tony&quot;</span>, <span class="number">23</span>&#125;</span><br><span class="line">a := [<span class="number">5</span>]<span class="type">int</span>&#123;<span class="number">13</span>, <span class="number">14</span>, <span class="number">15</span>, <span class="number">16</span>, <span class="number">17</span>&#125;</span><br><span class="line">sl := []<span class="type">int</span>&#123;<span class="number">23</span>, <span class="number">24</span>, <span class="number">25</span>, <span class="number">26</span>, <span class="number">27</span>&#125;</span><br><span class="line">m := <span class="keyword">map</span>[<span class="type">int</span>]<span class="type">string</span> &#123;<span class="number">1</span>:<span class="string">&quot;hello&quot;</span>, <span class="number">2</span>:<span class="string">&quot;gopher&quot;</span>, <span class="number">3</span>:<span class="string">&quot;!&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>显然，最初的代码得到了大幅简化。</p>
+<p>复合字面值由两部分组成：一部分是<strong>类型</strong>，比如上述示例代码中赋值操作符右侧的<code>myStruct</code>、<code>[5]int</code>、<code>[]int</code>和<code>map[int]string</code>；另一部分是由<strong>大括号<code>&#123;&#125;</code>包裹的字面值</strong>。这里的字面值形式仅仅是Go复合字面值作为值构造器的基本用法。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在 Go 语言中，变量和常量是非常重要的概念。变量用于存储可以在程序运行过程中被修改的数据，而常量用于存储在程序的整个生命周期中都不会改变的数据。通过不同的声明方式，可以方便地声明和初始化变量和常量。在使用变量和常量时，需要注意它们的作用域和特点，以确保程序的正确性和可读性。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_27870421/article/details/118493425">Go 语言变量声明和赋值</a></li>
+<li><a target="_blank" rel="noopener" href="https://juejin.cn/post/7081885129978675236">Go 零值可用类型</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/lianshuiwuyi/p/17828972.html">理解 Go 中的零值</a></li>
+</ul>
+<p>难得有一两天没什么笔试和面试的事情，还是要好好整理一下最近学习的内容，但是翻过来覆过去又好像一直都是这些东西。但是这些内容又是常看常新，还是边复习就内容边学习新内容吧。如果时间合适的话，还是想最近一段时间学一学关于测试开发相关的东西。</p>
+<p>加油，祝我面试顺利！！！</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">随便寻个地方</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2024/10/23/%E5%91%BD%E5%90%8D%E3%80%81%E5%A3%B0%E6%98%8E%E5%92%8C%E8%B5%8B%E5%80%BC/">http://example.com/2024/10/23/%E5%91%BD%E5%90%8D%E3%80%81%E5%A3%B0%E6%98%8E%E5%92%8C%E8%B5%8B%E5%80%BC/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">随便寻个地方'Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%B1%82%E8%81%8C%E5%BF%85%E5%A4%87/">求职必备</a><a class="post-meta__tags" href="/tags/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Go%E8%AF%AD%E8%A8%80/">深入理解Go语言</a></div><div class="post_share"><div class="social-share" data-image="/img/touxiang.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/10/23/%E7%89%B9%E6%AE%8A%E7%9A%84%E5%AD%98%E5%9C%A8%E2%80%94%E2%80%94string/" title="特殊的存在——string"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">特殊的存在——string</div></div></a></div><div class="next-post pull-right"><a href="/2024/10/21/%E5%82%BB%E5%82%BB%E5%88%86%E4%B8%8D%E6%B8%85%E4%B9%8BCookie%E3%80%81Session%E3%80%81Tokenb%E5%92%8CJWT/" title="傻傻分不清之Cookie、Session、Tokenb和JWT"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">傻傻分不清之Cookie、Session、Tokenb和JWT</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2024/10/19/Go%E8%AF%AD%E8%A8%80%E5%88%9B%E4%B8%96%E7%BA%AA/" title="Go语言创世纪"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-19</div><div class="title">Go语言创世纪</div></div></a></div><div><a href="/2024/10/19/%E3%80%8A%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Go%E8%AF%AD%E8%A8%80%E3%80%8B/" title="《深入理解Go语言》"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-19</div><div class="title">《深入理解Go语言》</div></div></a></div><div><a href="/2024/10/23/%E6%9F%A5%E8%AF%A2%E6%95%88%E7%8E%87%E6%9C%80%E5%BF%AB%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E2%80%94%E2%80%94map/" title="查询效率最快的数据结构——map"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-23</div><div class="title">查询效率最快的数据结构——map</div></div></a></div><div><a href="/2024/10/23/%E7%89%B9%E6%AE%8A%E7%9A%84%E5%AD%98%E5%9C%A8%E2%80%94%E2%80%94string/" title="特殊的存在——string"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-23</div><div class="title">特殊的存在——string</div></div></a></div><div><a href="/2024/11/07/%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%E4%B8%A4%E5%85%84%E5%BC%9F%E2%80%94%E2%80%94%E6%95%B0%E7%BB%84%E5%92%8C%E5%88%87%E7%89%87%EF%BC%8C%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F/" title="顺序存储两兄弟——数组和切片，到底有什么区别？"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-11-07</div><div class="title">顺序存储两兄弟——数组和切片，到底有什么区别？</div></div></a></div><div><a href="/2024/10/24/%E4%BA%86%E8%A7%A3%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" title="了解基础数据类型"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-24</div><div class="title">了解基础数据类型</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/touxiang.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">随便寻个地方</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">69</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Go%E8%AF%AD%E8%A8%80%E6%98%AF%E4%BB%80%E4%B9%88%E7%B1%BB%E5%9E%8B%E7%9A%84%E8%AF%AD%E8%A8%80%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">Go语言是什么类型的语言？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%91%BD%E5%90%8D%EF%BC%9F"><span class="toc-number">2.</span> <span class="toc-text">如何命名？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E4%B8%80%E8%87%B4%E7%9A%84%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E%E5%BD%A2%E5%BC%8F"><span class="toc-number">3.</span> <span class="toc-text">使用一致的变量声明形式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8C%85%E7%BA%A7%E5%8F%98%E9%87%8F%E7%9A%84%E5%A3%B0%E6%98%8E%E6%96%B9%E5%BC%8F"><span class="toc-number">3.1.</span> <span class="toc-text">包级变量的声明方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A3%B0%E6%98%8E%E5%B9%B6%E5%90%8C%E6%97%B6%E6%98%BE%E5%BC%8F%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">3.1.1.</span> <span class="toc-text">声明并同时显式初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A3%B0%E6%98%8E%E4%BD%86%E5%BB%B6%E8%BF%9F%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">3.1.2.</span> <span class="toc-text">声明但延迟初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A3%B0%E6%98%8E%E8%81%9A%E7%B1%BB%E4%B8%8E%E5%B0%B1%E8%BF%91%E5%8E%9F%E5%88%99"><span class="toc-number">3.1.3.</span> <span class="toc-text">声明聚类与就近原则</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E7%9A%84%E5%A3%B0%E6%98%8E%E6%96%B9%E5%BC%8F"><span class="toc-number">3.2.</span> <span class="toc-text">局部变量的声明方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E4%BA%8E%E5%BB%B6%E8%BF%9F%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E%EF%BC%8C%E9%87%87%E7%94%A8%E5%B8%A6%E6%9C%89-var-%E5%85%B3%E9%94%AE%E5%AD%97%E7%9A%84%E5%A3%B0%E6%98%8E%E5%BD%A2%E5%BC%8F"><span class="toc-number">3.2.1.</span> <span class="toc-text">对于延迟初始化的局部变量声明，采用带有 var 关键字的声明形式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E4%BA%8E%E5%A3%B0%E6%98%8E%E4%B8%94%E6%98%BE%E5%BC%8F%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9A%84%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%EF%BC%8C%E5%BB%BA%E8%AE%AE%E4%BD%BF%E7%94%A8%E7%9F%AD%E5%8F%98%E9%87%8F%E7%94%9F%E5%91%BD%E5%BD%A2%E5%BC%8F"><span class="toc-number">3.2.2.</span> <span class="toc-text">对于声明且显式初始化的局部变量，建议使用短变量生命形式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%BD%E9%87%8F%E5%9C%A8%E5%88%86%E6%94%AF%E6%8E%A7%E5%88%B6%E6%97%B6%E5%BA%94%E7%94%A8%E7%9F%AD%E5%8F%98%E9%87%8F%E5%A3%B0%E6%98%8E%E5%BD%A2%E5%BC%8F"><span class="toc-number">3.2.3.</span> <span class="toc-text">尽量在分支控制时应用短变量声明形式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-number">3.3.</span> <span class="toc-text">小结</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%97%A0%E7%B1%BB%E5%9E%8B%E5%B8%B8%E9%87%8F%E7%AE%80%E5%8C%96%E4%BB%A3%E7%A0%81"><span class="toc-number">4.</span> <span class="toc-text">使用无类型常量简化代码</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Go%E5%B8%B8%E9%87%8F%E6%BA%AF%E6%BA%90"><span class="toc-number">4.1.</span> <span class="toc-text">Go常量溯源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%89%E7%B1%BB%E5%9E%8B%E5%B8%B8%E9%87%8F%E5%B8%A6%E6%9D%A5%E7%9A%84%E7%83%A6%E6%81%BC"><span class="toc-number">4.2.</span> <span class="toc-text">有类型常量带来的烦恼</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A0%E7%B1%BB%E5%9E%8B%E5%B8%B8%E9%87%8F%E6%B6%88%E9%99%A4%E7%83%A6%E6%81%BC%EF%BC%8C%E7%AE%80%E5%8C%96%E4%BB%A3%E7%A0%81"><span class="toc-number">4.3.</span> <span class="toc-text">无类型常量消除烦恼，简化代码</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-itoa-%E5%AE%9E%E7%8E%B0%E6%9E%9A%E4%B8%BE%E5%B8%B8%E9%87%8F"><span class="toc-number">5.</span> <span class="toc-text">使用 itoa 实现枚举常量</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B0%BD%E9%87%8F%E5%AE%9A%E4%B9%89%E9%9B%B6%E5%80%BC%E5%8F%AF%E7%94%A8%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="toc-number">6.</span> <span class="toc-text">尽量定义零值可用的类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Go-%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E9%9B%B6%E5%80%BC"><span class="toc-number">6.1.</span> <span class="toc-text">Go 语言中的零值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%B6%E5%80%BC%E5%8F%AF%E7%94%A8"><span class="toc-number">6.2.</span> <span class="toc-text">零值可用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%B6%E5%80%BC%E5%8F%AF%E7%94%A8%E7%9A%84%E5%A5%BD%E5%A4%84"><span class="toc-number">6.3.</span> <span class="toc-text">零值可用的好处</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%A4%8D%E5%90%88%E5%AD%97%E9%9D%A2%E5%80%BC%E4%BD%9C%E4%B8%BA%E5%88%9D%E5%80%BC%E6%9E%84%E9%80%A0%E5%99%A8"><span class="toc-number">7.</span> <span class="toc-text">使用复合字面值作为初值构造器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">8.</span> <span class="toc-text">总结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">8.1.</span> <span class="toc-text">参考资料</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/07/Untitled/" title="无题">无题</a><time datetime="2025-03-07T06:39:56.000Z" title="发表于 2025-03-07 14:39:56">2025-03-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E5%86%99%E4%BD%9C%E5%8A%A9%E6%89%8B-%E5%90%88%E5%B9%B6md%E6%96%87%E4%BB%B6-1741099573219/" title="无题">无题</a><time datetime="2025-03-04T14:46:16.000Z" title="发表于 2025-03-04 22:46:16">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E5%86%99%E4%BD%9C%E5%8A%A9%E6%89%8B-%E5%90%88%E5%B9%B6md%E6%96%87%E4%BB%B6-1741098965071/" title="无题">无题</a><time datetime="2025-03-04T14:36:08.000Z" title="发表于 2025-03-04 22:36:08">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/07/%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%E4%B8%A4%E5%85%84%E5%BC%9F%E2%80%94%E2%80%94%E6%95%B0%E7%BB%84%E5%92%8C%E5%88%87%E7%89%87%EF%BC%8C%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F/" title="顺序存储两兄弟——数组和切片，到底有什么区别？">顺序存储两兄弟——数组和切片，到底有什么区别？</a><time datetime="2024-11-07T05:04:09.000Z" title="发表于 2024-11-07 13:04:09">2024-11-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/10/24/%E4%BA%86%E8%A7%A3%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" title="了解基础数据类型">了解基础数据类型</a><time datetime="2024-10-24T09:57:13.000Z" title="发表于 2024-10-24 17:57:13">2024-10-24</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 随便寻个地方</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container').forEach(node => {
+            if (node.hasAttribute('display')) {
+              btf.wrap(node, 'div', { class: 'mathjax-overflow' })
+            } else {
+              btf.wrap(node, 'span', { class: 'mathjax-overflow' })
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,278 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>顺序存储两兄弟——数组和切片，到底有什么区别？ | 随便寻个地方'Blog</title><meta name="author" content="随便寻个地方"><meta name="copyright" content="随便寻个地方"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="数组是一个长度固定的数据类型，其长度在定义时就已经确定，不能动态改变；切片是一个长度可变的数据类型，其长度在定义时可以为空，也可以指定一个初始长度。  在 Go 语言中，数组和切片看起来很像，但其实它们又有很多的不同之处，这篇文章就来说说他们到底有哪些不同。 另外，这个问题在面试中也经常会被问到，属于入门级题目，看完文章之后，相信你会有一个很好的答案。 数组数组——一个几乎所有主流语言都支持的数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="顺序存储两兄弟——数组和切片，到底有什么区别？">
+<meta property="og:url" content="http://example.com/2024/11/07/%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%E4%B8%A4%E5%85%84%E5%BC%9F%E2%80%94%E2%80%94%E6%95%B0%E7%BB%84%E5%92%8C%E5%88%87%E7%89%87%EF%BC%8C%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F/index.html">
+<meta property="og:site_name" content="随便寻个地方&#39;Blog">
+<meta property="og:description" content="数组是一个长度固定的数据类型，其长度在定义时就已经确定，不能动态改变；切片是一个长度可变的数据类型，其长度在定义时可以为空，也可以指定一个初始长度。  在 Go 语言中，数组和切片看起来很像，但其实它们又有很多的不同之处，这篇文章就来说说他们到底有哪些不同。 另外，这个问题在面试中也经常会被问到，属于入门级题目，看完文章之后，相信你会有一个很好的答案。 数组数组——一个几乎所有主流语言都支持的数">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/touxiang.png">
+<meta property="article:published_time" content="2024-11-07T05:04:09.000Z">
+<meta property="article:modified_time" content="2024-11-07T06:23:09.000Z">
+<meta property="article:author" content="随便寻个地方">
+<meta property="article:tag" content="求职必备">
+<meta property="article:tag" content="深入理解Go语言">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/touxiang.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2024/11/07/%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%E4%B8%A4%E5%85%84%E5%BC%9F%E2%80%94%E2%80%94%E6%95%B0%E7%BB%84%E5%92%8C%E5%88%87%E7%89%87%EF%BC%8C%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '顺序存储两兄弟——数组和切片，到底有什么区别？',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-11-07 14:23:09'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="随便寻个地方'Blog" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/touxiang.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">69</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="随便寻个地方'Blog"><span class="site-name">随便寻个地方'Blog</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">顺序存储两兄弟——数组和切片，到底有什么区别？</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-11-07T05:04:09.000Z" title="发表于 2024-11-07 13:04:09">2024-11-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-11-07T06:23:09.000Z" title="更新于 2024-11-07 14:23:09">2024-11-07</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%A7%8B%E6%8B%9B%E7%89%B9%E8%BE%91/">秋招特辑</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="顺序存储两兄弟——数组和切片，到底有什么区别？"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<p>数组是一个长度固定的数据类型，其长度在定义时就已经确定，不能动态改变；切片是一个长度可变的数据类型，其长度在定义时可以为空，也可以指定一个初始长度。</p>
+</blockquote>
+<p>在 Go 语言中，数组和切片看起来很像，但其实它们又有很多的不同之处，这篇文章就来说说他们到底有哪些不同。</p>
+<p>另外，这个问题在面试中也经常会被问到，属于入门级题目，看完文章之后，相信你会有一个很好的答案。</p>
+<h1 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h1><p>数组——一个几乎所有主流语言都支持的数据结构，它是一篇连续的内存区域。Go 语言中的数组和其他语言中的数组有显著不同的特性，例如，其不能进行扩容、在复制和传递时为值复制。开发者通常将数组与 Go 语言中另一个重要的结构——切片进行对比，这个会在后面的部分介绍和对比。</p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>数组是由相同类型的集合组成的数据结构，计算机会为数组分配一块连续的内存来保存其中的元素，我们可以利用数组中元素的索引快速访问特定元素，常见的数组大多都是一味的线性数组，而多维数组在数值和图形计算领域有着比较常见的应用。</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/c6552fc033d6528426b11992d8ab4166b00234.png" alt="图片"></p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/2019-02-20-3D-array.jpg" alt="3D-array"></p>
+<p>数组作为一种基本的数据结构，我们通常会从两个维度描述一个数组，也就是数组中<strong>存储的元素类型</strong>和数组<strong>最大能存储元素的个数</strong>。</p>
+<p>Go 语言数组在初始化之后大小就无法改变，存储元素类型相同但是大小不同的数组类型在 Go 语言看起来也是完全不同的，只有两个条件都相同才是同一类型。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewArray</span><span class="params">(elem *Type, bound <span class="type">int64</span>)</span></span> *Type &#123;</span><br><span class="line">	<span class="keyword">if</span> bound &lt; <span class="number">0</span> &#123;</span><br><span class="line">		Fatalf(<span class="string">&quot;NewArray: invalid bound %v&quot;</span>, bound)</span><br><span class="line">	&#125;</span><br><span class="line">	t := New(TARRAY)</span><br><span class="line">	t.Extra = &amp;Array&#123;Elem: elem, Bound: bound&#125;</span><br><span class="line">	t.SetNotInHeap(elem.NotInHeap())</span><br><span class="line">	<span class="keyword">return</span> t</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译期间的数组类型是由上述的 <code>cmd/compile/internal.types.NewArray</code> 函数生成的，该类型包含两个字段，分别是<strong>元素类型 <code>Elem</code></strong> 和<strong>数组大小 <code>Bound</code> </strong>，这两个字段共同构成了数组类型，而当前数组是否应该在堆栈中初始化也在编译期间就确定了。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Array <span class="keyword">struct</span> &#123;</span><br><span class="line">	Elme	*Type</span><br><span class="line">    Bound 	<span class="type">int64</span></span><br><span class="line">&#125;	</span><br></pre></td></tr></table></figure>
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> nums [<span class="number">3</span>]<span class="type">int</span>   <span class="comment">// 声明并初始化为默认零值</span></span><br><span class="line"><span class="keyword">var</span> nums1 = [<span class="number">4</span>]<span class="type">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;  <span class="comment">// 声明同时初始化</span></span><br><span class="line"><span class="keyword">var</span> nums2 = [...]<span class="type">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125; <span class="comment">// ...可以表示后面初始化值的长度</span></span><br></pre></td></tr></table></figure>
+<p>前两种声明方式严格意义上来说其实是同一种类型，区别在于是否进行初始化。第三种声明方式是 Go 语言中对于数组的一种语法糖，可以不指定长度，编译器会自动推断，在编译期间就会被转换成前一种。</p>
+<p>下面我们来看一下编译器的推导过程。</p>
+<h3 id="上限推导"><a href="#上限推导" class="headerlink" title="上限推导"></a>上限推导</h3><p>两种不同的声明方式导致编译器做出完全不同的处理，如果使用的是第一种方式，那么变量的类型在编译进行到类型检查阶段就会被提取出来，随后使用 <code>cmd/compile/internal/types.NewArray</code> 创建包含数组大小的 <code>cmd/compile/internal/types.Array</code> 结构体。</p>
+<p>当使用第二种声明方式时，编译器会在 <code>cmd/compile/internal/gc.typecheckcomplit</code> 函数中对该数组的大小进行推导：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">typecheckcomplit</span><span class="params">(n *Node)</span></span> (res *Node) &#123;</span><br><span class="line">	...</span><br><span class="line">	<span class="keyword">if</span> n.Right.Op == OTARRAY &amp;&amp; n.Right.Left != <span class="literal">nil</span> &amp;&amp; n.Right.Left.Op == ODDD &#123;</span><br><span class="line">		n.Right.Right = typecheck(n.Right.Right, ctxType)</span><br><span class="line">		<span class="keyword">if</span> n.Right.Right.Type == <span class="literal">nil</span> &#123;</span><br><span class="line">			n.Type = <span class="literal">nil</span></span><br><span class="line">			<span class="keyword">return</span> n</span><br><span class="line">		&#125;</span><br><span class="line">		elemType := n.Right.Right.Type</span><br><span class="line"></span><br><span class="line">		length := typecheckarraylit(elemType, <span class="number">-1</span>, n.List.Slice(), <span class="string">&quot;array literal&quot;</span>)</span><br><span class="line"></span><br><span class="line">		n.Op = OARRAYLIT</span><br><span class="line">		n.Type = types.NewArray(elemType, length)</span><br><span class="line">		n.Right = <span class="literal">nil</span></span><br><span class="line">		<span class="keyword">return</span> n</span><br><span class="line">	&#125;</span><br><span class="line">	...</span><br><span class="line"></span><br><span class="line">	<span class="keyword">switch</span> t.Etype &#123;</span><br><span class="line">	<span class="keyword">case</span> TARRAY:</span><br><span class="line">		typecheckarraylit(t.Elem(), t.NumElem(), n.List.Slice(), <span class="string">&quot;array literal&quot;</span>)</span><br><span class="line">		n.Op = OARRAYLIT</span><br><span class="line">		n.Right = <span class="literal">nil</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个删减后的 <code>cmd/compile/internal/gc.typecheckcomplit</code> 会调用 <code>cmd/compile/internal/gc.typecheckarraylit</code> 通过遍历元素的方式来计算数组中元素的数量。</p>
+<p>所以我们可以看出 <code>[...]T&#123;1, 2, 3&#125;</code> 和 <code>[3]T&#123;1, 2, 3&#125;</code> 在运行时是完全等价的，<code>[...]T</code> 这种初始化方式也只是 Go 语言为我们提供的一种语法糖，当我们不想计算数组中的元素个数时可以通过这种方法减少一些工作量。</p>
+<h3 id="语句转换"><a href="#语句转换" class="headerlink" title="语句转换"></a>语句转换</h3><p>对于一个由字面量组成的数组，根据数组元素数量的不同，编译器会在负责初始化字面量的 <code>cmd/compile/internal/gc.anylit</code> 函数中做两种不同的优化：</p>
+<ol>
+<li>当元素数量小于或者等于 4 个时，会直接将数组中的元素放置在栈上；</li>
+<li>当元素数量大于 4 个时，会将数组中的元素放置到静态区并在运行时取出；</li>
+</ol>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">anylit</span><span class="params">(n *Node, var_ *Node, init *Nodes)</span></span> &#123;</span><br><span class="line">	t := n.Type</span><br><span class="line">	<span class="keyword">switch</span> n.Op &#123;</span><br><span class="line">	<span class="keyword">case</span> OSTRUCTLIT, OARRAYLIT:</span><br><span class="line">		<span class="keyword">if</span> n.List.Len() &gt; <span class="number">4</span> &#123;</span><br><span class="line">			...</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		fixedlit(inInitFunction, initKindLocalCode, n, var_, init)</span><br><span class="line">	...</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当数组的元素<strong>小于或者等于四个</strong>时，<code>cmd/compile/internal/gc.fixedlit</code> 会负责在函数编译之前将 <code>[3]&#123;1, 2, 3&#125;</code> 转换成更加原始的语句：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">fixedlit</span><span class="params">(ctxt initContext, kind initKind, n *Node, var_ *Node, init *Nodes)</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> splitnode <span class="function"><span class="keyword">func</span><span class="params">(*Node)</span></span> (a *Node, value *Node)</span><br><span class="line">	...</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _, r := <span class="keyword">range</span> n.List.Slice() &#123;</span><br><span class="line">		a, value := splitnode(r)</span><br><span class="line">		a = nod(OAS, a, value)</span><br><span class="line">		a = typecheck(a, ctxStmt)</span><br><span class="line">		<span class="keyword">switch</span> kind &#123;</span><br><span class="line">		<span class="keyword">case</span> initKindStatic:</span><br><span class="line">			genAsStatic(a)</span><br><span class="line">		<span class="keyword">case</span> initKindLocalCode:</span><br><span class="line">			a = orderStmtInPlace(a, <span class="keyword">map</span>[<span class="type">string</span>][]*Node&#123;&#125;)</span><br><span class="line">			a = walkstmt(a)</span><br><span class="line">			init.Append(a)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当数组中元素的个数小于或者等于四个并且 <code>cmd/compile/internal/gc.fixedlit</code> 函数接收的 <code>kind</code> 是 <code>initKindLocalCode</code> 时，上述代码会将原有的初始化语句 <code>[3]int&#123;1, 2, 3&#125;</code> 拆分成一个声明变量的表达式和几个赋值表达式，这些表达式会完成对数组的初始化：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr [<span class="number">3</span>]<span class="type">int</span></span><br><span class="line">arr[<span class="number">0</span>] = <span class="number">1</span></span><br><span class="line">arr[<span class="number">1</span>] = <span class="number">2</span></span><br><span class="line">arr[<span class="number">2</span>] = <span class="number">3</span></span><br></pre></td></tr></table></figure>
+<p>但是如果当前数组的元素大于四个，<code>cmd/compile/internal/gc.anylit</code> 会先获取一个唯一的 <code>staticname</code>，然后调用 <code>cmd/compile/internal/gc.fixedlit</code> 函数在静态存储区初始化数组中的元素并将临时变量赋值给数组：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">anylit</span><span class="params">(n *Node, var_ *Node, init *Nodes)</span></span> &#123;</span><br><span class="line">	t := n.Type</span><br><span class="line">	<span class="keyword">switch</span> n.Op &#123;</span><br><span class="line">	<span class="keyword">case</span> OSTRUCTLIT, OARRAYLIT:</span><br><span class="line">		<span class="keyword">if</span> n.List.Len() &gt; <span class="number">4</span> &#123;</span><br><span class="line">			vstat := staticname(t)</span><br><span class="line">			vstat.Name.SetReadonly(<span class="literal">true</span>)</span><br><span class="line"></span><br><span class="line">			fixedlit(inNonInitFunction, initKindStatic, n, vstat, init)</span><br><span class="line"></span><br><span class="line">			a := nod(OAS, var_, vstat)</span><br><span class="line">			a = typecheck(a, ctxStmt)</span><br><span class="line">			a = walkexpr(a, init)</span><br><span class="line">			init.Append(a)</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		...</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>假设代码需要初始化 <code>[5]int&#123;1, 2, 3, 4, 5&#125;</code>，那么我们可以将上述过程理解成以下的伪代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr [<span class="number">5</span>]<span class="type">int</span></span><br><span class="line">statictmp_0[<span class="number">0</span>] = <span class="number">1</span></span><br><span class="line">statictmp_0[<span class="number">1</span>] = <span class="number">2</span></span><br><span class="line">statictmp_0[<span class="number">2</span>] = <span class="number">3</span></span><br><span class="line">statictmp_0[<span class="number">3</span>] = <span class="number">4</span></span><br><span class="line">statictmp_0[<span class="number">4</span>] = <span class="number">5</span></span><br><span class="line">arr = statictmp_0</span><br></pre></td></tr></table></figure>
+<p>总结起来，在不考虑逃逸分析的情况下，如果数组中元素的个数小于或者等于 4 个，那么所有的变量会直接在栈上初始化，如果数组元素大于 4 个，变量就会在静态存储区初始化然后拷贝到栈上，这些转换后的代码才会继续进入<strong>中间代码生成</strong>和<strong>机器码生成</strong>两个阶段，最后生成可以执行的二进制文件。</p>
+<h2 id="访问和赋值"><a href="#访问和赋值" class="headerlink" title="访问和赋值"></a>访问和赋值</h2><p>无论是在栈上还是静态存储区，数组在内存中都是一连串的内存空间，我们通过指向数组开头的指针、元素的数量以及元素类型占的空间大小表示数组。如果我们不知道数组中元素的数量，访问时可能发生越界；而如果不知道数组中元素类型的大小，就没有办法知道应该一次取出多少字节的数据，无论丢失了哪个信息，我们都无法知道这片连续的内存空间到底存储了什么数据。</p>
+<p>数组访问越界时非常严重的错误，Go 语言中可以在编译期间的静态类型检查判断数组越界，<code>cmd/compile/internal/gc.typecheck1</code> 会验证访问数组的索引：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">typecheck1</span><span class="params">(n *Node, top <span class="type">int</span>)</span></span> (res *Node) &#123;</span><br><span class="line">	<span class="keyword">switch</span> n.Op &#123;</span><br><span class="line">	<span class="keyword">case</span> OINDEX:</span><br><span class="line">		ok |= ctxExpr</span><br><span class="line">		l := n.Left  <span class="comment">// array</span></span><br><span class="line">		r := n.Right <span class="comment">// index</span></span><br><span class="line">		<span class="keyword">switch</span> n.Left.Type.Etype &#123;</span><br><span class="line">		<span class="keyword">case</span> TSTRING, TARRAY, TSLICE:</span><br><span class="line">			...</span><br><span class="line">			<span class="keyword">if</span> n.Right.Type != <span class="literal">nil</span> &amp;&amp; !n.Right.Type.IsInteger() &#123;</span><br><span class="line">				yyerror(<span class="string">&quot;non-integer array index %v&quot;</span>, n.Right)</span><br><span class="line">				<span class="keyword">break</span></span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span> !n.Bounded() &amp;&amp; Isconst(n.Right, CTINT) &#123;</span><br><span class="line">				x := n.Right.Int64()</span><br><span class="line">				<span class="keyword">if</span> x &lt; <span class="number">0</span> &#123;</span><br><span class="line">					yyerror(<span class="string">&quot;invalid array index %v (index must be non-negative)&quot;</span>, n.Right)</span><br><span class="line">				&#125; <span class="keyword">else</span> <span class="keyword">if</span> n.Left.Type.IsArray() &amp;&amp; x &gt;= n.Left.Type.NumElem() &#123;</span><br><span class="line">					yyerror(<span class="string">&quot;invalid array index %v (out of bounds for %d-element array)&quot;</span>, n.Right, n.Left.Type.NumElem())</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	...</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>访问数组的索引是非整数时，报错 “non-integer array index %v”；</li>
+<li>访问数组的索引是负数时，报错 “invalid array index %v (index must be non-negative)”；</li>
+<li>访问数组的索引越界时，报错 “invalid array index %v (out of bounds for %d-element array)”；</li>
+</ol>
+<p>数组和字符串的一些简单越界错误都会在编译期间发现，例如：直接使用整数或者常量访问数组；但是如果使用变量去访问数组或者字符串时，编译器就无法提前发现错误。</p>
+<p>Go 语言对于数组的访问还是有着比较多的检查的，它不仅会在编译期间提前发现一些简单的越界错误并插入用于检测数组上限的函数调用，还会在运行期间通过插入的函数保证不会发生越界。</p>
+<h2 id="参数传递"><a href="#参数传递" class="headerlink" title="参数传递"></a>参数传递</h2><p>如果数组作为函数的参数，那么实际传递的是一份数组的拷贝，而不是数组的指针。这也就意味着，在函数中修改数组的元素是不会影响到原始数组的。</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/0383cab49f5ba2bbbb9328165db34f553d0bfa.png" alt="图片"></p>
+<h1 id="切片"><a href="#切片" class="headerlink" title="切片"></a>切片</h1><blockquote>
+<p>Go语言中的切片（Slice）在某种程度上和其他语言（例如C语言）中的数组在使用中有许多相似的地方。但是 Go语言中的切片有许多独特之处，例如，切片是长度可变的序列。序列中的每个元素都有相同的类型。一个切片一般写作 []T，其中T代表 Slice 中元素的类型。和数组不同的是，切片不用指定固定长度。</p>
+</blockquote>
+<p>由于数组 Array 的特性，在 Go 代码中适用场景有限，而切片 Slice 会用得非常多。切片 Slice 基于数组，但提供了更高的灵活性，它可以动态地扩容。切片的类型和长度无关。</p>
+<h2 id="概述-1"><a href="#概述-1" class="headerlink" title="概述"></a>概述</h2><p>Slice 的底层数据是数组，Slice 是对数组的封装，它描述一个数组的片段。两者都可以通过下标来访问单个元素。</p>
+<p>数组是定长的，长度定义好之后，不能再更改。在 Go 中，数组是不常见的，因为其长度是类型的一部分，限制了它的表达能力，比如 <code>[3]int</code> 和 <code>[4]int</code> 就是不同的类型。</p>
+<p>数组就是一片连续的内存， Slice 实际上是一个结构体，包含三个字段：<strong>长度</strong>、<strong>容量</strong>、<strong>底层数组</strong>。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// runtime/slice.go</span></span><br><span class="line"><span class="keyword">type</span> slice <span class="keyword">struct</span> &#123;</span><br><span class="line">	array unsafe.Pointer <span class="comment">// 元素指针</span></span><br><span class="line">	<span class="built_in">len</span>   <span class="type">int</span> <span class="comment">// 长度，实际切片中存储数据的数量</span></span><br><span class="line">	<span class="built_in">cap</span>   <span class="type">int</span> <span class="comment">// 容量，底层数组最多容纳元素的数量</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>内置的 <code>len</code>和 <code>cap</code>函数可以分别获取切片的长度和容量。</p>
+<p>slice 的数据结构如下：</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/0.png" alt="切片数据结构"></p>
+<p>注意，底层数组是可以被多个 Slice 同时指向的，因此对一个 Slice 的元素进行操作是有可能影响到其他 Slice 的。</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/image-20241107142015248.png" alt="image-20241107142015248"></p>
+<h2 id="初始化-1"><a href="#初始化-1" class="headerlink" title="初始化"></a>初始化</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> slice1 []<span class="type">int</span></span><br><span class="line"><span class="keyword">var</span> slice2 []<span class="type">int</span> = <span class="built_in">make</span>([]<span class="type">int</span>, <span class="number">5</span>)</span><br><span class="line"><span class="keyword">var</span> slice3 []<span class="type">int</span> = <span class="built_in">make</span>([]<span class="type">int</span>, <span class="number">5</span>, <span class="number">7</span>)</span><br><span class="line">slice4 := []<span class="type">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>切片有长度和容量的区别，可以在初始化时指定。由于切片具有可扩展性，所以当它的容量比长度大时，意味着为切片元素的增长预留了内存空间。</p>
+<h2 id="动态扩容"><a href="#动态扩容" class="headerlink" title="动态扩容"></a>动态扩容</h2><h2 id="参数传递-1"><a href="#参数传递-1" class="headerlink" title="参数传递"></a>参数传递</h2></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">随便寻个地方</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2024/11/07/%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%E4%B8%A4%E5%85%84%E5%BC%9F%E2%80%94%E2%80%94%E6%95%B0%E7%BB%84%E5%92%8C%E5%88%87%E7%89%87%EF%BC%8C%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F/">http://example.com/2024/11/07/%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%E4%B8%A4%E5%85%84%E5%BC%9F%E2%80%94%E2%80%94%E6%95%B0%E7%BB%84%E5%92%8C%E5%88%87%E7%89%87%EF%BC%8C%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">随便寻个地方'Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%B1%82%E8%81%8C%E5%BF%85%E5%A4%87/">求职必备</a><a class="post-meta__tags" href="/tags/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Go%E8%AF%AD%E8%A8%80/">深入理解Go语言</a></div><div class="post_share"><div class="social-share" data-image="/img/touxiang.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2025/03/04/%E5%86%99%E4%BD%9C%E5%8A%A9%E6%89%8B-%E5%90%88%E5%B9%B6md%E6%96%87%E4%BB%B6-1741098965071/" title=""><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info"></div></div></a></div><div class="next-post pull-right"><a href="/2024/10/24/%E4%BA%86%E8%A7%A3%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" title="了解基础数据类型"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">了解基础数据类型</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2024/10/19/Go%E8%AF%AD%E8%A8%80%E5%88%9B%E4%B8%96%E7%BA%AA/" title="Go语言创世纪"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-19</div><div class="title">Go语言创世纪</div></div></a></div><div><a href="/2024/10/19/%E3%80%8A%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Go%E8%AF%AD%E8%A8%80%E3%80%8B/" title="《深入理解Go语言》"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-19</div><div class="title">《深入理解Go语言》</div></div></a></div><div><a href="/2024/10/23/%E6%9F%A5%E8%AF%A2%E6%95%88%E7%8E%87%E6%9C%80%E5%BF%AB%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E2%80%94%E2%80%94map/" title="查询效率最快的数据结构——map"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-23</div><div class="title">查询效率最快的数据结构——map</div></div></a></div><div><a href="/2024/10/23/%E7%89%B9%E6%AE%8A%E7%9A%84%E5%AD%98%E5%9C%A8%E2%80%94%E2%80%94string/" title="特殊的存在——string"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-23</div><div class="title">特殊的存在——string</div></div></a></div><div><a href="/2024/10/23/%E5%91%BD%E5%90%8D%E3%80%81%E5%A3%B0%E6%98%8E%E5%92%8C%E8%B5%8B%E5%80%BC/" title="命名、声明和赋值"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-23</div><div class="title">命名、声明和赋值</div></div></a></div><div><a href="/2024/10/24/%E4%BA%86%E8%A7%A3%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" title="了解基础数据类型"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-10-24</div><div class="title">了解基础数据类型</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/touxiang.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">随便寻个地方</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">69</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E7%BB%84"><span class="toc-number">1.</span> <span class="toc-text">数组</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="toc-number">1.2.</span> <span class="toc-text">初始化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8A%E9%99%90%E6%8E%A8%E5%AF%BC"><span class="toc-number">1.2.1.</span> <span class="toc-text">上限推导</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%AD%E5%8F%A5%E8%BD%AC%E6%8D%A2"><span class="toc-number">1.2.2.</span> <span class="toc-text">语句转换</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BF%E9%97%AE%E5%92%8C%E8%B5%8B%E5%80%BC"><span class="toc-number">1.3.</span> <span class="toc-text">访问和赋值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92"><span class="toc-number">1.4.</span> <span class="toc-text">参数传递</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%87%E7%89%87"><span class="toc-number">2.</span> <span class="toc-text">切片</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E8%BF%B0-1"><span class="toc-number">2.1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96-1"><span class="toc-number">2.2.</span> <span class="toc-text">初始化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E6%89%A9%E5%AE%B9"><span class="toc-number">2.3.</span> <span class="toc-text">动态扩容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92-1"><span class="toc-number">2.4.</span> <span class="toc-text">参数传递</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/07/Untitled/" title="无题">无题</a><time datetime="2025-03-07T06:39:56.000Z" title="发表于 2025-03-07 14:39:56">2025-03-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E5%86%99%E4%BD%9C%E5%8A%A9%E6%89%8B-%E5%90%88%E5%B9%B6md%E6%96%87%E4%BB%B6-1741099573219/" title="无题">无题</a><time datetime="2025-03-04T14:46:16.000Z" title="发表于 2025-03-04 22:46:16">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E5%86%99%E4%BD%9C%E5%8A%A9%E6%89%8B-%E5%90%88%E5%B9%B6md%E6%96%87%E4%BB%B6-1741098965071/" title="无题">无题</a><time datetime="2025-03-04T14:36:08.000Z" title="发表于 2025-03-04 22:36:08">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/07/%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%E4%B8%A4%E5%85%84%E5%BC%9F%E2%80%94%E2%80%94%E6%95%B0%E7%BB%84%E5%92%8C%E5%88%87%E7%89%87%EF%BC%8C%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F/" title="顺序存储两兄弟——数组和切片，到底有什么区别？">顺序存储两兄弟——数组和切片，到底有什么区别？</a><time datetime="2024-11-07T05:04:09.000Z" title="发表于 2024-11-07 13:04:09">2024-11-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/10/24/%E4%BA%86%E8%A7%A3%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" title="了解基础数据类型">了解基础数据类型</a><time datetime="2024-10-24T09:57:13.000Z" title="发表于 2024-10-24 17:57:13">2024-10-24</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 随便寻个地方</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container').forEach(node => {
+            if (node.hasAttribute('display')) {
+              btf.wrap(node, 'div', { class: 'mathjax-overflow' })
+            } else {
+              btf.wrap(node, 'span', { class: 'mathjax-overflow' })
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

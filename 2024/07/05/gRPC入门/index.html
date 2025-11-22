@@ -1,0 +1,338 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>gRPC入门 | 随便寻个地方'Blog</title><meta name="author" content="随便寻个地方"><meta name="copyright" content="随便寻个地方"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="RPC 和 gRPC 其实是笔者在几个月前就开始接触的东西，但是由于当时在 Windows 上配不好环境加上学起来确实有点难度，所以就放下没去做项目，就简单地了解了一下。最近几天实在是没什么想学的，在拿起来看看吧，环境已经在 WSL 上配置好了，回头可以直接开始做项目了。 那今天就先来学习总结一下基础概念吧。 关于 RPC对 RPC 不了解地人，或许会纠结其与 TCP、HTTP 等的关系。后者是网">
+<meta property="og:type" content="article">
+<meta property="og:title" content="gRPC入门">
+<meta property="og:url" content="http://example.com/2024/07/05/gRPC%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="随便寻个地方&#39;Blog">
+<meta property="og:description" content="RPC 和 gRPC 其实是笔者在几个月前就开始接触的东西，但是由于当时在 Windows 上配不好环境加上学起来确实有点难度，所以就放下没去做项目，就简单地了解了一下。最近几天实在是没什么想学的，在拿起来看看吧，环境已经在 WSL 上配置好了，回头可以直接开始做项目了。 那今天就先来学习总结一下基础概念吧。 关于 RPC对 RPC 不了解地人，或许会纠结其与 TCP、HTTP 等的关系。后者是网">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/touxiang.png">
+<meta property="article:published_time" content="2024-07-05T13:12:05.000Z">
+<meta property="article:modified_time" content="2024-07-05T14:11:25.492Z">
+<meta property="article:author" content="随便寻个地方">
+<meta property="article:tag" content="项目开发">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/touxiang.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2024/07/05/gRPC%E5%85%A5%E9%97%A8/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'gRPC入门',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-07-05 22:11:25'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="随便寻个地方'Blog" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/touxiang.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">69</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="随便寻个地方'Blog"><span class="site-name">随便寻个地方'Blog</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">gRPC入门</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-07-05T13:12:05.000Z" title="发表于 2024-07-05 21:12:05">2024-07-05</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-07-05T14:11:25.492Z" title="更新于 2024-07-05 22:11:25">2024-07-05</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF%E5%89%96%E6%9E%90/">技术剖析</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="gRPC入门"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>RPC 和 gRPC 其实是笔者在几个月前就开始接触的东西，但是由于当时在 Windows 上配不好环境加上学起来确实有点难度，所以就放下没去做项目，就简单地了解了一下。最近几天实在是没什么想学的，在拿起来看看吧，环境已经在 WSL 上配置好了，回头可以直接开始做项目了。</p>
+<p>那今天就先来学习总结一下基础概念吧。</p>
+<h1 id="关于-RPC"><a href="#关于-RPC" class="headerlink" title="关于 RPC"></a>关于 RPC</h1><p>对 RPC 不了解地人，或许会纠结其与 TCP、HTTP 等的关系。后者是网络传输种的协议，而 RPC 是一种设计、实现框架。通讯协议只是其中一部分，RPC 不仅要解决协议通讯的问题，还有序列化与反序列化，以及消息通知。</p>
+<h2 id="是什么？"><a href="#是什么？" class="headerlink" title="是什么？"></a>是什么？</h2><p>从本质上讲，它使一台机器上的程序能够调用另一台机器上的子程序，而不会意识到它是远程的。RPC 是一种软件通信协议，一个程序可以用来向位于网络上另一台计算机的程序请求服务，而不必了解网络的细节。</p>
+<p>一个完整的 RPC 框架里面包含了四个核心的组件，分别是 <code>CLient</code>, <code>Server</code>, <code>ClientOptions</code> 以及 <code>ServerOptions</code>，这个 Options 就是 RPC 需要设计实现的东西。</p>
+<ul>
+<li>客户端（Client）：服务的调用方。</li>
+<li>服务端（Server）：真正的服务提供方。</li>
+<li>客户端存根（ClientOption）：socket 管理，网络收发包的序列化。</li>
+<li>服务端存根（ServerOption）：socket 管理，提醒 server 层 rpc 方法调用，以及网络收发包的序列化。</li>
+</ul>
+<p>RPC 的逻辑示意图如下：</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/image-20240705212612357.png" alt="image-20240705212612357"></p>
+<h2 id="为什么？"><a href="#为什么？" class="headerlink" title="为什么？"></a>为什么？</h2><p>为什么会有 RPC？RPC 和 HTTP 是什么关系？</p>
+<blockquote>
+<p>Socket 和 HTTP 编程使用消息传递范式。客户端向服务器发送一个消息，而服务器通常会发送一个消息回来。双方都负责以双方都能理解的格式创建消息，并从这些消息中读出数据。</p>
+<p>然而，大多数独立的应用程序并没有那么多地使用消息传递技术。一般来说，首选的机制是函数（或方法或过程）的调用。在这种方式中，程序将调用一个带有参数列表的函数，并在完成函数调用后有一组返回值。这些值可能是函数值，或者如果地址被作为参数传递，那么这些地址的内容可能已经被改变。地址的内容可能已经被改变。</p>
+<p>RPC 就是将这种编程方式引入网络世界的一种尝试。因此，客户端将进行在它看来是正常的过程调用。客户端会将其打包成网络消息并传送给服务器。服务器会将其解包，并在服务器端将其转回为过程调用。服务器端的过程调用。这个调用的结果将被打包，以便返回给客户端。</p>
+</blockquote>
+<p>上面的解释可谓是非常官方，看过之后也不是很清楚 RPC 到底是什么，有什么用，<a target="_blank" rel="noopener" href="https://xiaolincoding.com/network/2_http/http_rpc.html">建议去看这篇博客</a>，解释的非常清楚，这里给一下结论：</p>
+<ul>
+<li>纯裸 TCP 是能收发数据，但它是个<strong>无边界</strong>的数据流，上层需要定义<strong>消息格式</strong>用于定义<strong>消息边界</strong>。于是就有了各种协议，HTTP 和各类 RPC 协议就是在 TCP 之上定义的应用层协议。</li>
+<li><strong>RPC 本质上不算是协议，而是一种调用方式</strong>，而像 gRPC 和 Thrift 这样的具体实现，才是协议，它们是实现了 RPC 调用的协议。目的是希望程序员能像调用本地方法那样去调用远端的服务方法。同时 RPC 有很多种实现方式，<strong>不一定非得基于 TCP 协议</strong>。</li>
+<li>从发展历史来说，<strong>HTTP 主要用于 B/S 架构，而 RPC 更多用于 C/S 架构。但现在其实已经没分那么清了，B/S 和 C/S 在慢慢融合</strong>。很多软件同时支持多端，所以对外一般用 HTTP 协议，而内部集群的微服务之间则采用 RPC 协议进行通讯。</li>
+<li>RPC 其实比 HTTP 出现的要早，且比目前主流的 HTTP/1.1 <strong>性能</strong>要更好，所以大部分公司内部都还在使用 RPC。</li>
+<li><strong>HTTP/2.0</strong> 在 <strong>HTTP/1.1</strong> 的基础上做了优化，性能可能比很多 RPC 协议都要好，但由于是这几年才出来的，所以也不太可能取代掉 RPC。</li>
+</ul>
+<h2 id="RPC-和-REST-的区别"><a href="#RPC-和-REST-的区别" class="headerlink" title="RPC 和 REST 的区别"></a>RPC 和 REST 的区别</h2><p>RPC 与 REST 最大的区别就在于 RPC 提供了更好的抽象，RPC 甚至将网络传输细节彻底隐藏了，而 REST 没有。具体来说，REST 至少要求用于提供 URL 以及请求参数，而 RPC 隐藏了与网络传输的相关实现细节。另一方面，RPC 可以基于任何网络通信协议，而 REST 通常基于 HTTP（或者 HTTPS）协议。RPC 调用者并不会关心具体的协议是：HTTP、TCP 还是其他任何自定义协议。</p>
+<h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><p>以下是 RPC 为开发人员和应用程序管理员提供的一些优势：</p>
+<ul>
+<li>帮助客户端通过传统使用高级语言的过程调用与服务器进行通信。</li>
+<li>可以在分布式环境以及本地环境中使用。</li>
+<li>支持面向进程和面向线程的模型。</li>
+<li>对用户隐藏内部消息传递机制。</li>
+<li>只需极少的努力即可重写和重新开发代码。</li>
+<li>提供抽象，即对用户隐藏网络通信的消息传递性质。</li>
+<li>省略许多协议层以提高性能。</li>
+</ul>
+<p>另一方面，RPC 的一些缺点包括：</p>
+<ul>
+<li>客户端和服务器对各自的例程使用不同的执行环境，并且资源（例如，文件）的使用也更加复杂。因此，RPC 系统并不总是适合传输大量数据。</li>
+<li>RPC 非常容易发生故障，因为它涉及通信系统，另一台计算机和另一个进程。</li>
+<li>RPC 没有统一的标准;它可以通过多种方式实现。</li>
+<li>RPC 只是基于交互的，因此，在硬件架构方面，它不提供任何灵活性。</li>
+</ul>
+<h1 id="关于-gRPC"><a href="#关于-gRPC" class="headerlink" title="关于 gRPC"></a>关于 gRPC</h1><p>gRPC 是 RPC 的一种，它使用 Protocol Buffer (简称 Protobuf) 作为序列化格式，Protocol Buffer 是来自 Google 的序列化框架，比 Json 更加轻便高效，同时基于 HTTP/2 标准设计，<strong>带来诸如双向流、流控、头部压缩、单 TCP 连接上的多复用请求</strong>等特性。这些特性使得其在移动设备上表现更好，更省电和节省空间占用。用 protoc 就能使用 proto 文件帮助我们生成上面的 option 层代码。</p>
+<p>在 gRPC 中，客户端应用程序可以直接在另一台计算机上的服务器应用程序上调用方法，就好像它是本地对象一样，从而使您更轻松地创建分布式应用程序和服务。</p>
+<p>gRPC 的调用模型如下：</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/image-20240705215225298.png" alt="image-20240705215225298"></p>
+<h2 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h2><ul>
+<li><strong>分布式场景</strong> ：gRPC 设计为低延迟和高吞吐量通信，非常适用于效率至关重要的轻型微服务。</li>
+<li><strong>点对点实时通信</strong>： gRPC 对双向流媒体提供出色的支持，可以实时推送消息而无需轮询。</li>
+<li><strong>多语言混合开发</strong> ：支持主流的开发语言，使 gRPC 成为多语言开发环境的理想选择。</li>
+<li><strong>网络受限环境</strong> ： 使用 Protobuf（一种轻量级消息格式）序列化 gRPC 消息。gRPC 消息始终小于等效的 JSON 消息。</li>
+</ul>
+<h2 id="四种调用方式"><a href="#四种调用方式" class="headerlink" title="四种调用方式"></a>四种调用方式</h2><p>学习 gRPC 使用之前，先介绍一下 RPC 中的客户端与服务端。在 RPC 中，服务端会开启服务供客户端调用，每一句 RPC 调用都是一次客户端发请求到服务器获得相应的过程，中间过程被封装了，看起来像本地的一次调用一样，一次 RPC 调用也就是一次通讯过程。</p>
+<p>RPC 调用通常根据双端是否流式交互，分为了<code>单项 RPC (Simple RPC)</code>、<code>服务端流式（Server-side streaming RPC）</code>、<code>客户端流式（Client-side streaming RPC）</code>、和<code>双向流式（Bidirectional streaming RPC）</code>四种方式。</p>
+<ul>
+<li><code>单项 RPC(Simple RPC)</code>：客户端发起请求并等待服务端响应，就是普通的 Ping-Pong 模式。</li>
+<li><code>服务端流式 RPC（Server-side streaming RPC）</code>：服务端发送数据，客户端接收数据。客户端发送请求到服务器，拿到一个流去读取返回的消息序列。 客户端读取返回的流，直到里面没有任何消息。</li>
+<li><code>客户端流式 RPC（Client-side streaming RPC）</code>：与服务端数据流模式相反，这次是客户端源源不断的向服务端发送数据流，而在发送结束后，由服务端返回一个响应。</li>
+<li><code>双向流式 RPC（Bidirectional streaming RPC）</code>：双方使用读写流去发送一个消息序列，两个流独立操作，双方可以同时发送和同时接收。</li>
+</ul>
+<p>为了便于大家理解四种 gRPC 调用的应用场景，这里举一个例子，假设你是小超，有一个女朋友叫婷婷，婷婷的每种情绪代表一个微服务，你们之间的每一次对话可以理解为一次 PRC 调用，为了便于画流程图，RPC 请求被封装成 client.SayHello，请求包为 HelloRequest，响应为 HelloReply。</p>
+<h3 id="单项-RPC"><a href="#单项-RPC" class="headerlink" title="单项 RPC"></a>单项 RPC</h3><p>当你在等婷婷回去吃饭，婷婷在加班时，你们之间的 rpc 调用可能是这样的：</p>
+<p><em>小超：回来吃饭吗</em></p>
+<p><em>婷婷：还在加班</em></p>
+<p>这就是单项 RPC，即客户端发送一个请求给服务端，从服务端获取一个应答，就像一次普通的函数调用。</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/image-20240705220032151.png" alt="image-20240705220032151"></p>
+<ul>
+<li>client 层调用 SayHello 接口，把 HelloRequest 包进行序列化</li>
+<li>client option 将序列化的数据发送到 server 端</li>
+<li>server option 接收到 rpc 请求</li>
+<li>将 rpc 请求返回给 server 端，server 端进行处理，将结果给 server option</li>
+<li>server option 将 HelloReply 进行序列化并发给 client</li>
+<li>client option 做反序列化处理，并返回给 client 层</li>
+</ul>
+<h3 id="服务端流式-RPC"><a href="#服务端流式-RPC" class="headerlink" title="服务端流式 RPC"></a>服务端流式 RPC</h3><p>当你比赛输了给婷婷发消息时：</p>
+<p><em>小超：今天比赛输了</em></p>
+<p><em>婷婷：没事，一次比赛而已</em></p>
+<p><em>婷婷：晚上带你去吃好吃的</em></p>
+<p>这就是服务端流式 RPC，即客户端发送一个请求给服务端，可获取一个数据流用来读取一系列消息。客户端从返回的数据流里一直读取直到没有更多消息为止。</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/image-20240705220316542.png" alt=""></p>
+<ul>
+<li>client 层调用 SayHello 接口，把 HelloRequest 包进行序列化</li>
+<li>client option 将序列化的数据发送到 server 端</li>
+<li>server option 接收到 rpc 请求</li>
+<li>将 rpc 请求返回给 server 端，server 端进行处理，将将数据流给 server option</li>
+<li>server option 将 HelloReply 进行序列化并发给 client</li>
+<li>client option 做反序列化处理，并返回给 client 层</li>
+</ul>
+<h3 id="客户端流式-RPC"><a href="#客户端流式-RPC" class="headerlink" title="客户端流式 RPC"></a>客户端流式 RPC</h3><p>当你惹婷婷生气的时候：</p>
+<p><em>小超：怎么了，宝贝</em></p>
+<p><em>小超：别生气了，带你吃好吃的</em></p>
+<p><em>婷婷：滚</em></p>
+<p>客户端流式 RPC，即客户端用提供的一个数据流写入并发送一系列消息给服务端。一旦客户端完成消息写入，就等待服务端读取这些消息并返回应答。</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/image-20240705220455218.png" alt="image-20240705220455218"></p>
+<ul>
+<li>client 层调用 SayHello 接口，把 HelloRequest 包进行序列化</li>
+<li>client option 将序列化的数据流发送到 server 端</li>
+<li>server option 接收到 rpc 请求</li>
+<li>将 rpc 请求返回给 server 端，server 端进行处理，将结果给 server option</li>
+<li>server option 将 HelloReply 进行序列化并发给 client</li>
+<li>client option 做反序列化处理，并返回给 client 层</li>
+</ul>
+<h3 id="双向流-RPC"><a href="#双向流-RPC" class="headerlink" title="双向流 RPC"></a>双向流 RPC</h3><p>当你哄好婷婷时：</p>
+<p><em>小超：今天看了一个超好看的视频</em></p>
+<p><em>婷婷：什么视频</em></p>
+<p><em>小超：发给你看看</em></p>
+<p><em>婷婷：这也叫好看？</em></p>
+<p>双向流 RPC，即两边都可以分别通过一个读写数据流来发送一系列消息。这两个数据流操作是相互独立的，所以客户端和服务端能按其希望的任意顺序读写，例如：服务端可以在写应答前等待所有的客户端消息，或者它可以先读一个消息再写一个消息，或者是读写相结合的其他方式。每个数据流里消息的顺序会被保持。</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/image-20240705220534237.png" alt="image-20240705220534237"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>其实弄懂了单项 RPC、服务端流式 RPC、客户端流式 RPC、双向流 PRC 四种 grpc 应用场景，实现起来非常容易</p>
+<ol>
+<li>根据应用场景选择好哪种 gRPC 服务</li>
+<li>写好 proto 文件，用 protoc 生成.pb.go 文件</li>
+<li>服务端实现接口 -&gt;listen -&gt; grpc.NewServer () -&gt; pb.RegisterGreetsServer (server, &amp;Server {}) -&gt; s.Serve (lis)</li>
+<li>客户端 grpc.Dial-&gt;pb.NewGreetsClient-&gt;context.WithTimeout-&gt;client.SayHello (调用接口)-&gt; 如果是流传输则循环读取数据</li>
+</ol>
+<p>代码实现这里就不实现了，因为就算写也不是我实现的，所以这里就我自己在下面理解了。</p>
+<p>最近这两天什么都没干，做什么事都提不起来兴趣，有一种抽离感，好煎熬啊，快点出结果吧，祝我面试顺利！！！</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://learnku.com/articles/58641">https://learnku.com/articles/58641</a></p>
+<p><a target="_blank" rel="noopener" href="https://grpc.io/blog/principles/">https://grpc.io/blog/principles/</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/rickiyang/p/14758485.html">https://www.cnblogs.com/rickiyang/p/14758485.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://bbs.huaweicloud.com/blogs/337073#H21">https://bbs.huaweicloud.com/blogs/337073#H21</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">随便寻个地方</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2024/07/05/gRPC%E5%85%A5%E9%97%A8/">http://example.com/2024/07/05/gRPC%E5%85%A5%E9%97%A8/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">随便寻个地方'Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91/">项目开发</a></div><div class="post_share"><div class="social-share" data-image="/img/touxiang.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/10/19/%E3%80%8A%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Go%E8%AF%AD%E8%A8%80%E3%80%8B/" title="《深入理解Go语言》"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">《深入理解Go语言》</div></div></a></div><div class="next-post pull-right"><a href="/2024/07/03/%E4%B8%80%E8%87%B4%E6%80%A7%E7%AE%97%E6%B3%95%E2%80%94%E2%80%94ZAB/" title="一致性算法——ZAB"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">一致性算法——ZAB</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2024/03/23/Go%E8%AF%AD%E8%A8%80%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93%E2%80%94%E2%80%94%E5%8D%9A%E5%AE%A2%E5%90%8E%E7%AB%AF/" title="GoBlog，启动！"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-03-23</div><div class="title">GoBlog，启动！</div></div></a></div><div><a href="/2024/03/22/Web%E7%A8%8B%E5%BA%8F/" title="一个简单的Go Web程序"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-03-22</div><div class="title">一个简单的Go Web程序</div></div></a></div><div><a href="/2024/03/25/%E8%B7%AF%E7%94%B1%E5%92%8C%E4%B8%AD%E9%97%B4%E4%BB%B6/" title="路由和中间件"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-03-25</div><div class="title">路由和中间件</div></div></a></div><div><a href="/2024/03/26/%E6%93%8D%E4%BD%9C%E6%95%B0%E6%8D%AE%E5%BA%93/" title="操作数据库"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-03-26</div><div class="title">操作数据库</div></div></a></div><div><a href="/2024/04/16/Gohub%E2%80%94%E2%80%94%E6%B3%A8%E5%86%8C/" title="Gohub——注册"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-04-16</div><div class="title">Gohub——注册</div></div></a></div><div><a href="/2024/04/15/Gohub%E5%BC%80%E5%8F%91/" title="Gohub开发"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-04-15</div><div class="title">Gohub开发</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/touxiang.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">随便寻个地方</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">69</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E-RPC"><span class="toc-number">1.</span> <span class="toc-text">关于 RPC</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">1.1.</span> <span class="toc-text">是什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">1.2.</span> <span class="toc-text">为什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RPC-%E5%92%8C-REST-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.3.</span> <span class="toc-text">RPC 和 REST 的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="toc-number">1.4.</span> <span class="toc-text">优缺点</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E-gRPC"><span class="toc-number">2.</span> <span class="toc-text">关于 gRPC</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">2.1.</span> <span class="toc-text">适用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E7%A7%8D%E8%B0%83%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="toc-number">2.2.</span> <span class="toc-text">四种调用方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E9%A1%B9-RPC"><span class="toc-number">2.2.1.</span> <span class="toc-text">单项 RPC</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%B5%81%E5%BC%8F-RPC"><span class="toc-number">2.2.2.</span> <span class="toc-text">服务端流式 RPC</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%B5%81%E5%BC%8F-RPC"><span class="toc-number">2.2.3.</span> <span class="toc-text">客户端流式 RPC</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8C%E5%90%91%E6%B5%81-RPC"><span class="toc-number">2.2.4.</span> <span class="toc-text">双向流 RPC</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">3.1.</span> <span class="toc-text">参考</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/07/Untitled/" title="无题">无题</a><time datetime="2025-03-07T06:39:56.000Z" title="发表于 2025-03-07 14:39:56">2025-03-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E5%86%99%E4%BD%9C%E5%8A%A9%E6%89%8B-%E5%90%88%E5%B9%B6md%E6%96%87%E4%BB%B6-1741099573219/" title="无题">无题</a><time datetime="2025-03-04T14:46:16.000Z" title="发表于 2025-03-04 22:46:16">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E5%86%99%E4%BD%9C%E5%8A%A9%E6%89%8B-%E5%90%88%E5%B9%B6md%E6%96%87%E4%BB%B6-1741098965071/" title="无题">无题</a><time datetime="2025-03-04T14:36:08.000Z" title="发表于 2025-03-04 22:36:08">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/07/%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%E4%B8%A4%E5%85%84%E5%BC%9F%E2%80%94%E2%80%94%E6%95%B0%E7%BB%84%E5%92%8C%E5%88%87%E7%89%87%EF%BC%8C%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F/" title="顺序存储两兄弟——数组和切片，到底有什么区别？">顺序存储两兄弟——数组和切片，到底有什么区别？</a><time datetime="2024-11-07T05:04:09.000Z" title="发表于 2024-11-07 13:04:09">2024-11-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/10/24/%E4%BA%86%E8%A7%A3%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" title="了解基础数据类型">了解基础数据类型</a><time datetime="2024-10-24T09:57:13.000Z" title="发表于 2024-10-24 17:57:13">2024-10-24</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 随便寻个地方</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container').forEach(node => {
+            if (node.hasAttribute('display')) {
+              btf.wrap(node, 'div', { class: 'mathjax-overflow' })
+            } else {
+              btf.wrap(node, 'span', { class: 'mathjax-overflow' })
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
