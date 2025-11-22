@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>随便寻个地方&#39;Blog</title>
   
-  
+  <subtitle>继续摇摆吧，我的天真老朋友；只有滚动的石头，才能不长青苔。</subtitle>
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
