@@ -1,0 +1,381 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>一致性算法——Raft | 随便寻个地方'Blog</title><meta name="author" content="随便寻个地方"><meta name="copyright" content="随便寻个地方"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="几天前更新的文章里降到了一致性算法，也详细地写了 Paxos 算法的内部原理，今天我们继续学习分布式一致性算法的其他两种，由于篇幅有限，所以一篇博客写一个算法。 关于 Raft 算法Raft 是工程上使用较为广泛的强一致性、去中心化、高可用的分布式协议。在这里强调了是在工程上，因为在学术理论界，最耀眼的还是大名鼎鼎的 Paxos。 Paxos 算法是分布式系统领域最重要的一致性算法，同时也是公认的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一致性算法——Raft">
+<meta property="og:url" content="http://example.com/2024/07/01/%E4%B8%80%E8%87%B4%E6%80%A7%E7%AE%97%E6%B3%95%E2%80%94%E2%80%94Raft/index.html">
+<meta property="og:site_name" content="随便寻个地方&#39;Blog">
+<meta property="og:description" content="几天前更新的文章里降到了一致性算法，也详细地写了 Paxos 算法的内部原理，今天我们继续学习分布式一致性算法的其他两种，由于篇幅有限，所以一篇博客写一个算法。 关于 Raft 算法Raft 是工程上使用较为广泛的强一致性、去中心化、高可用的分布式协议。在这里强调了是在工程上，因为在学术理论界，最耀眼的还是大名鼎鼎的 Paxos。 Paxos 算法是分布式系统领域最重要的一致性算法，同时也是公认的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/touxiang.png">
+<meta property="article:published_time" content="2024-07-01T13:04:35.000Z">
+<meta property="article:modified_time" content="2024-07-01T14:03:21.000Z">
+<meta property="article:author" content="随便寻个地方">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/touxiang.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2024/07/01/%E4%B8%80%E8%87%B4%E6%80%A7%E7%AE%97%E6%B3%95%E2%80%94%E2%80%94Raft/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '一致性算法——Raft',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-07-01 22:03:21'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="随便寻个地方'Blog" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/touxiang.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">69</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><hr/></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="随便寻个地方'Blog"><span class="site-name">随便寻个地方'Blog</span></a></span><div id="menus"><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">一致性算法——Raft</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-07-01T13:04:35.000Z" title="发表于 2024-07-01 21:04:35">2024-07-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-07-01T14:03:21.000Z" title="更新于 2024-07-01 22:03:21">2024-07-01</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/">分布式系统</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="一致性算法——Raft"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>几天前更新的文章里降到了一致性算法，也详细地写了 Paxos 算法的内部原理，今天我们继续学习分布式一致性算法的其他两种，由于篇幅有限，所以一篇博客写一个算法。</p>
+<h1 id="关于-Raft-算法"><a href="#关于-Raft-算法" class="headerlink" title="关于 Raft 算法"></a>关于 Raft 算法</h1><p>Raft 是工程上使用较为广泛的强一致性、去中心化、高可用的分布式协议。在这里强调了是在工程上，因为在学术理论界，最耀眼的还是大名鼎鼎的 Paxos。</p>
+<p>Paxos 算法是分布式系统领域最重要的一致性算法，同时也是公认的极为艰深难懂的算法。为了解决这个晦涩难懂的问题，斯坦福大学的Diego Ongaro、John Ousterhout教授以容易理解（Understandability）为目标设计了这个新的一致性算法：Raft，并在2013年发布了论文：《In Search of an Understandable Consensus Algorithm》。为了验证这个容易理解的特性，他们分别在斯坦福大学和加州大学伯克利分校的分布式计算课程上，使用了Raft和Paxos两种算法，采用视频教学的方式来传授给学生，之后采用小测验的方式来验证。结果表明 Raft 比 Paxos 容易理解很多。</p>
+<p>Raft 和 Paxos 一样只要保证 n/2+1 节点（即超过半数节点）正常工作就能够提供服务。在设计层面，Raft 把算法流程分为三个子问题：领导选举（Leader election）、日志复制（Log replication）、安全性（Safety）。 Raft 开始时在集群中选举出 Leader 负责日志复制的管理，Leader 接受来自客户端的事务请求（日志），并将它们复制给集群的其他节点，然后负责通知集群中其他节点提交日志，Leader 负责保证其他节点与他的日志同步，当 Leader 宕机后集群其他节点会发起选举选出新的 Leader。</p>
+<h2 id="Raft-算法使用场景"><a href="#Raft-算法使用场景" class="headerlink" title="Raft 算法使用场景"></a>Raft 算法使用场景</h2><p>一般用作两种场景：<strong>元数据管理</strong>：比如 etcd，特点是数据规模小，主要保证<strong>数据一致性</strong>和<strong>集群的高可用（Raft选主）</strong>，所以一套 Raft 集群就够了，<strong>分布式数据库</strong>：这种会用 parttion group，每个 group 有一个 Raft 集群，当数据变大的时候会做拓展。</p>
+<blockquote>
+<p>Raft只是个共识算法来保证数据的一致性，与数据库客户端、事务没有关系</p>
+</blockquote>
+<h1 id="算法基础"><a href="#算法基础" class="headerlink" title="算法基础"></a>算法基础</h1><p>Reft 算法流程分为三个子问题：领导选举（Leader election）、日志复制（Log replication）、安全性（Safety）。</p>
+<h2 id="角色"><a href="#角色" class="headerlink" title="角色"></a>角色</h2><ul>
+<li>领导者 Leader：接收处理客户端请求、向 Follower 进行日志同步、同一时刻最多只能有一个可行的 Leader。</li>
+<li>追随者 Follower：接受并持久化 Leader 同步的日志，在 Leader 告之日志可以提交之后，提交日志，处在完全被动状态。</li>
+<li>候选人 Candidate：临时角色，处于 Leader 和 Follower 之间的暂时状态。</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/39ba62045eb5c0f8cbbc2b8aa99badad.png" alt="img"></p>
+<p>Raft算法中在任意时刻最多只有一个Leader，正常工作期间只有Leader和Followers。</p>
+<h2 id="状态转换"><a href="#状态转换" class="headerlink" title="状态转换"></a>状态转换</h2><p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/a7531168a16a5b7cb5091b2fe06eb8ca.png" alt="img"></p>
+<p><strong>状态切换流程：</strong></p>
+<ol>
+<li>Raft 刚启动的时候，所有节点初始状态都是 Follower</li>
+<li>超时时间内如果没有收到 Leader 的请求，则转换为 Candidate 角色并发起 Leader 选举</li>
+<li>如果 Candidate 收到了多数节点的选票则转换为 Leader</li>
+<li>如果在发起选举期间发现已经有 Leader 了，或者收到更高任期的请求则转换为 Follower</li>
+<li>Leader 在收到更高任期的请求后转换为 Follower</li>
+</ol>
+<h2 id="任期"><a href="#任期" class="headerlink" title="任期"></a>任期</h2><p>可以理解为是节点担任 Leader 职务的时间期限。</p>
+<p>Raft 将时间划分为一个一个的任期（term），每个任期由单调递增的数字（人气编号）标识，工作期可长可短可能不存在。</p>
+<blockquote>
+<p>任期时间 = 选举时间 + 正常运行时间</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/7fc521859d0fb400f01877953d410b96.png" alt="img"></p>
+<h2 id="通信"><a href="#通信" class="headerlink" title="通信"></a>通信</h2><p>Raft 中服务器节点之间通信通过两个 RPC 调用：</p>
+<ul>
+<li>请求投票 RequestVote：候选人(Candidate) 选举期间发起</li>
+<li>日志复制 AppendEntries：领导人(Leader)发起，用于复制 log 和发送心跳</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/7ccfe7004ee130b435c7f808be0839f8.png" alt="img"></p>
+<h1 id="Leader-选举"><a href="#Leader-选举" class="headerlink" title="Leader 选举"></a>Leader 选举</h1><h2 id="初始状态"><a href="#初始状态" class="headerlink" title="初始状态"></a>初始状态</h2><p>初始状态时，每个节点的角色都是 Follower (跟随者)，Term 任期编号为 1 (假设任期编号从1开始)</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/26963445b747cd52f7534d03d3cfe213.png" alt="img"></p>
+<p>不过这两种情况会触发选举：</p>
+<ul>
+<li>Raft 初次启动时，不存在 Leader，这时候会触发 Leader 选举</li>
+<li>Follower 在自己的超时时间内没有接收到 Leader 的心跳 heartBeat，触发选举超时，从而 Follower 的角色切换成 Candidate，Candidate 会发起选举</li>
+</ul>
+<h2 id="选举"><a href="#选举" class="headerlink" title="选举"></a>选举</h2><p>既然有两种情况下会触发选举，一个是初次启动，一个是Leader故障未发送心跳给Follower，那么我们假设有五个节点，然后分别用图来看下是如何选举的！</p>
+<p><strong>初始启动时：</strong></p>
+<p>初次启动节点都是正常流程如下：</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/d01d252e6630b2a6594f5cc3a2cf2516.png" alt="img"></p>
+<p><strong>Leader 故障时：</strong></p>
+<p>Node2此时是Leader 节点，结果故障了，剩下四个节点参与选举：</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/175a55e163fb0e173eb3cf8971dec5ad.png" alt="img"></p>
+<h2 id="当选条件"><a href="#当选条件" class="headerlink" title="当选条件"></a>当选条件</h2><p>在一个任期（Term）内只可以投票给一个结点，得到超过半数的投票才可成为 Leader，从而保证了一个任期内只会有一个 Leader 产生。</p>
+<h1 id="日志同步"><a href="#日志同步" class="headerlink" title="日志同步"></a>日志同步</h1><p>概括成一句话就是：<strong>保证Leader上日志能完全相同地复制到多台Follower服务器上。</strong></p>
+<p>OK！我们看下是如何进行同步的。</p>
+<h2 id="日志结构"><a href="#日志结构" class="headerlink" title="日志结构"></a>日志结构</h2><p>Raft算法中，每个节点维护着一份日志，其中包含了系统中所有状态变更的记录，每一次状态变更被称为一个日志条目。</p>
+<p>我们先看日志结构和右侧说明：</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/213828ecfbb19cea31428ec6a8cd6cc9.png" alt="img"></p>
+<p>图中每个节点存储自己的日志副本(log[])，每条日志记录包含：</p>
+<ul>
+<li>索引 (log index)：记录在日志中的位置，是一个连续单调递增整数</li>
+<li>任期号 (term)：日志记录被创建时Leader的任期号，上图中有三个任期</li>
+<li>命令 (command)：客户端请求指定的、状态机需要执行的指令</li>
+</ul>
+<h2 id="执行流程"><a href="#执行流程" class="headerlink" title="执行流程"></a>执行流程</h2><p>了解完日志结构后，我们来看日志是如何发起同步的。</p>
+<p><strong>日志持久化存储的条件</strong></p>
+<p>Follower节点必须先将记录安全写到磁盘，才能向Leader节点返回写入成功响应。</p>
+<p>如果一条日志记录被存储在超过半数的节点上，我们认为该记录已提交(committed)——这是 Raft 非常重要的特性！如果一条记录已提交，意味着状态机可以安全地执行该记录</p>
+<p><strong>流程如下图：</strong></p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/7a78999c1896181c3ca0eb79f03a8acf.png" alt="img"></p>
+<ol>
+<li>客户端向 Leader 发送命令，希望该命令被所有状态机执行；</li>
+<li>Leader 先将该命令追加到自己的日志中；</li>
+<li>Leader 并行地向其它节点发送AppendEntries RPC，等待响应；</li>
+<li>收到超过半数节点的响应，则认为新的日志记录是被提交的：</li>
+<li>Leader 将命令传给自己的状态机，然后向客户端返回响应</li>
+<li>此外，一旦 Leader 知道一条记录被提交了，将在后续的AppendEntries RPC中通知已经提交记录的 Followers</li>
+<li>Follower 将已提交的命令传给自己的状态机</li>
+<li>如果 Follower 宕机/超时：Leader 将反复尝试发送 RPC；</li>
+</ol>
+<blockquote>
+<p>Leader 不必等待每个 Follower 做出响应，只需要超过半数的成功响应（确保日志记录已经存储在超过半数的节点上），一个很慢的节点不会使系统变慢，因为 Leader 不必等待。</p>
+</blockquote>
+<h2 id="一致性检查"><a href="#一致性检查" class="headerlink" title="一致性检查"></a>一致性检查</h2><p>Raft 通过 AppendEntries RPC 消息来检测。</p>
+<ul>
+<li>每个AppendEntries RPC包含新日志记录之前那条记录的索引 (prevLogIndex) 和任期 (prevTerm)；</li>
+<li>Follower接收到消息后检查自己的 log index 、 term 与 prevLogIndex 、 prevTerm 进行匹配</li>
+<li>匹配成功则接收该记录，添加最新log，匹配失败则拒绝该消息</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/0f1b62539e3fbb42d6b1effd2bedf236.png" alt="img"></p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/f3966f5f1a26d6a30aef6c55b6c02e4b.png" alt="img"></p>
+<h2 id="日志一致性"><a href="#日志一致性" class="headerlink" title="日志一致性"></a>日志一致性</h2><p>Raft算法的目的是保证所有节点的一致性，即一个日志条目在某个节点被提交，那么这个日志条目也必须在所有节点上被提交。</p>
+<blockquote>
+<p>通过【<strong>一致性检查</strong>】就保证了日志一致性的这两点内容。</p>
+</blockquote>
+<ul>
+<li>如果两个节点的日志在相同的索引位置上的任期号相同，则认为他们具有一样的命令，从头到这个索引位置之间的日志完全相同</li>
+<li>如果给定的记录已提交，那么所有前面的记录也已提交</li>
+</ul>
+<h1 id="安全性"><a href="#安全性" class="headerlink" title="安全性"></a>安全性</h1><p>Raft增加了如下两条限制以保证安全性:</p>
+<ul>
+<li><p>拥有最新的已提交的 log entry 的 Follower才有资格成为Leader。</p>
+<p>这个保证是在 RequestVote RPC中做的，Candidate 在发送RequestVote RPC时，要带上自己的最后一条日志的term和log index，其他节点收到消息时，如果发现自己的日志比请求中携带的更新，则拒绝投票。日志比较的原则是，如果本地的最后一条log entry的term更大，则term大的更新，如果term一样大，则log index更大的更新。</p>
+</li>
+<li><p>Leader只能推进commit index来提交当前 term 的已经复制到大多数服务器上的日志，旧term日志的提交要等到提交当前term的日志来间接提交(log index 小于 commit index的日志被间接提交)。</p>
+</li>
+</ul>
+<p>之所以要这样，是因为可能会出现已提交的日志又被覆盖的情况:</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/alg-dst-raft-8.jpg" alt="img"></p>
+<p>在阶段a，term为2，S1是Leader，且S1写入日志(term, index)为(2, 2)，并且日志被同步写入了S2；</p>
+<p>在阶段b，S1离线，触发一次新的选主，此时S5被选为新的 Leader，此时系统 term 为3，且写入了日志(term, index)为(3， 2);</p>
+<p>S5尚未将日志推送到 Followers 就离线了，进而触发了一次新的选主，而之前离线的S1经过重新上线后被选中变成Leader，此时系统term为4，此时S1会将自己的日志同步到Followers，按照上图就是将日志(2， 2)同步到了S3，而此时由于该日志已经被同步到了多数节点(S1, S2, S3)，因此，此时日志(2，2)可以被提交了。；</p>
+<p>在阶段d，S1又下线了，触发一次选主，而S5有可能被选为新的Leader(这是因为S5可以满足作为主的一切条件: 1. term = 5 &gt; 4，2. 最新的日志为(3，2)，比大多数节点(如S2/S3/S4的日志都新)，然后S5会将自己的日志更新到Followers，于是S2、S3中已经被提交的日志(2，2)被截断了。</p>
+<p>增加上述限制后，即使日志(2，2)已经被大多数节点(S1、S2、S3)确认了，但是它不能被提交，因为它是来自之前term(2)的日志，直到S1在当前term(4)产生的日志(4， 4)被大多数Followers确认，S1方可提交日志(4，4)这条日志，当然，根据Raft定义，(4，4)之前的所有日志也会被提交。此时即使S1再下线，重新选主时S5不可能成为Leader，因为它没有包含大多数节点已经拥有的日志(4，4)。</p>
+<h2 id="日志压缩"><a href="#日志压缩" class="headerlink" title="日志压缩"></a>日志压缩</h2><p>在实际的系统中，不能让日志无限增长，否则系统重启时需要花很长的时间进行回放，从而影响可用性。Raft采用对整个系统进行snapshot来解决，snapshot之前的日志都可以丢弃。</p>
+<p>每个副本独立的对自己的系统状态进行snapshot，并且只能对已经提交的日志记录进行snapshot。</p>
+<p>Snapshot中包含以下内容:</p>
+<ul>
+<li>日志元数据。最后一条已提交的 log entry的 log index和term。这两个值在snapshot之后的第一条log entry的AppendEntries RPC的完整性检查的时候会被用上。</li>
+<li>系统当前状态。</li>
+</ul>
+<p>当Leader要发给某个日志落后太多的Follower的log entry被丢弃，Leader会将snapshot发给Follower。或者当新加进一台机器时，也会发送snapshot给它。发送snapshot使用InstalledSnapshot RPC。</p>
+<p>做snapshot既不要做的太频繁，否则消耗磁盘带宽， 也不要做的太不频繁，否则一旦节点重启需要回放大量日志，影响可用性。推荐当日志达到某个固定的大小做一次snapshot。</p>
+<p>做一次snapshot可能耗时过长，会影响正常日志同步。可以通过使用copy-on-write技术避免snapshot过程影响正常日志同步。</p>
+<h2 id="成员变更"><a href="#成员变更" class="headerlink" title="成员变更"></a>成员变更</h2><p>成员变更是在集群运行过程中副本发生变化，如增加/减少副本数、节点替换等。</p>
+<p>成员变更也是一个分布式一致性问题，既所有服务器对新成员达成一致。但是成员变更又有其特殊性，因为在成员变更的一致性达成的过程中，参与投票的进程会发生变化。</p>
+<p>如果将成员变更当成一般的一致性问题，直接向Leader发送成员变更请求，Leader复制成员变更日志，达成多数派之后提交，各服务器提交成员变更日志后从旧成员配置(Cold)切换到新成员配置(Cnew)。</p>
+<p>因为各个服务器提交成员变更日志的时刻可能不同，造成各个服务器从旧成员配置(Cold)切换到新成员配置(Cnew)的时刻不同。</p>
+<p>成员变更不能影响服务的可用性，但是成员变更过程的某一时刻，可能出现在Cold和Cnew中同时存在两个不相交的多数派，进而可能选出两个Leader，形成不同的决议，破坏安全性。</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/alg-dst-raft-9.jpg" alt="img"></p>
+<p>由于成员变更的这一特殊性，成员变更不能当成一般的一致性问题去解决。</p>
+<p>为了解决这一问题，Raft提出了两阶段的成员变更方法。集群先从旧成员配置Cold切换到一个过渡成员配置，称为共同一致(joint consensus)，共同一致是旧成员配置Cold和新成员配置Cnew的组合Cold U Cnew，一旦共同一致Cold U Cnew被提交，系统再切换到新成员配置Cnew。</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/alg-dst-raft-10.jpg" alt="img"></p>
+<p>Raft两阶段成员变更过程如下:</p>
+<ul>
+<li>Leader收到成员变更请求从Cold切成Cnew；</li>
+<li>eader在本地生成一个新的log entry，其内容是Cold∪Cnew，代表当前时刻新旧成员配置共存，写入本地日志，同时将该log entry复制至Cold∪Cnew中的所有副本。在此之后新的日志同步需要保证得到Cold和Cnew两个多数派的确认；</li>
+<li>Follower收到Cold∪Cnew的log entry后更新本地日志，并且此时就以该配置作为自己的成员配置；</li>
+<li>如果Cold和Cnew中的两个多数派确认了Cold U Cnew这条日志，Leader就提交这条log entry；</li>
+<li>接下来Leader生成一条新的log entry，其内容是新成员配置Cnew，同样将该log entry写入本地日志，同时复制到Follower上；</li>
+<li>Follower收到新成员配置Cnew后，将其写入日志，并且从此刻起，就以该配置作为自己的成员配置，并且如果发现自己不在Cnew这个成员配置中会自动退出；</li>
+<li>Leader收到Cnew的多数派确认后，表示成员变更成功，后续的日志只要得到Cnew多数派确认即可。Leader给客户端回复成员变更执行成功。</li>
+</ul>
+<p>异常分析:</p>
+<ul>
+<li>如果Leader的Cold U Cnew尚未推送到Follower，Leader就挂了，此后选出的新Leader并不包含这条日志，此时新Leader依然使用Cold作为自己的成员配置。</li>
+<li>如果Leader的Cold U Cnew推送到大部分的Follower后就挂了，此后选出的新Leader可能是Cold也可能是Cnew中的某个Follower。</li>
+<li>如果Leader在推送Cnew配置的过程中挂了，那么同样，新选出来的Leader可能是Cold也可能是Cnew中的某一个，此后客户端继续执行一次改变配置的命令即可。</li>
+<li>如果大多数的Follower确认了Cnew这个消息后，那么接下来即使Leader挂了，新选出来的Leader肯定位于Cnew中。</li>
+<li>两阶段成员变更比较通用且容易理解，但是实现比较复杂，同时两阶段的变更协议也会在一定程度上影响变更过程中的服务可用性，因此我们期望增强成员变更的限制，以简化操作流程。</li>
+</ul>
+<p>两阶段成员变更，之所以分为两个阶段，是因为对Cold与Cnew的关系没有做任何假设，为了避免Cold和Cnew各自形成不相交的多数派选出两个Leader，才引入了两阶段方案。</p>
+<p>如果增强成员变更的限制，假设Cold与Cnew任意的多数派交集不为空，这两个成员配置就无法各自形成多数派，那么成员变更方案就可能简化为一阶段。</p>
+<p>那么如何限制Cold与Cnew，使之任意的多数派交集不为空呢? 方法就是每次成员变更只允许增加或删除一个成员。</p>
+<p>可从数学上严格证明，只要每次只允许增加或删除一个成员，Cold与Cnew不可能形成两个不相交的多数派。</p>
+<p>一阶段成员变更:</p>
+<ul>
+<li>成员变更限制每次只能增加或删除一个成员(如果要变更多个成员，连续变更多次)。</li>
+<li>成员变更由Leader发起，Cnew得到多数派确认后，返回客户端成员变更成功。</li>
+<li>一次成员变更成功前不允许开始下一次成员变更，因此新任Leader在开始提供服务前要将自己本地保存的最新成员配置重新投票形成多数派确认。</li>
+<li>Leader只要开始同步新成员配置，即可开始使用新的成员配置进行日志同步。</li>
+</ul>
+<h1 id="Raft-和-Multi-Paxos对比"><a href="#Raft-和-Multi-Paxos对比" class="headerlink" title="Raft 和 Multi-Paxos对比"></a>Raft 和 Multi-Paxos对比</h1><p>Raft与Multi-Paxos都是基于领导者的一致性算法，乍一看有很多地方相同，下面总结一下Raft与Multi-Paxos的异同。</p>
+<p>Raft与Multi-Paxos中相似的概念:</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/alg-dst-raft-11.jpg" alt="img"></p>
+<p>Raft与Multi-Paxos的不同:</p>
+<p><img src="https://raw.githubusercontent.com/zxh3032/save-image/masin/alg-dst-raft-12.jpg" alt="img"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>没更新的几天去干嘛了，有在学习，只是没去学习全新的东西，回过头去看了看之前没注意的一些知识点，收获非常大。不过不打算写博客来记录了，学到最多的还是一些关于 Go 底层实现的一些东西，我也是在看别人写的书，没有什么实际收获，只是去理解了一下，所以觉得没有再写博客的必要。</p>
+<p>学习使我快乐，学习使我快乐，学习是我快乐。幸亏最近几天有去做算法题，才不至于在做笔试的时候手忙脚乱的。老规矩，祝我面试顺利！！！</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://example.com">随便寻个地方</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://example.com/2024/07/01/%E4%B8%80%E8%87%B4%E6%80%A7%E7%AE%97%E6%B3%95%E2%80%94%E2%80%94Raft/">http://example.com/2024/07/01/%E4%B8%80%E8%87%B4%E6%80%A7%E7%AE%97%E6%B3%95%E2%80%94%E2%80%94Raft/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://example.com" target="_blank">随便寻个地方'Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%AE%97%E6%B3%95/">算法</a></div><div class="post_share"><div class="social-share" data-image="/img/touxiang.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/07/03/%E4%B8%80%E8%87%B4%E6%80%A7%E7%AE%97%E6%B3%95%E2%80%94%E2%80%94ZAB/" title="一致性算法——ZAB"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">一致性算法——ZAB</div></div></a></div><div class="next-post pull-right"><a href="/2024/06/27/%E4%B8%80%E8%87%B4%E6%80%A7%E7%AE%97%E6%B3%95%E2%80%94%E2%80%94Paxos/" title="一致性算法——Paxos"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">一致性算法——Paxos</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2024/06/27/%E4%B8%80%E8%87%B4%E6%80%A7%E7%AE%97%E6%B3%95%E2%80%94%E2%80%94Paxos/" title="一致性算法——Paxos"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-06-27</div><div class="title">一致性算法——Paxos</div></div></a></div><div><a href="/2024/07/03/%E4%B8%80%E8%87%B4%E6%80%A7%E7%AE%97%E6%B3%95%E2%80%94%E2%80%94ZAB/" title="一致性算法——ZAB"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-07-03</div><div class="title">一致性算法——ZAB</div></div></a></div><div><a href="/2024/06/20/%E4%BB%80%E4%B9%88%E6%98%AF%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95%EF%BC%9F/" title="什么是一致性哈希算法？"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-06-20</div><div class="title">什么是一致性哈希算法？</div></div></a></div><div><a href="/2024/06/20/%E5%8D%81%E5%A4%A7%E7%BB%8F%E5%85%B8%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%A4%A7%E6%8F%AD%E7%A7%98/" title="十大经典排序算法大揭秘"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-06-20</div><div class="title">十大经典排序算法大揭秘</div></div></a></div><div><a href="/2024/06/17/%E7%BA%A2%E9%BB%91%E6%A0%91%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F%E2%80%94%E2%80%94%E4%B8%80%E4%B8%AA%E2%80%9C%E6%B8%85%E6%9C%9D%E2%80%9D%E7%9A%84%E9%81%97%E7%95%99%E9%97%AE%E9%A2%98/" title="红黑树是什么？——一个“清朝”的遗留问题"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-06-17</div><div class="title">红黑树是什么？——一个“清朝”的遗留问题</div></div></a></div><div><a href="/2024/06/24/%E8%85%BE%E8%AE%AF%E9%9D%A2%E8%AF%95-%E4%B8%89/" title="腾讯面试(三)"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-06-24</div><div class="title">腾讯面试(三)</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/touxiang.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">随便寻个地方</div><div class="author-info__description">最近在做博客重建，有些乱，请见谅……</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">69</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E-Raft-%E7%AE%97%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">关于 Raft 算法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Raft-%E7%AE%97%E6%B3%95%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">1.1.</span> <span class="toc-text">Raft 算法使用场景</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AE%97%E6%B3%95%E5%9F%BA%E7%A1%80"><span class="toc-number">2.</span> <span class="toc-text">算法基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%92%E8%89%B2"><span class="toc-number">2.1.</span> <span class="toc-text">角色</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E8%BD%AC%E6%8D%A2"><span class="toc-number">2.2.</span> <span class="toc-text">状态转换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%BB%E6%9C%9F"><span class="toc-number">2.3.</span> <span class="toc-text">任期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E4%BF%A1"><span class="toc-number">2.4.</span> <span class="toc-text">通信</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Leader-%E9%80%89%E4%B8%BE"><span class="toc-number">3.</span> <span class="toc-text">Leader 选举</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E7%8A%B6%E6%80%81"><span class="toc-number">3.1.</span> <span class="toc-text">初始状态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%89%E4%B8%BE"><span class="toc-number">3.2.</span> <span class="toc-text">选举</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BD%93%E9%80%89%E6%9D%A1%E4%BB%B6"><span class="toc-number">3.3.</span> <span class="toc-text">当选条件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%97%A5%E5%BF%97%E5%90%8C%E6%AD%A5"><span class="toc-number">4.</span> <span class="toc-text">日志同步</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A5%E5%BF%97%E7%BB%93%E6%9E%84"><span class="toc-number">4.1.</span> <span class="toc-text">日志结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="toc-number">4.2.</span> <span class="toc-text">执行流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E8%87%B4%E6%80%A7%E6%A3%80%E6%9F%A5"><span class="toc-number">4.3.</span> <span class="toc-text">一致性检查</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A5%E5%BF%97%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-number">4.4.</span> <span class="toc-text">日志一致性</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E6%80%A7"><span class="toc-number">5.</span> <span class="toc-text">安全性</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A5%E5%BF%97%E5%8E%8B%E7%BC%A9"><span class="toc-number">5.1.</span> <span class="toc-text">日志压缩</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%90%E5%91%98%E5%8F%98%E6%9B%B4"><span class="toc-number">5.2.</span> <span class="toc-text">成员变更</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Raft-%E5%92%8C-Multi-Paxos%E5%AF%B9%E6%AF%94"><span class="toc-number">6.</span> <span class="toc-text">Raft 和 Multi-Paxos对比</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">7.</span> <span class="toc-text">总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/07/Untitled/" title="无题">无题</a><time datetime="2025-03-07T06:39:56.000Z" title="发表于 2025-03-07 14:39:56">2025-03-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E5%86%99%E4%BD%9C%E5%8A%A9%E6%89%8B-%E5%90%88%E5%B9%B6md%E6%96%87%E4%BB%B6-1741099573219/" title="无题">无题</a><time datetime="2025-03-04T14:46:16.000Z" title="发表于 2025-03-04 22:46:16">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/04/%E5%86%99%E4%BD%9C%E5%8A%A9%E6%89%8B-%E5%90%88%E5%B9%B6md%E6%96%87%E4%BB%B6-1741098965071/" title="无题">无题</a><time datetime="2025-03-04T14:36:08.000Z" title="发表于 2025-03-04 22:36:08">2025-03-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/11/07/%E9%A1%BA%E5%BA%8F%E5%AD%98%E5%82%A8%E4%B8%A4%E5%85%84%E5%BC%9F%E2%80%94%E2%80%94%E6%95%B0%E7%BB%84%E5%92%8C%E5%88%87%E7%89%87%EF%BC%8C%E5%88%B0%E5%BA%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F/" title="顺序存储两兄弟——数组和切片，到底有什么区别？">顺序存储两兄弟——数组和切片，到底有什么区别？</a><time datetime="2024-11-07T05:04:09.000Z" title="发表于 2024-11-07 13:04:09">2024-11-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/10/24/%E4%BA%86%E8%A7%A3%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" title="了解基础数据类型">了解基础数据类型</a><time datetime="2024-10-24T09:57:13.000Z" title="发表于 2024-10-24 17:57:13">2024-10-24</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 随便寻个地方</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container').forEach(node => {
+            if (node.hasAttribute('display')) {
+              btf.wrap(node, 'div', { class: 'mathjax-overflow' })
+            } else {
+              btf.wrap(node, 'span', { class: 'mathjax-overflow' })
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
